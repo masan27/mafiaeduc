@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Controllers for the API
+use App\Http\Controllers\WelcomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [WelcomeController::class, 'welcome']);

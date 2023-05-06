@@ -13,4 +13,5 @@ interface AuthServiceInterface
     public function logout(Request $request): array;
 
     public function getUser(Request $request): array;
+    
 }

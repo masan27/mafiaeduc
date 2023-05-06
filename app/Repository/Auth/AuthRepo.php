@@ -46,4 +46,64 @@ class AuthRepo implements AuthRepoInterface
             ->where('status', UserEntities::USER_ACTIVE)
             ->where('email', $email)->first();
     }
+
+    public static function insertOrUpdateOTP($userId, $otp)
+    {
+        return DB::table('password_resets')
+            ->updateOrInsert(
+                ['user_id' => $userId],
+                [
+                    'otp' => $otp,
+                    'expired_at' => date('Y-m-d H:i:s', strtotime('+1 minutes')),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]
+            );
+    }
+
+    public static function insertUserRememberToken($userId, $otp)
+    {
+        return self::getDbTable()
+            ->where('id', $userId)
+            ->update([
+                'remember_token' => $otp,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+    }
+
+    public static function getUserRememberToken($userId)
+    {
+        return self::getDbTable()
+            ->where('id', $userId)
+            ->select('remember_token')
+            ->first()
+            ->remember_token;
+    }
+
+    public static function getUserOtp($userId, $otp)
+    {
+        return DB::table('password_resets')
+            ->where('user_id', $userId)
+            ->where('otp', $otp)
+            ->where('expired_at', '>', date('Y-m-d H:i:s'))
+            ->select('otp', 'expired_at')
+            ->first();
+    }
+
+    public static function deleteUserOtp($userId)
+    {
+        return DB::table('password_resets')
+            ->where('user_id', $userId)
+            ->delete();
+    }
+
+    public static function updateUserPassword($userId, $password)
+    {
+        return self::getDbTable()
+            ->where('id', $userId)
+            ->update([
+                'password' => Hash::make($password),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+    }
 }

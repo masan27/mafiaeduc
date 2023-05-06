@@ -35,4 +35,13 @@ class UserRepo implements UserRepoInterface
     {
         return DB::table('users');
     }
+
+    public static function getUserFullName($userId): string
+    {
+        return DB::table('user_details')
+            ->where('user_id', $userId)
+            ->select('full_name')
+            ->first()
+            ->full_name;
+    }
 }

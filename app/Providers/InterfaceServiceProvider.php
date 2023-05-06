@@ -32,6 +32,16 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Auth\AuthService::class
         );
 
+        $this->app->bind(
+            \App\Services\ForgotPassword\ForgotPasswordServiceInterface::class,
+            \App\Services\ForgotPassword\ForgotPasswordService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Email\EmailServiceInterface::class,
+            \App\Services\Email\EmailService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

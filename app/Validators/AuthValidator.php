@@ -38,7 +38,17 @@ class AuthValidator
     public function validateForgotPasswordInput($request): bool|array
     {
         $validator = Validator::make($request->all(), [
+            'email' => 'required|email|max:255',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
+    public function validateVerifyOtpInput($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:255|exists:users,email',
+            'otp' => 'required|string|max:4',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);
@@ -47,7 +57,7 @@ class AuthValidator
     public function validateResetPasswordInput($request): bool|array
     {
         $validator = Validator::make($request->all(), [
-            'token' => 'required|string',
+            'otp' => 'required|string|max:4',
             'email' => 'required|email|max:255|exists:users,email',
             'password' => 'required|string|min:6|max:25',
             'password_confirmation' => 'required|string|min:6|max:25|same:password',

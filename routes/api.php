@@ -31,4 +31,10 @@ Route::prefix('v1')->group(function () {
             Route::post('logout', [AuthController::class, 'logout']);
         });
     });
+
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    Route::prefix('forgot-password')->group(function () {
+        Route::post('send-email', [AuthController::class, 'sendResetLinkEmail']);
+        Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
+    });
 });

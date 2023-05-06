@@ -38,9 +38,10 @@ class InterfaceServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \App\Services\Email\EmailServiceInterface::class,
-            \App\Services\Email\EmailService::class
+            \App\Services\Notifications\NotificationServiceInterface::class,
+            \App\Services\Notifications\NotificationService::class
         );
+
 
         // Register the Repository Interfaces
         // -------------------------------
@@ -53,6 +54,11 @@ class InterfaceServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Repository\Users\UserRepoInterface::class,
             \App\Repository\Users\UserRepo::class
+        );
+
+        $this->app->bind(
+            \App\Repository\Notifications\NotificationRepoInterface::class,
+            \App\Repository\Notifications\NotificationRepo::class
         );
     }
 }

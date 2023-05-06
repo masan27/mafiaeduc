@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,5 +37,12 @@ Route::prefix('v1')->group(function () {
     Route::prefix('forgot-password')->group(function () {
         Route::post('send-email', [AuthController::class, 'sendResetLinkEmail']);
         Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
+    });
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', [NotificationController::class, 'getUserNotification']);
+            Route::post('mark-as-read', [NotificationController::class, 'markAsRead']);
+        });
     });
 });

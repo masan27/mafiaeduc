@@ -12,7 +12,7 @@ class AuthRepo implements AuthRepoInterface
 {
     use RepoTrait;
 
-    public static function registerUser($fullName, $email, $password, $role): void
+    public static function registerUser($fullName, $email, $password, $role)
     {
         $userId = self::getDbTable()->insertGetId([
             'email' => $email,
@@ -23,6 +23,8 @@ class AuthRepo implements AuthRepoInterface
         ]);
 
         self::registerUserDetail($userId, $fullName);
+
+        return $userId;
     }
 
     private static function getDbTable()

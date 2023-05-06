@@ -2,9 +2,11 @@
 
 namespace App\Services\Auth;
 
+use App\Entities\NotificationEntities;
 use App\Entities\RoleEntities;
 use App\Helpers\ResponseHelper;
 use App\Repository\Auth\AuthRepoInterface;
+use App\Repository\Notifications\NotificationRepoInterface;
 use App\Repository\Users\UserRepoInterface;
 use App\Validators\AuthValidator;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +20,15 @@ class AuthService implements AuthServiceInterface
 
     private UserRepoInterface $userRepo;
 
-    public function __construct(AuthValidator $authValidator, AuthRepoInterface $authRepo, UserRepoInterface $userRepo)
+    private NotificationRepoInterface $notificationRepo;
+
+    public function __construct(AuthValidator     $authValidator, AuthRepoInterface $authRepo,
+                                UserRepoInterface $userRepo, NotificationRepoInterface $notificationRepo)
     {
         $this->authValidator = $authValidator;
         $this->authRepo = $authRepo;
         $this->userRepo = $userRepo;
+        $this->notificationRepo = $notificationRepo;
     }
 
     public function register($request): array
@@ -38,7 +44,16 @@ class AuthService implements AuthServiceInterface
             $password = $request->input('password');
             $role = RoleEntities::GUEST_ROLE;
 
-            $this->authRepo->registerUser($fullName, $email, $password, $role);
+            $userId = $this->authRepo->registerUser($fullName, $email, $password, $role);
+
+            $notificationData = [
+                $userId,
+                'Selamat datang di aplikasi',
+                'Halo, ' . $fullName . ' Selamat datang di mafia education, pilih kelas yang kamu inginkan dan mulai belajar sekarang',
+                NotificationEntities::TYPE_GENERAL
+            ];
+
+            $this->notificationRepo->createUserNotification(...$notificationData);
 
             DB::commit();
             return ResponseHelper::success('Berhasil mendaftarkan user');

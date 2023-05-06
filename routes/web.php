@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 // Controllers for the API
-use App\Http\Controllers\WelcomeController;
 
 /*
 |--------------------------------------------------------------------------

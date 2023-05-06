@@ -2,6 +2,9 @@
 
 namespace App\Helpers;
 
+use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+
 class ValidationHelper
 {
     const  VALIDATION_MESSAGES = [
@@ -56,4 +59,17 @@ class ValidationHelper
         '*.array' => ':attribute harus berupa array',
         '*.boolean' => ':attribute harus berupa boolean',
     ];
+
+    public function getValidationResponse($validator): bool|array
+    {
+        if($validator->fails()) {
+            return ResponseHelper::error(
+                $validator->errors()->first(),
+                $validator->errors(),
+                ResponseAlias::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        return false;
+    }
 }

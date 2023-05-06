@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 // Controllers for the API
-use App\Http\Controllers\WelcomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +22,13 @@ Route::get('/', fn() => redirect('/v1'));
 Route::prefix('v1')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
 
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('register', [AuthController::class, 'register']);
+
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::get('user', [AuthController::class, 'getUser']);
+            Route::post('logout', [AuthController::class, 'logout']);
+        });
+    });
 });

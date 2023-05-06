@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Welcome;
 
+use App\Http\Controllers\Controller;
 use App\Services\Welcome\WelcomeServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;

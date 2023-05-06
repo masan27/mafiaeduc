@@ -27,7 +27,22 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Welcome\WelcomeService::class
         );
 
+        $this->app->bind(
+            \App\Services\Auth\AuthServiceInterface::class,
+            \App\Services\Auth\AuthService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
+
+        $this->app->bind(
+            \App\Repository\Auth\AuthRepoInterface::class,
+            \App\Repository\Auth\AuthRepo::class
+        );
+
+        $this->app->bind(
+            \App\Repository\Users\UserRepoInterface::class,
+            \App\Repository\Users\UserRepo::class
+        );
     }
 }

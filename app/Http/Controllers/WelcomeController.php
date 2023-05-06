@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\WelcomeServiceInterface;
+use App\Services\Welcome\WelcomeServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class WelcomeController extends Controller

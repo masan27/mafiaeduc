@@ -23,8 +23,8 @@ class InterfaceServiceProvider extends ServiceProvider
         // -------------------------------
 
         $this->app->bind(
-            \App\Services\WelcomeServiceInterface::class,
-            \App\Services\WelcomeService::class
+            \App\Services\Welcome\WelcomeServiceInterface::class,
+            \App\Services\Welcome\WelcomeService::class
         );
 
         // Register the Repository Interfaces

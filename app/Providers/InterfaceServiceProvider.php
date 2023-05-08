@@ -60,5 +60,10 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Repository\Notifications\NotificationRepoInterface::class,
             \App\Repository\Notifications\NotificationRepo::class
         );
+
+        $this->app->bind(
+            \App\Repository\AccessLogs\AccessLogRepoInterface::class,
+            \App\Repository\AccessLogs\AccessLogRepo::class
+        );
     }
 }

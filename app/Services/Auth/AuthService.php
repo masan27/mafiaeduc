@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Entities\NotificationEntities;
 use App\Entities\RoleEntities;
 use App\Helpers\ResponseHelper;
+use App\Repository\AccessLogs\AccessLogRepoInterface;
 use App\Repository\Auth\AuthRepoInterface;
 use App\Repository\Notifications\NotificationRepoInterface;
 use App\Repository\Users\UserRepoInterface;
@@ -22,17 +23,21 @@ class AuthService implements AuthServiceInterface
 
     private NotificationRepoInterface $notificationRepo;
 
+    private AccessLogRepoInterface $accessLogRepo;
+
     public function __construct(
         AuthValidator             $authValidator,
         AuthRepoInterface         $authRepo,
         UserRepoInterface         $userRepo,
-        NotificationRepoInterface $notificationRepo
+        NotificationRepoInterface $notificationRepo,
+        AccessLogRepoInterface    $accessLogRepo
     )
     {
         $this->authValidator = $authValidator;
         $this->authRepo = $authRepo;
         $this->userRepo = $userRepo;
         $this->notificationRepo = $notificationRepo;
+        $this->accessLogRepo = $accessLogRepo;
     }
 
     public function register($request): array
@@ -100,6 +105,9 @@ class AuthService implements AuthServiceInterface
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
+            $clientIP = $request->ip();
+            $this->accessLogRepo->createLoginLogs($user->id, $clientIP, $token);
+
             $data = [
                 'token' => $token,
                 'user' => $userData
@@ -117,7 +125,12 @@ class AuthService implements AuthServiceInterface
     {
         DB::beginTransaction();
         try {
+            $userId = $request->user()->id;
+            $token = $request->bearerToken();
+
             $request->user()->currentAccessToken()->delete();
+
+            $this->accessLogRepo->updateLogoutLogs($userId, $token);
 
             DB::commit();
             return ResponseHelper::success('Berhasil logout');

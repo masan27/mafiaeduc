@@ -22,8 +22,12 @@ class AuthService implements AuthServiceInterface
 
     private NotificationRepoInterface $notificationRepo;
 
-    public function __construct(AuthValidator     $authValidator, AuthRepoInterface $authRepo,
-                                UserRepoInterface $userRepo, NotificationRepoInterface $notificationRepo)
+    public function __construct(
+        AuthValidator             $authValidator,
+        AuthRepoInterface         $authRepo,
+        UserRepoInterface         $userRepo,
+        NotificationRepoInterface $notificationRepo
+    )
     {
         $this->authValidator = $authValidator;
         $this->authRepo = $authRepo;
@@ -46,14 +50,7 @@ class AuthService implements AuthServiceInterface
 
             $userId = $this->authRepo->registerUser($fullName, $email, $password, $role);
 
-            $notificationData = [
-                $userId,
-                'Selamat datang di aplikasi',
-                'Halo, ' . $fullName . ' Selamat datang di mafia education, pilih kelas yang kamu inginkan dan mulai belajar sekarang',
-                NotificationEntities::TYPE_GENERAL
-            ];
-
-            $this->notificationRepo->createUserNotification(...$notificationData);
+            $this->sendWelcomeNotification($userId);
 
             DB::commit();
             return ResponseHelper::success('Berhasil mendaftarkan user');
@@ -61,6 +58,21 @@ class AuthService implements AuthServiceInterface
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
+
+    private function sendWelcomeNotification(int $userId): void
+    {
+        $notificationTitle = 'Selamat datang di aplikasi';
+        $notificationBody = 'Halo, ' . $fullName . ' Selamat datang di mafia education, pilih kelas yang kamu inginkan dan mulai belajar sekarang';
+
+        $notificationData = [
+            $userId,
+            $notificationTitle,
+            $notificationBody,
+            NotificationEntities::TYPE_GENERAL
+        ];
+
+        $this->notificationRepo->createUserNotification(...$notificationData);
     }
 
     public function login($request): array

@@ -50,7 +50,7 @@ class AuthService implements AuthServiceInterface
 
             $userId = $this->authRepo->registerUser($fullName, $email, $password, $role);
 
-            $this->sendWelcomeNotification($userId);
+            $this->sendWelcomeNotification($userId, $fullName);
 
             DB::commit();
             return ResponseHelper::success('Berhasil mendaftarkan user');
@@ -60,7 +60,7 @@ class AuthService implements AuthServiceInterface
         }
     }
 
-    private function sendWelcomeNotification(int $userId): void
+    private function sendWelcomeNotification(int $userId, string $fullName): void
     {
         $notificationTitle = 'Selamat datang di aplikasi';
         $notificationBody = 'Halo, ' . $fullName . ' Selamat datang di mafia education, pilih kelas yang kamu inginkan dan mulai belajar sekarang';

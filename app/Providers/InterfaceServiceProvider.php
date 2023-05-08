@@ -42,6 +42,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Notifications\NotificationService::class
         );
 
+        $this->app->bind(
+            \App\Services\Users\UserServiceInterface::class,
+            \App\Services\Users\UserService::class
+        );
+
 
         // Register the Repository Interfaces
         // -------------------------------

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Notifications\NotificationController;
+use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,12 @@ Route::prefix('v1')->group(function () {
         Route::prefix('notifications')->group(function () {
             Route::get('/', [NotificationController::class, 'getUserNotification']);
             Route::post('mark-as-read', [NotificationController::class, 'markAsRead']);
+        });
+
+        Route::prefix('user')->group(function () {
+            Route::get('/', [UserController::class, 'getUserDetails']);
+            Route::post('update', [UserController::class, 'updateUserDetails']);
+            Route::post('change-password', [UserController::class, 'changePassword']);
         });
     });
 });

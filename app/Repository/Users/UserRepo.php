@@ -5,6 +5,7 @@ namespace App\Repository\Users;
 use App\Entities\UserEntities;
 use App\Traits\RepoTrait;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepo implements UserRepoInterface
 {
@@ -43,5 +44,22 @@ class UserRepo implements UserRepoInterface
             ->select('full_name')
             ->first()
             ->full_name;
+    }
+
+    public static function changeUserPassword($userId, $newPassword): bool
+    {
+        return self::getDbTable()
+            ->where('id', $userId)
+            ->update([
+                'password' => Hash::make($newPassword),
+                'updated_at' => now()
+            ]);
+    }
+
+    public static function updateUserDetails($userId, $data): bool
+    {
+        return self::getDbTable()
+            ->where('id', $userId)
+            ->update($data);
     }
 }

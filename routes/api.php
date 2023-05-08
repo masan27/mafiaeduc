@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Notifications\NotificationController;
+use App\Http\Controllers\Payments\PaymentMethodController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -51,5 +52,7 @@ Route::prefix('v1')->group(function () {
             Route::post('update', [UserController::class, 'updateUserDetails']);
             Route::post('change-password', [UserController::class, 'changePassword']);
         });
+
+        Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
     });
 });

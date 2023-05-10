@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordService implements ForgotPasswordServiceInterface
 {
-    private AuthValidator $authValidator;
+    protected AuthValidator $authValidator;
 
-    private AuthRepoInterface $authRepo;
+    protected AuthRepoInterface $authRepo;
 
-    private UserRepoInterface $userRepo;
+    protected UserRepoInterface $userRepo;
 
     public function __construct(AuthValidator $authValidator, AuthRepoInterface $authRepo, UserRepoInterface $userRepo)
     {

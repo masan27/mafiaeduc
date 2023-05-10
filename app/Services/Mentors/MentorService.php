@@ -8,12 +8,13 @@ use App\Repository\Mentors\MentorRepoInterface;
 use App\Validators\MentorValidator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MentorService implements MentorServiceInterface
 {
-    private MentorRepoInterface $mentorRepo;
+    protected MentorRepoInterface $mentorRepo;
 
-    private MentorValidator $mentorValidator;
+    protected MentorValidator $mentorValidator;
 
     public function __construct(MentorRepoInterface $mentorRepo, MentorValidator $mentorValidator)
     {
@@ -43,6 +44,10 @@ class MentorService implements MentorServiceInterface
             $linkedin = $request->input('linkedin');
             $subjects = (array)$request->input('subjects');
             $teachingDays = (array)$request->input('teaching_days');
+
+            $canSendProposal = $this->mentorRepo->checkMentorCanRegister($userId);
+
+            if (!$canSendProposal) return ResponseHelper::error('Lamaran anda sedang diproses');
 
             if (count($subjects) > 3) return ResponseHelper::error('Mata pelajaran tidak boleh lebih dari 3');
 
@@ -85,6 +90,51 @@ class MentorService implements MentorServiceInterface
             return ResponseHelper::success('Lamaran mentor berhasil dikirim');
         } catch (\Exception $e) {
             DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
+
+    public function acceptMentorApplication($request): array
+    {
+        $validator = $this->mentorValidator->validateMentorId($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $mentorId = $request->input('mentor_id');
+            $mentor = $this->mentorRepo->getMentorById($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $this->mentorRepo->acceptMentorApplication($mentorId);
+
+            DB::commit();
+            return ResponseHelper::success('Lamaran mentor berhasil diterima');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
+
+    public function getAllMentors(): array
+    {
+        try {
+            $mentors = $this->mentorRepo->getAllMentors();
+
+            if ($mentors->isEmpty()) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            foreach ($mentors as $mentor) {
+                $mentor->subjects = $this->mentorRepo->getMentorSubjects($mentor->id);
+                $mentor->teaching_days = $this->mentorRepo->getMentorTeachingDays($mentor->id);
+                $mentor->photo = url(Storage::url($mentor->photo));
+                $mentor->certificate = url(Storage::url($mentor->certificate));
+                $mentor->identity_card = url(Storage::url($mentor->identity_card));
+                $mentor->cv = url(Storage::url($mentor->cv));
+            }
+
+            return ResponseHelper::success('Berhasil mengambil data mentor', $mentors);
+        } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }
     }

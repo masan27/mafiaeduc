@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    private AuthServiceInterface $authService;
-    private ForgotPasswordServiceInterface $forgotPasswordService;
+    protected AuthServiceInterface $authService;
+    protected ForgotPasswordServiceInterface $forgotPasswordService;
 
     public function __construct(AuthServiceInterface $authService, ForgotPasswordServiceInterface $forgotPasswordService)
     {

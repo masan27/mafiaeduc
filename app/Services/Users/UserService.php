@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 class UserService implements UserServiceInterface
 {
 
-    private UserRepoInterface $userRepo;
+    protected UserRepoInterface $userRepo;
 
-    private UserValidator $userValidator;
+    protected UserValidator $userValidator;
 
     public function __construct(UserRepoInterface $userRepo, UserValidator $userValidator)
     {
@@ -44,7 +44,7 @@ class UserService implements UserServiceInterface
         DB::beginTransaction();
         try {
             $userId = $request->user()->id;
-            
+
             $updateData = [
                 'full_name' => $request->only('full_name'),
                 'gender' => $request->only('gender'),

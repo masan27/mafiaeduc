@@ -16,14 +16,14 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class AuthService implements AuthServiceInterface
 {
-    private AuthValidator $authValidator;
-    private AuthRepoInterface $authRepo;
+    protected AuthValidator $authValidator;
+    protected AuthRepoInterface $authRepo;
 
-    private UserRepoInterface $userRepo;
+    protected UserRepoInterface $userRepo;
 
-    private NotificationRepoInterface $notificationRepo;
+    protected NotificationRepoInterface $notificationRepo;
 
-    private AccessLogRepoInterface $accessLogRepo;
+    protected AccessLogRepoInterface $accessLogRepo;
 
     public function __construct(
         AuthValidator             $authValidator,

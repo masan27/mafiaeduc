@@ -7,7 +7,7 @@ use App\Repository\Payments\PaymentMethodRepoInterface;
 
 class PaymentMethodService implements PaymentMethodServiceInterface
 {
-    private PaymentMethodRepoInterface $paymentMethodRepo;
+    protected PaymentMethodRepoInterface $paymentMethodRepo;
 
     public function __construct(PaymentMethodRepoInterface $paymentMethodRepo)
     {

@@ -36,4 +36,13 @@ class MentorValidator
 
         return $this->validationHelper->getValidationResponse($validator);
     }
+
+    public function validateMentorId($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'mentor_id' => 'required|integer|exists:mentors,id',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
 }

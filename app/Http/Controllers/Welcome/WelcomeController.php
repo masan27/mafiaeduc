@@ -9,7 +9,7 @@ use Illuminate\View\View;
 
 class WelcomeController extends Controller
 {
-    private WelcomeServiceInterface $welcomeService;
+    protected WelcomeServiceInterface $welcomeService;
 
     public function __construct(WelcomeServiceInterface $welcomeService)
     {

@@ -8,21 +8,19 @@ class FileHelper
 {
     private static function getPath(string $folderName): string
     {
-        return 'public/' . $folderName . '/';
+        return $folderName;
     }
 
     public static function uploadFile($file, $folderName = null, $filePrefix = null): string
     {
         $defaultFileName = Carbon::now()->timestamp . '-' . $file->getClientOriginalName();
         $fileName = $filePrefix ? $filePrefix . '.' . $file->getClientOriginalExtension() : $defaultFileName;
-        $file->storeAs(self::getPath($folderName), $fileName);
-        return $fileName;
+        return $file->storeAs(self::getPath($folderName), $fileName, ['disk' => 'public']);
     }
 
-    public static function downloadFile(string $fileName, string $folderName): bool|\Symfony\Component\HttpFoundation\BinaryFileResponse
+    public static function downloadFile(string $filePath):
+    bool|\Symfony\Component\HttpFoundation\BinaryFileResponse
     {
-        $filePath = self::getPath($folderName) . $fileName;
-
         if (file_exists($filePath)) {
             return response()->download($filePath);
         }

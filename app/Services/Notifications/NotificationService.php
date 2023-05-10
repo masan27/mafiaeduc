@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class NotificationService implements NotificationServiceInterface
 {
-    private NotificationRepoInterface $notificationRepo;
+    protected NotificationRepoInterface $notificationRepo;
 
     public function __construct(NotificationRepoInterface $notificationRepo)
     {

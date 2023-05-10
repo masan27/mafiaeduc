@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 
 class PaymentMethodController extends Controller
 {
-    private PaymentMethodServiceInterface $paymentMethodService;
+    protected PaymentMethodServiceInterface $paymentMethodService;
 
     public function __construct(PaymentMethodServiceInterface $paymentMethodService)
     {

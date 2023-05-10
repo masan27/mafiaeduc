@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\PaymentMethodController;
@@ -8,7 +9,6 @@ use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
-// Controllers for the API
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect('/v1'));
 
+// Public Routes
 Route::prefix('v1')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
 
@@ -57,5 +58,14 @@ Route::prefix('v1')->group(function () {
         Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
 
         Route::post('mentor-register', [MentorController::class, 'mentorRegister']);
+    });
+});
+
+// Admin Routes
+Route::prefix('v1/admin')->group(function () {
+    Route::prefix('mentors')->group(function () {
+        Route::post('acceptance', [AdminMentorController::class, 'acceptMentorApplication']);
+
+        Route::get('all', [AdminMentorController::class, 'getAllMentors']);
     });
 });

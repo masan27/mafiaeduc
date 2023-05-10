@@ -7,7 +7,7 @@ use App\Services\Mentors\MentorServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class MentorController extends Controller
+class AdminMentorController extends Controller
 {
     protected MentorServiceInterface $mentorService;
 
@@ -16,9 +16,15 @@ class MentorController extends Controller
         $this->mentorService = $mentorService;
     }
 
-    public function mentorRegister(Request $request): JsonResponse
+    public function acceptMentorApplication(Request $request): JsonResponse
     {
-        $data = $this->mentorService->registerMentor($request);
+        $data = $this->mentorService->acceptMentorApplication($request);
+        return response()->json($data, $data['code']);
+    }
+
+    public function getAllMentors(): JsonResponse
+    {
+        $data = $this->mentorService->getAllMentors();
         return response()->json($data, $data['code']);
     }
 }

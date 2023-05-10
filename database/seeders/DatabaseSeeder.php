@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             LearningMethodSeeder::class,
             SubjectSeeder::class,
             RoleSeeder::class,
+            DaySeeder::class,
         ]);
     }
 }

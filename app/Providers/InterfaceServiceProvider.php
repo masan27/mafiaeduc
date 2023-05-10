@@ -52,6 +52,10 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Payments\PaymentMethodService::class
         );
 
+        $this->app->bind(
+            \App\Services\Mentors\MentorServiceInterface::class,
+            \App\Services\Mentors\MentorService::class
+        );
 
         // Register the Repository Interfaces
         // -------------------------------
@@ -79,6 +83,11 @@ class InterfaceServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Repository\Payments\PaymentMethodRepoInterface::class,
             \App\Repository\Payments\PaymentMethodRepo::class
+        );
+
+        $this->app->bind(
+            \App\Repository\Mentors\MentorRepoInterface::class,
+            \App\Repository\Mentors\MentorRepo::class
         );
     }
 }

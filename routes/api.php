@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\PaymentMethodController;
 use App\Http\Controllers\Users\UserController;
@@ -54,5 +55,7 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
+
+        Route::post('mentor-register', [MentorController::class, 'mentorRegister']);
     });
 });

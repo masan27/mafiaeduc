@@ -21,8 +21,6 @@ interface MentorRepoInterface
 
     public static function checkMentorCanRegister(int $userId): bool;
 
-    public static function insertMentorTeachingDays(int $mentorId, int $dayIds): bool;
-
     public static function insertMentorSubject(int $mentorId, int $subjectIds): bool;
 
     public static function getMentorById(int $mentorId): object;

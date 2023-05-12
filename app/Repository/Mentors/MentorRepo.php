@@ -49,17 +49,6 @@ class MentorRepo implements MentorRepoInterface
             ]);
     }
 
-    public static function insertMentorTeachingDays($mentorId, $dayIds): bool
-    {
-        return DB::table('mentor_teaching_days')
-            ->insert([
-                'mentor_id' => $mentorId,
-                'day_id' => $dayIds,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-    }
-
     public static function insertMentorSubject($mentorId, $subjectIds): bool
     {
         return DB::table('mentor_subjects')

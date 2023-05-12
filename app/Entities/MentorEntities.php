@@ -16,4 +16,7 @@ class MentorEntities
     const MENTOR_STATUS_REJECTED_TEXT = 'Rejected';
 
     const MENTOR_STATUS_BLOCKED_TEXT = 'Blocked';
+
+    const ACTIVE_CREDENTIALS = 1;
+    const INACTIVE_CREDENTIALS = 0;
 }

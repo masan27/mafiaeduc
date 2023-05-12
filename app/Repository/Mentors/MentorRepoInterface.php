@@ -27,6 +27,8 @@ interface MentorRepoInterface
 
     public static function acceptMentorApplication(int $mentorId): bool;
 
+    public static function createMentorCredential(int $mentorId, string $mentorEmail, string $mentorPassword, string $mentorApiToken);
+
     public static function getAllMentors(): object;
 
     public static function getMentorSubjects(int $mentorId): object;

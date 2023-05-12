@@ -9,6 +9,7 @@ use App\Validators\MentorValidator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MentorService implements MentorServiceInterface
 {
@@ -100,14 +101,40 @@ class MentorService implements MentorServiceInterface
 
             if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
 
+            if ($mentor->status == 1) return ResponseHelper::error('Lamaran mentor sudah diterima');
+
             $this->mentorRepo->acceptMentorApplication($mentorId);
 
+            $mentorEmail = $mentor->email;
+
+            $mentorPassword = self::generateRandomPassword(6);
+            $mentorApiToken = self::generateApiToken($mentorId, $mentorEmail);
+
+            $this->mentorRepo->createMentorCredential($mentorId, $mentorEmail,
+                $mentorPassword, $mentorApiToken);
+
+            $mentorAuthData = [
+                'mentor_id' => $mentorId,
+                'email' => $mentorEmail,
+                'password' => $mentorPassword,
+            ];
+
             DB::commit();
-            return ResponseHelper::success('Lamaran mentor berhasil diterima');
+            return ResponseHelper::success('Lamaran mentor berhasil diterima', $mentorAuthData);
         } catch (\Exception $e) {
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
+
+    private function generateApiToken($mentorId, $mentorEmail): string
+    {
+        return md5($mentorId . $mentorEmail . Carbon::now()->timestamp);
+    }
+
+    private function generateRandomPassword(int $length = 8): string
+    {
+        return Str::password($length, true, true, false);
     }
 
     public function getAllMentors(): array
@@ -119,7 +146,6 @@ class MentorService implements MentorServiceInterface
 
             foreach ($mentors as $mentor) {
                 $mentor->subjects = $this->mentorRepo->getMentorSubjects($mentor->id);
-                $mentor->teaching_days = $this->mentorRepo->getMentorTeachingDays($mentor->id);
                 $mentor->photo = url(Storage::url($mentor->photo));
                 $mentor->certificate = url(Storage::url($mentor->certificate));
                 $mentor->identity_card = url(Storage::url($mentor->identity_card));

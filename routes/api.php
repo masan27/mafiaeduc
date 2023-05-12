@@ -68,6 +68,6 @@ Route::prefix('v1/admin')->group(function () {
 
         Route::get('all', [AdminMentorController::class, 'getAllMentors']);
 
-        Route::get('/{mentorId}', [AdminMentorController::class, 'getMentorDetails']);
+        Route::get('{mentorId}', [AdminMentorController::class, 'getMentorDetails']);
     });
 });

@@ -94,7 +94,7 @@ class MentorRepo implements MentorRepoInterface
             )->first();
     }
 
-    public static function createMentorCredential($mentorId, $mentorEmail, $mentorPassword, $mentorApiToken)
+    public static function createMentorCredential($mentorId, $mentorEmail, $mentorPassword, $mentorApiToken): bool
     {
         return DB::table('mentor_credentials')
             ->insert([
@@ -104,6 +104,16 @@ class MentorRepo implements MentorRepoInterface
                 'default_password' => $mentorPassword,
                 'api_token' => $mentorApiToken,
                 'created_at' => now(),
+                'updated_at' => now()
+            ]);
+    }
+
+    public static function updateMentorAccountStatus($mentorId, $status)
+    {
+        return DB::table('mentor_credentials')
+            ->where('mentor_id', $mentorId)
+            ->update([
+                'status' => $status,
                 'updated_at' => now()
             ]);
     }
@@ -170,6 +180,7 @@ class MentorRepo implements MentorRepoInterface
             ->where('mentor_id', $mentorId)
             ->select(
                 'email',
+                'status',
                 'default_password',
             )
             ->first();

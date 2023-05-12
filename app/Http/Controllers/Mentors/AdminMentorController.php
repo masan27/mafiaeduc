@@ -33,4 +33,10 @@ class AdminMentorController extends Controller
         $data = $this->mentorService->getMentorDetails($mentorId);
         return response()->json($data, $data['code']);
     }
+
+    public function nonActiveMentors(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->nonActiveMentors($request);
+        return response()->json($data, $data['code']);
+    }
 }

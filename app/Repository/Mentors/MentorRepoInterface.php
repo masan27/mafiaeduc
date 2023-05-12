@@ -36,4 +36,6 @@ interface MentorRepoInterface
     public static function getMentorTeachingDays(int $mentorId): object;
 
     public static function getMentorCredentials(int $mentorId): object;
+
+    public static function updateMentorAccountStatus(int $mentorId, int $status);
 }

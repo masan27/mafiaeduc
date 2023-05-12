@@ -67,7 +67,7 @@ Route::prefix('v1/admin')->group(function () {
         Route::post('acceptance', [AdminMentorController::class, 'acceptMentorApplication']);
 
         Route::get('all', [AdminMentorController::class, 'getAllMentors']);
-
         Route::get('{mentorId}', [AdminMentorController::class, 'getMentorDetails']);
+        Route::post('non-active', [AdminMentorController::class, 'nonActiveMentors']);
     });
 });

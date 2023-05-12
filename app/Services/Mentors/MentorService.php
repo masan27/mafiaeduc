@@ -183,4 +183,35 @@ class MentorService implements MentorServiceInterface
         $mentor->identity_card = url(Storage::url($mentor->identity_card));
         $mentor->cv = url(Storage::url($mentor->cv));
     }
+
+    public function nonActiveMentors($request): array
+    {
+        $validator = $this->mentorValidator->validateMentorId($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $mentorId = $request->input('mentor_id');
+
+            $mentor = $this->mentorRepo->getMentorCredentials($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $mentorAccount = $this->mentorRepo->updateMentorAccountStatus($mentorId, !$mentor->status);
+
+            if (!$mentorAccount) return ResponseHelper::error('Gagal menonaktifkan mentor');
+
+            DB::commit();
+
+            $mentor = $this->mentorRepo->getMentorCredentials($mentorId);
+
+            if ($mentor->status == 1) return ResponseHelper::success('Berhasil mengaktifkan mentor');
+            else return ResponseHelper::success('Berhasil menonaktifkan mentor');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
 }

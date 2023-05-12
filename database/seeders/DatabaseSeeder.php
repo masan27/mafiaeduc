@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\Days\DaySeeder;
 use Database\Seeders\Grades\GradeSeeder;
 use Database\Seeders\LearningMethods\LearningMethodSeeder;
 use Database\Seeders\Roles\RoleSeeder;

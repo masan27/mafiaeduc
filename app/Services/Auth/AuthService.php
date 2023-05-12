@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Entities\AccessLogEntities;
 use App\Entities\NotificationEntities;
 use App\Entities\RoleEntities;
 use App\Helpers\ResponseHelper;
@@ -103,10 +104,10 @@ class AuthService implements AuthServiceInterface
 
             $userData = $this->userRepo->getUserDetailByUserId($user->id);
 
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken('user_token')->plainTextToken;
 
             $clientIP = $request->ip();
-            $this->accessLogRepo->createLoginLogs($user->id, $clientIP, $token);
+            $this->accessLogRepo->createLoginLogs($user->id, $clientIP, $token, AccessLogEntities::USER_LOGIN_TYPE);
 
             $data = [
                 'token' => $token,
@@ -130,7 +131,7 @@ class AuthService implements AuthServiceInterface
 
             $request->user()->currentAccessToken()->delete();
 
-            $this->accessLogRepo->updateLogoutLogs($userId, $token);
+            $this->accessLogRepo->updateLogoutLogs($userId, $token, AccessLogEntities::USER_LOGIN_TYPE);
 
             DB::commit();
             return ResponseHelper::success('Berhasil logout');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
@@ -65,6 +66,16 @@ Route::prefix('v1')->group(function () {
 
 // Admin Routes
 Route::prefix('v1/admin')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [AdminAuthController::class, 'login']);
+        Route::post('register', [AdminAuthController::class, 'register']);
+
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::get('profile', [AdminAuthController::class, 'getProfileDetails']);
+            Route::post('logout', [AdminAuthController::class, 'logout']);
+        });
+    });
+
     Route::prefix('mentors')->group(function () {
         Route::post('acceptance', [AdminMentorController::class, 'acceptMentorApplication']);
 
@@ -84,4 +95,5 @@ Route::prefix('v1/admin')->group(function () {
 // Mentor Routes
 Route::prefix('v1/mentor')->group(function () {
     Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
+
 });

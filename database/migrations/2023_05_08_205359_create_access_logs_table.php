@@ -12,8 +12,9 @@ return new class extends Migration {
     {
         Schema::create('access_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->bigInteger('login_id')->unsigned();
             $table->string('token');
+            $table->string('login_type')->default('users');
             $table->string('ip_address');
             $table->dateTime('login_at')->nullable();
             $table->dateTime('logout_at')->nullable();

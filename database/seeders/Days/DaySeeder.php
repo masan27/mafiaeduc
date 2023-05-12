@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Days;
 
 use App\Models\Days\Day;
 use Illuminate\Database\Seeder;

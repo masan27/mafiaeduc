@@ -62,6 +62,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Subjects\SubjectService::class
         );
 
+        $this->app->bind(
+            \App\Services\Admins\Auth\AdminAuthServiceInterface::class,
+            \App\Services\Admins\Auth\AdminAuthService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 
@@ -98,6 +103,11 @@ class InterfaceServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Repository\Subjects\SubjectRepoInterface::class,
             \App\Repository\Subjects\SubjectRepo::class
+        );
+
+        $this->app->bind(
+            \App\Repository\Admin\AdminRepoInterface::class,
+            \App\Repository\Admin\AdminRepo::class,
         );
     }
 }

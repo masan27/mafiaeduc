@@ -2,10 +2,8 @@
 
 namespace App\Models\AccessLogs;
 
-use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccessLog extends Model
 {
@@ -14,8 +12,9 @@ class AccessLog extends Model
     protected $table = 'access_logs';
 
     protected $fillable = [
-        'user_id',
+        'login_id',
         'token',
+        'type',
         'ip_address',
         'login_at',
         'logout_at',
@@ -25,9 +24,4 @@ class AccessLog extends Model
         'login_at' => 'datetime',
         'logout_at' => 'datetime',
     ];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }

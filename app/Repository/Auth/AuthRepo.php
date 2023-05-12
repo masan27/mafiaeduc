@@ -2,7 +2,6 @@
 
 namespace App\Repository\Auth;
 
-use App\Entities\UserEntities;
 use App\Models\Users\User;
 use App\Traits\RepoTrait;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +44,6 @@ class AuthRepo implements AuthRepoInterface
     public static function getUserByEmail($email)
     {
         return User::active()
-            ->where('status', UserEntities::USER_ACTIVE)
             ->where('email', $email)->first();
     }
 

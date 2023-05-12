@@ -6,6 +6,8 @@ use App\Helpers\ResponseHelper;
 use App\Repository\Users\UserRepoInterface;
 use App\Validators\UserValidator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UserService implements UserServiceInterface
 {
@@ -55,7 +57,7 @@ class UserService implements UserServiceInterface
                 'phone' => $request->input('phone'),
                 'updated_at' => now(),
             ];
-            
+
             $data = $this->userRepo->updateUserDetails($userId, $updateData);
 
             if (!$data) {
@@ -82,11 +84,22 @@ class UserService implements UserServiceInterface
             $userId = $request->user()->id;
             $newPassword = $request->input('new_password');
 
+            $user = $this->userRepo->getUserById($userId);
+
+            if (!$user) {
+                return ResponseHelper::notFound('User tidak ditemukan');
+            }
+
+            if (Hash::check($newPassword, $user->password)) {
+                return ResponseHelper::error('Password baru tidak boleh sama dengan password lama', null,
+                    ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
             $data = $this->userRepo->changeUserPassword($userId, $newPassword);
 
             if (!$data) {
                 DB::rollBack();
-                return ResponseHelper::notFound('User tidak ditemukan');
+                return ResponseHelper::notFound('Gagal merubah password');
             }
 
             DB::commit();

@@ -46,6 +46,14 @@ class UserRepo implements UserRepoInterface
             ->full_name;
     }
 
+    public static function getUserById($userId): object
+    {
+        return self::getDbTable()
+            ->where('id', $userId)
+            ->where('status', UserEntities::USER_ACTIVE)
+            ->first();
+    }
+
     public static function changeUserPassword($userId, $newPassword): bool
     {
         return self::getDbTable()

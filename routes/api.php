@@ -58,9 +58,7 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
-
         Route::post('mentor-register', [MentorController::class, 'mentorRegister']);
-
         Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
     });
 });
@@ -81,4 +79,9 @@ Route::prefix('v1/admin')->group(function () {
         Route::put('{subjectId}', [AdminSubjectController::class, 'updateSubject']);
         Route::delete('{subjectId}', [AdminSubjectController::class, 'deleteSubject']);
     });
+});
+
+// Mentor Routes
+Route::prefix('v1/mentor')->group(function () {
+    Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
 });

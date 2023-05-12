@@ -43,15 +43,12 @@ class MentorService implements MentorServiceInterface
             $salary = $request->input('salary');
             $linkedin = $request->input('linkedin');
             $subjects = (array)$request->input('subjects');
-            $teachingDays = (array)$request->input('teaching_days');
 
             $canSendProposal = $this->mentorRepo->checkMentorCanRegister($userId);
 
             if (!$canSendProposal) return ResponseHelper::error('Lamaran anda sedang diproses');
 
             if (count($subjects) > 3) return ResponseHelper::error('Mata pelajaran tidak boleh lebih dari 3');
-
-            if (count($teachingDays) > 7) return ResponseHelper::error('Hari mengajar tidak valid');
 
             $folderPath = 'mentors/' . $userId . '-' . Carbon::now()->timestamp;
 
@@ -79,10 +76,6 @@ class MentorService implements MentorServiceInterface
 
             foreach ($subjects as $subject) {
                 $this->mentorRepo->insertMentorSubject($mentorId, $subject);
-            }
-
-            foreach ($teachingDays as $teachingDay) {
-                $this->mentorRepo->insertMentorTeachingDays($mentorId, $teachingDay);
             }
 
             DB::commit();

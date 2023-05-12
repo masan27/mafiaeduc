@@ -29,8 +29,6 @@ class MentorValidator
             'salary' => 'required|numeric|min:0',
             'subjects' => 'required|array',
             'subjects.*' => 'required|integer|exists:subjects,id',
-            'teaching_days' => 'required|array',
-            'teaching_days.*' => 'required|integer|exists:days,id',
             'linkedin' => 'nullable|string|min:3|max:255',
         ], ValidationHelper::VALIDATION_MESSAGES);
 

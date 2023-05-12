@@ -14,4 +14,6 @@ interface SubjectRepoInterface
     bool;
 
     public static function deleteSubject(int $subjectId): bool;
+
+    public static function getActiveSubjects(): object;
 }

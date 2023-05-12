@@ -13,4 +13,6 @@ interface SubjectServiceInterface
     public function updateSubject(Request $request, int $subjectId): array;
 
     public function deleteSubject(int $subjectId): array;
+
+    public function getActiveSubjects(): array;
 }

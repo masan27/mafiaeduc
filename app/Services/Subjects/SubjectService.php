@@ -98,4 +98,17 @@ class SubjectService implements SubjectServiceInterface
             return ResponseHelper::serverError($e->getMessage());
         }
     }
+
+    public function getActiveSubjects(): array
+    {
+        try {
+            $subjects = $this->subjectRepo->getActiveSubjects();
+
+            if ($subjects->isEmpty()) return ResponseHelper::notFound('Mata pelajaran tidak ditemukan');
+
+            return ResponseHelper::success('Berhasil mendapatkan semua mata pelajaran', $subjects);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
 }

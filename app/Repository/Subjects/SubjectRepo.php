@@ -44,6 +44,18 @@ class SubjectRepo implements SubjectRepoInterface
             )->first();
     }
 
+    public static function getActiveSubjects(): object
+    {
+        return self::getDbTable()
+            ->where('status', 1)
+            ->select(
+                'id',
+                'name',
+                'description',
+                'status',
+            )->get();
+    }
+
     public static function deleteSubject($subjectId): bool
     {
         return self::getDbTable()

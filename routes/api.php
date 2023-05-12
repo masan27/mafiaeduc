@@ -5,6 +5,7 @@ use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\PaymentMethodController;
+use App\Http\Controllers\Subjects\AdminSubjectController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +69,13 @@ Route::prefix('v1/admin')->group(function () {
 
         Route::get('all', [AdminMentorController::class, 'getAllMentors']);
         Route::get('{mentorId}', [AdminMentorController::class, 'getMentorDetails']);
-        Route::post('non-active', [AdminMentorController::class, 'nonActiveMentors']);
+        Route::post('update-status', [AdminMentorController::class, 'nonActiveMentors']);
+    });
+
+    Route::prefix('subjects')->group(function () {
+        Route::get('/', [AdminSubjectController::class, 'getAllSubjects']);
+        Route::post('add', [AdminSubjectController::class, 'addSubject']);
+        Route::put('{subjectId}', [AdminSubjectController::class, 'updateSubject']);
+        Route::delete('{subjectId}', [AdminSubjectController::class, 'deleteSubject']);
     });
 });

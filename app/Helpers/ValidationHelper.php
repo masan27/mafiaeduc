@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class ValidationHelper
@@ -10,6 +9,7 @@ class ValidationHelper
     const  VALIDATION_MESSAGES = [
         'password.exists' => ':attribute atau password salah',
         'email.exists' => 'email atau password salah',
+        'subject_name.unique' => 'mata pelajaran sudah terdaftar',
         '*.required' => ':attribute tidak boleh kosong',
         '*.string' => ':attribute tidak valid',
         '*.exists' => ':attribute tidak terdaftar',
@@ -62,7 +62,7 @@ class ValidationHelper
 
     public function getValidationResponse($validator): bool|array
     {
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return ResponseHelper::error(
                 $validator->errors()->first(),
                 $validator->errors(),

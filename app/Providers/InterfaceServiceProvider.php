@@ -57,6 +57,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Mentors\MentorService::class
         );
 
+        $this->app->bind(
+            \App\Services\Subjects\SubjectServiceInterface::class,
+            \App\Services\Subjects\SubjectService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 
@@ -88,6 +93,11 @@ class InterfaceServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Repository\Mentors\MentorRepoInterface::class,
             \App\Repository\Mentors\MentorRepo::class
+        );
+
+        $this->app->bind(
+            \App\Repository\Subjects\SubjectRepoInterface::class,
+            \App\Repository\Subjects\SubjectRepo::class
         );
     }
 }

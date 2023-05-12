@@ -32,7 +32,7 @@ class UserRepo implements UserRepoInterface
             ->first();
     }
 
-    private static function getDbTable()
+    private static function getDbTable(): object
     {
         return DB::table('users');
     }
@@ -58,8 +58,8 @@ class UserRepo implements UserRepoInterface
 
     public static function updateUserDetails($userId, $data): bool
     {
-        return self::getDbTable()
-            ->where('id', $userId)
+        return DB::table('user_details')
+            ->where('user_id', $userId)
             ->update($data);
     }
 }

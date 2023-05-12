@@ -46,16 +46,16 @@ class UserService implements UserServiceInterface
             $userId = $request->user()->id;
 
             $updateData = [
-                'full_name' => $request->only('full_name'),
-                'gender' => $request->only('gender'),
-                'birth_date' => $request->only('birth_date'),
-                'school_origin' => $request->only('school_origin'),
-                'grade_id' => $request->only('grade_id'),
-                'address' => $request->only('address'),
-                'phone' => $request->only('phone'),
+                'full_name' => $request->input('full_name'),
+                'gender' => $request->input('gender'),
+                'birth_date' => $request->input('birth_date'),
+                'school_origin' => $request->input('school_origin'),
+                'grade_id' => $request->input('grade_id'),
+                'address' => $request->input('address'),
+                'phone' => $request->input('phone'),
                 'updated_at' => now(),
             ];
-
+            
             $data = $this->userRepo->updateUserDetails($userId, $updateData);
 
             if (!$data) {

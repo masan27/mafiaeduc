@@ -19,6 +19,7 @@ class MentorCredentials extends Authenticatable
         'password',
         'api_token',
         'remember_token',
+        'default_password',
         'status',
     ];
 

@@ -134,7 +134,7 @@ class MentorService implements MentorServiceInterface
 
     private function generateRandomPassword(int $length = 8): string
     {
-        return Str::password($length, true, true, false);
+        return strtoupper(Str::password($length, true, true, false));
     }
 
     public function getAllMentors(): array
@@ -145,16 +145,42 @@ class MentorService implements MentorServiceInterface
             if ($mentors->isEmpty()) return ResponseHelper::notFound('Mentor tidak ditemukan');
 
             foreach ($mentors as $mentor) {
-                $mentor->subjects = $this->mentorRepo->getMentorSubjects($mentor->id);
-                $mentor->photo = url(Storage::url($mentor->photo));
-                $mentor->certificate = url(Storage::url($mentor->certificate));
-                $mentor->identity_card = url(Storage::url($mentor->identity_card));
-                $mentor->cv = url(Storage::url($mentor->cv));
+                $this->getMentorFile($mentor);
             }
 
             return ResponseHelper::success('Berhasil mengambil data mentor', $mentors);
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
+
+    public function getMentorDetails($mentorId): array
+    {
+        try {
+            $mentor = $this->mentorRepo->getMentorById($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $this->getMentorFile($mentor);
+
+            $mentor->account = $this->mentorRepo->getMentorCredentials($mentorId);
+
+            return ResponseHelper::success('Berhasil mengambil data mentor', $mentor);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * @param object $mentor
+     * @return void
+     */
+    private function getMentorFile(object $mentor): void
+    {
+        $mentor->subjects = $this->mentorRepo->getMentorSubjects($mentor->id);
+        $mentor->photo = url(Storage::url($mentor->photo));
+        $mentor->certificate = url(Storage::url($mentor->certificate));
+        $mentor->identity_card = url(Storage::url($mentor->identity_card));
+        $mentor->cv = url(Storage::url($mentor->cv));
     }
 }

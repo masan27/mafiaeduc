@@ -27,4 +27,10 @@ class AdminMentorController extends Controller
         $data = $this->mentorService->getAllMentors();
         return response()->json($data, $data['code']);
     }
+
+    public function getMentorDetails(int $mentorId): JsonResponse
+    {
+        $data = $this->mentorService->getMentorDetails($mentorId);
+        return response()->json($data, $data['code']);
+    }
 }

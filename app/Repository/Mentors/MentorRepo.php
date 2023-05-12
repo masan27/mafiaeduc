@@ -101,6 +101,7 @@ class MentorRepo implements MentorRepoInterface
                 'mentor_id' => $mentorId,
                 'email' => $mentorEmail,
                 'password' => Hash::make($mentorPassword),
+                'default_password' => $mentorPassword,
                 'api_token' => $mentorApiToken,
                 'created_at' => now(),
                 'updated_at' => now()
@@ -119,21 +120,24 @@ class MentorRepo implements MentorRepoInterface
 
     public static function getAllMentors(): object
     {
-        return self::getAll([
-            'id',
-            'user_id',
-            'learning_method_id',
-            'grade_id',
-            'full_name',
-            'photo',
-            'certificate',
-            'identity_card',
-            'cv',
-            'teaching_video',
-            'phone',
-            'salary',
-            'linkedin',
-        ]);
+        return self::getDbTable()
+            ->where('status', MentorEntities::MENTOR_STATUS_APPROVED)
+            ->select(
+                'id',
+                'user_id',
+                'status',
+                'learning_method_id',
+                'grade_id',
+                'full_name',
+                'photo',
+                'certificate',
+                'identity_card',
+                'cv',
+                'teaching_video',
+                'phone',
+                'salary',
+                'linkedin',
+            )->get();
     }
 
     public static function getMentorTeachingDays(int $mentorId): object
@@ -158,5 +162,16 @@ class MentorRepo implements MentorRepoInterface
                 'subjects.name'
             )
             ->get();
+    }
+
+    public static function getMentorCredentials(int $mentorId): object
+    {
+        return DB::table('mentor_credentials')
+            ->where('mentor_id', $mentorId)
+            ->select(
+                'email',
+                'default_password',
+            )
+            ->first();
     }
 }

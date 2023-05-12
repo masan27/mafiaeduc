@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->boolean('status')->default(MentorEntities::ACTIVE_CREDENTIALS);
             $table->rememberToken();
+            $table->string('default_password')->nullable();
             $table->timestamps();
         });
     }

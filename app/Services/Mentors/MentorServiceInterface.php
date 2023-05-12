@@ -11,4 +11,6 @@ interface MentorServiceInterface
     public function acceptMentorApplication(Request $request): array;
 
     public function getAllMentors(): array;
+
+    public function getMentorDetails(int $mentorId): array;
 }

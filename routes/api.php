@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Notifications\NotificationController;
+use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
 use App\Http\Controllers\Subjects\AdminSubjectController;
 use App\Http\Controllers\Subjects\SubjectController;
@@ -79,7 +80,7 @@ Route::prefix('v1/admin')->group(function () {
     Route::prefix('mentors')->group(function () {
         Route::post('acceptance', [AdminMentorController::class, 'acceptMentorApplication']);
 
-        Route::get('all', [AdminMentorController::class, 'getAllMentors']);
+        Route::get('/', [AdminMentorController::class, 'getAllMentors']);
         Route::get('{mentorId}', [AdminMentorController::class, 'getMentorDetails']);
         Route::post('update-status', [AdminMentorController::class, 'nonActiveMentors']);
     });
@@ -90,6 +91,9 @@ Route::prefix('v1/admin')->group(function () {
         Route::put('{subjectId}', [AdminSubjectController::class, 'updateSubject']);
         Route::delete('{subjectId}', [AdminSubjectController::class, 'deleteSubject']);
     });
+
+    Route::post('payment-methods', [AdminPaymentMethodController::class, 'addPaymentMethod']);
+    Route::post('payment-methods/non-active', [AdminPaymentMethodController::class, 'nonActivePaymentMethod']);
 });
 
 // Mentor Routes

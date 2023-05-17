@@ -48,4 +48,6 @@ interface MentorRepoInterface
     public static function updatePassword(int $mentorCredentialId, string $password): bool;
 
     public static function updateRememberToken(int $mentorCredentialId, string $token): bool;
+
+    public static function updateMentorProfile(int $mentorId, string $fullName): bool;
 }

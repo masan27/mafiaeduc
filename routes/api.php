@@ -143,7 +143,8 @@ Route::prefix('v1/mentor')->group(function () {
 
     Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
 
-    // TODO: make mentor profile (update)
+    Route::put('profile/update', [MentorController::class, 'updateProfile']);
+
     // TODO: make mentor payment methods (get, add, update)
     // TODO: make mentor schedule (get, add, update, delete)
 });

@@ -17,4 +17,6 @@ interface MentorServiceInterface
     public function nonActiveMentors(Request $request): array;
 
     public function getProfileDetails(Request $request): array;
+
+    public function updateMentorProfile(Request $request): array;
 }

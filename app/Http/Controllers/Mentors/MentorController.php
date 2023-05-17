@@ -21,4 +21,10 @@ class MentorController extends Controller
         $data = $this->mentorService->registerMentor($request);
         return response()->json($data, $data['code']);
     }
+
+    public function updateProfile(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->updateMentorProfile($request);
+        return response()->json($data, $data['code']);
+    }
 }

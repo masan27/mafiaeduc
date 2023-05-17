@@ -230,4 +230,25 @@ class MentorService implements MentorServiceInterface
             return ResponseHelper::serverError($e->getMessage());
         }
     }
+
+    public function updateMentorProfile($request): array
+    {
+        $validator = $this->mentorValidator->validateMentorUpdateProfileInput($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $mentorId = $request->mentor->mentor_id;
+            $fullName = $request->input('full_name');
+
+            $this->mentorRepo->updateMentorProfile($mentorId, $fullName);
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil merubah profile');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
 }

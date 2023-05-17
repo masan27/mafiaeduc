@@ -33,7 +33,7 @@ class MentorRepo implements MentorRepoInterface
 
     public static function getCurrentRememberToken($mentorCredentialId): string
     {
-        return self::getDbTable()
+        return DB::table('mentor_credentials')
             ->where('id', $mentorCredentialId)
             ->first()
             ->remember_token;
@@ -41,7 +41,7 @@ class MentorRepo implements MentorRepoInterface
 
     public static function updatePassword($mentorCredentialId, $password): bool
     {
-        return self::getDbTable()
+        return DB::table('mentor_credentials')
             ->where('id', $mentorCredentialId)
             ->update([
                 'password' => Hash::make($password),
@@ -51,11 +51,20 @@ class MentorRepo implements MentorRepoInterface
 
     public static function updateRememberToken($mentorCredentialId, $token): bool
     {
-        return self::getDbTable()
+        return DB::table('mentor_credentials')
             ->where('id', $mentorCredentialId)
             ->update([
                 'remember_token' => $token,
                 'updated_at' => now(),
+            ]);
+    }
+
+    public static function updateMentorProfile($mentorId, $fullName): bool
+    {
+        return self::getDbTable()
+            ->where('id', $mentorId)
+            ->update([
+                'full_name' => $fullName
             ]);
     }
 

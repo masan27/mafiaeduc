@@ -43,4 +43,13 @@ class MentorValidator
 
         return $this->validationHelper->getValidationResponse($validator);
     }
+
+    public function validateMentorUpdateProfileInput($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'full_name' => 'required|string|max:45',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
 }

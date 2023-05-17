@@ -214,4 +214,20 @@ class MentorService implements MentorServiceInterface
             return ResponseHelper::serverError($e->getMessage());
         }
     }
+
+    public function getProfileDetails($request): array
+    {
+        try {
+            $mentorId = $request->mentor->mentor_id;
+            $mentor = $this->mentorRepo->getMentorById($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $this->getMentorFile($mentor);
+
+            return ResponseHelper::success('Berhasil mengambil data mentor', $mentor);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
 }

@@ -38,4 +38,14 @@ interface MentorRepoInterface
     public static function getMentorCredentials(int $mentorId): object;
 
     public static function updateMentorAccountStatus(int $mentorId, int $status);
+
+    public static function getMentorByEmail(string $email);
+
+    public static function getMentorFullName(int $mentorId): string;
+
+    public static function getCurrentRememberToken(int $mentorCredentialId): string;
+
+    public static function updatePassword(int $mentorCredentialId, string $password): bool;
+
+    public static function updateRememberToken(int $mentorCredentialId, string $token): bool;
 }

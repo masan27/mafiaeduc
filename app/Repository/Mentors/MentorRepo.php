@@ -3,6 +3,7 @@
 namespace App\Repository\Mentors;
 
 use App\Entities\MentorEntities;
+use App\Models\Mentors\MentorCredentials;
 use App\Traits\RepoTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -11,9 +12,51 @@ class MentorRepo implements MentorRepoInterface
 {
     use RepoTrait;
 
-    private static function getDbTable()
+    private static function getDbTable(): object
     {
         return DB::table('mentors');
+    }
+
+    public static function getMentorByEmail($email)
+    {
+        return MentorCredentials::where('email', $email)->first();
+    }
+
+    public static function getMentorFullName($mentorId): string
+    {
+        return self::getDbTable()
+            ->where('id', $mentorId)
+            ->select('full_name')
+            ->first()
+            ->full_name;
+    }
+
+    public static function getCurrentRememberToken($mentorCredentialId): string
+    {
+        return self::getDbTable()
+            ->where('id', $mentorCredentialId)
+            ->first()
+            ->remember_token;
+    }
+
+    public static function updatePassword($mentorCredentialId, $password): bool
+    {
+        return self::getDbTable()
+            ->where('id', $mentorCredentialId)
+            ->update([
+                'password' => Hash::make($password),
+                'updated_at' => now(),
+            ]);
+    }
+
+    public static function updateRememberToken($mentorCredentialId, $token): bool
+    {
+        return self::getDbTable()
+            ->where('id', $mentorCredentialId)
+            ->update([
+                'remember_token' => $token,
+                'updated_at' => now(),
+            ]);
     }
 
     public static function registerMentor(

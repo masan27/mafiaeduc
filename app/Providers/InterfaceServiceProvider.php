@@ -67,6 +67,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Admins\Auth\AdminAuthService::class
         );
 
+        $this->app->bind(
+            \App\Services\Mentors\Auth\MentorAuthServiceInterface::class,
+            \App\Services\Mentors\Auth\MentorAuthService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

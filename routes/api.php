@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\MentorAuthController;
 use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Notifications\NotificationController;
@@ -69,6 +70,9 @@ Route::prefix('v1')->group(function () {
     // TODO: make get all mentor active classes
     // TODO: make get all users schedule
     // TODO: make get all users materials
+    // TODO: make post checkout
+    // TODO: make post payment
+    // TODO: make post payment confirmation
 });
 
 // Admin Routes
@@ -77,7 +81,7 @@ Route::prefix('v1/admin')->group(function () {
         Route::post('login', [AdminAuthController::class, 'login']);
         Route::post('register', [AdminAuthController::class, 'register']);
 
-        Route::middleware('auth:sanctum')->group(function () {
+        Route::middleware('auth:sanctum,admin')->group(function () {
             Route::get('profile', [AdminAuthController::class, 'getProfileDetails']);
             Route::post('logout', [AdminAuthController::class, 'logout']);
         });
@@ -120,12 +124,26 @@ Route::prefix('v1/admin')->group(function () {
 
 // Mentor Routes
 Route::prefix('v1/mentor')->group(function () {
+
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [MentorAuthController::class, 'login']);
+
+        Route::middleware('checkMentorToken')->group(function () {
+            Route::get('profile', [MentorAuthController::class, 'getProfileDetails']);
+            Route::post('logout', [MentorAuthController::class, 'logout']);
+        });
+    });
+
+    Route::post('reset-password', [MentorAuthController::class, 'resetPassword']);
+    Route::prefix('forgot-password')->group(function () {
+        Route::post('send-email', [MentorAuthController::class, 'sendResetLinkEmail']);
+    });
+
     Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
 
     Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
 
-    // TODO: make authentication for mentor (login, register, logout, reset password, forgot password)
-    // TODO: make mentor profile (get, update)
+    // TODO: make mentor profile (update)
     // TODO: make mentor payment methods (get, add, update)
     // TODO: make mentor schedule (get, add, update, delete)
 });

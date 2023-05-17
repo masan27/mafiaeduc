@@ -65,4 +65,18 @@ class AuthValidator
 
         return $this->validationHelper->getValidationResponse($validator);
     }
+
+    public function validateResetPasswordTokenInput($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|string',
+            'email' => 'required|email|max:255',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required|string|min:6|same:password'
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
+
 }

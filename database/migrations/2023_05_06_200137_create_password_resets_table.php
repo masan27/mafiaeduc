@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('password_resets', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->bigInteger('user_id');
             $table->string('otp', 6);
             $table->dateTime('expired_at');
             $table->timestamps();

@@ -39,4 +39,16 @@ class AdminAuthController extends Controller
         $data = $this->adminAuthService->getAdminProfileDetails($request);
         return response()->json($data, $data['code']);
     }
+
+    public function sendResetLinkEmail(Request $request): JsonResponse
+    {
+        $data = $this->adminAuthService->sendResetLinkEmail($request);
+        return response()->json($data, $data['code']);
+    }
+
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $data = $this->adminAuthService->resetPassword($request);
+        return response()->json($data, $data['code']);
+    }
 }

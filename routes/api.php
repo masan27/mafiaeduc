@@ -63,6 +63,12 @@ Route::prefix('v1')->group(function () {
         Route::post('mentor-register', [MentorController::class, 'mentorRegister']);
         Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
     });
+
+    // TODO: make get recommended mentors
+    // TODO: make get all active classes
+    // TODO: make get all mentor active classes
+    // TODO: make get all users schedule
+    // TODO: make get all users materials
 });
 
 // Admin Routes
@@ -75,6 +81,11 @@ Route::prefix('v1/admin')->group(function () {
             Route::get('profile', [AdminAuthController::class, 'getProfileDetails']);
             Route::post('logout', [AdminAuthController::class, 'logout']);
         });
+    });
+
+    Route::post('reset-password', [AdminAuthController::class, 'resetPassword']);
+    Route::prefix('forgot-password')->group(function () {
+        Route::post('send-email', [AdminAuthController::class, 'sendResetLinkEmail']);
     });
 
     Route::prefix('mentors')->group(function () {
@@ -94,10 +105,27 @@ Route::prefix('v1/admin')->group(function () {
 
     Route::post('payment-methods', [AdminPaymentMethodController::class, 'addPaymentMethod']);
     Route::post('payment-methods/non-active', [AdminPaymentMethodController::class, 'nonActivePaymentMethod']);
+
+    // TODO: make get all users
+    // TODO: make get all users schedule
+    // TODO: make get all users materials
+    // TODO: make update user status
+    // TODO: make material (get, add, update, delete)
+    // TODO: make set user material
+    // TODO: make classes (get, add, update, delete)
+    // TODO: make mentor payment (get, add, update)
+    // TODO: make confirmation user payment (get, add, update)
+    // TODO: make user schedule (get, add, update, delete)
 });
 
 // Mentor Routes
 Route::prefix('v1/mentor')->group(function () {
     Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
 
+    Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
+
+    // TODO: make authentication for mentor (login, register, logout, reset password, forgot password)
+    // TODO: make mentor profile (get, update)
+    // TODO: make mentor payment methods (get, add, update)
+    // TODO: make mentor schedule (get, add, update, delete)
 });

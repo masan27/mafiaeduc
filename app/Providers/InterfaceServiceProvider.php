@@ -109,5 +109,10 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Repository\Admin\AdminRepoInterface::class,
             \App\Repository\Admin\AdminRepo::class,
         );
+
+        $this->app->bind(
+            \App\Repository\PasswordResetToken\PasswordResetTokenRepoInterface::class,
+            \App\Repository\PasswordResetToken\PasswordResetTokenRepo::class,
+        );
     }
 }

@@ -21,6 +21,34 @@ class AdminRepo implements AdminRepoInterface
         return Admin::where('email', $email)->first();
     }
 
+    public static function getCurrentRememberToken($adminId): string
+    {
+        return self::getDbTable()
+            ->where('id', $adminId)
+            ->first()
+            ->remember_token;
+    }
+
+    public static function updatePassword($adminId, $password): bool
+    {
+        return self::getDbTable()
+            ->where('id', $adminId)
+            ->update([
+                'password' => Hash::make($password),
+                'updated_at' => now(),
+            ]);
+    }
+
+    public static function updateRememberToken($adminId, $token): bool
+    {
+        return self::getDbTable()
+            ->where('id', $adminId)
+            ->update([
+                'remember_token' => $token,
+                'updated_at' => now(),
+            ]);
+    }
+
     public static function addNewAdmin($fullName, $email, $password): bool
     {
         return self::getDbTable()->insert([

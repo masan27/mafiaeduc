@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        'mentor' => [
+            'driver' => 'session',
+            'provider' => 'mentors',
+        ],
     ],
 
     /*
@@ -65,10 +75,15 @@ return [
             'model' => \App\Models\Users\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Admins\Admin::class,
+        ],
+
+        'mentors' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Mentors\Mentor::class,
+        ],
     ],
 
     /*

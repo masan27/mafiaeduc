@@ -13,4 +13,8 @@ interface AdminAuthServiceInterface
     public function addNewAdmin(Request $request): array;
 
     public function getAdminProfileDetails(Request $request): array;
+
+    public function sendResetLinkEmail(Request $request): array;
+
+    public function resetPassword(Request $request): array;
 }

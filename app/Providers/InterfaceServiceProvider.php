@@ -72,6 +72,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Mentors\Auth\MentorAuthService::class
         );
 
+        $this->app->bind(
+            \App\Services\Mentors\PaymentMethod\MentorPaymentMethodServiceInterface::class,
+            \App\Services\Mentors\PaymentMethod\MentorPaymentMethodService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 
@@ -118,6 +123,11 @@ class InterfaceServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Repository\PasswordResetToken\PasswordResetTokenRepoInterface::class,
             \App\Repository\PasswordResetToken\PasswordResetTokenRepo::class,
+        );
+
+        $this->app->bind(
+            \App\Repository\MentorPaymentMethod\MentorPaymentMethodRepoInterface::class,
+            \App\Repository\MentorPaymentMethod\MentorPaymentMethodRepo::class
         );
     }
 }

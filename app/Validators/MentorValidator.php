@@ -52,4 +52,17 @@ class MentorValidator
 
         return $this->validationHelper->getValidationResponse($validator);
     }
+
+    public function validateAddMentorPaymentMethod($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'mentor_id' => 'required|integer',
+            'payment_method_id' => 'required|integer',
+            'account_number' => 'required|string|max:45',
+            'account_name' => 'required|string|max:45',
+            'bank_name' => 'required|string|max:45',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
 }

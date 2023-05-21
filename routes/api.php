@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\MentorAuthController;
 use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
+use App\Http\Controllers\Mentors\MentorPaymentMethodController;
 use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
@@ -111,9 +112,11 @@ Route::prefix('v1/admin')->group(function () {
     Route::post('payment-methods/non-active', [AdminPaymentMethodController::class, 'nonActivePaymentMethod']);
 
     // TODO: make get all users
-    // TODO: make get all users schedule
-    // TODO: make get all users materials
+    // TODO: make get user details
     // TODO: make update user status
+    // TODO: make get all mentors
+    // TODO: make get mentor details
+    // TODO: make update mentor credential status
     // TODO: make material (get, add, update, delete)
     // TODO: make set user material
     // TODO: make classes (get, add, update, delete)
@@ -145,6 +148,9 @@ Route::prefix('v1/mentor')->group(function () {
 
     Route::put('profile/update', [MentorController::class, 'updateProfile']);
 
-    // TODO: make mentor payment methods (get, add, update)
+    Route::get('mentor-payment-methods', [MentorPaymentMethodController::class, 'getMentorPaymentMethods']);
+    Route::post('mentor-payment-methods', [MentorPaymentMethodController::class, 'addMentorPaymentMethod']);
+    Route::delete('mentor-payment-methods/{mentorPaymentMethodId}', [MentorPaymentMethodController::class, 'deleteMentorPaymentMethod']);
+
     // TODO: make mentor schedule (get, add, update, delete)
 });

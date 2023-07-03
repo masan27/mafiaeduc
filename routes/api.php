@@ -114,9 +114,11 @@ Route::prefix('v1/admin')->group(function () {
     // TODO: make get all users
     // TODO: make get user details
     // TODO: make update user status
+
     // TODO: make get all mentors
     // TODO: make get mentor details
     // TODO: make update mentor credential status
+
     // TODO: make material (get, add, update, delete)
     // TODO: make set user material
     // TODO: make classes (get, add, update, delete)

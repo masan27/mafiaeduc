@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Models\Notifications;
+namespace App\Models\Sales;
 
+use App\Models\Payments\PaymentMethod;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Notification extends Model
+class Sales extends Model
 {
     use HasFactory;
 
-    protected $table = 'notifications';
-
     protected $fillable = [
         'user_id',
-        'sales_id',
-        'title',
-        'body',
-        'is_read',
-        'read_at',
-    ];
-
-    protected $casts = [
-        'is_read' => 'boolean',
-        'read_at' => 'datetime',
+        'payment_method_id',
+        'sales_date',
+        'confirm_date',
+        'payment_date',
+        'status',
+        'total_price',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function paymentMethod(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 }

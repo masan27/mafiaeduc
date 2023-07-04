@@ -106,6 +106,7 @@ Route::prefix('v1/admin')->group(function () {
         Route::get('/', [AdminMentorController::class, 'getAllMentors']);
         Route::get('{mentorId}', [AdminMentorController::class, 'getMentorDetails']);
         Route::post('update-status', [AdminMentorController::class, 'nonActiveMentors']);
+        Route::post('reset-password/{mentorId}', [AdminMentorController::class, 'resetPassword']);
     });
 
     Route::prefix('subjects')->group(function () {
@@ -139,12 +140,7 @@ Route::prefix('v1/admin')->group(function () {
         Route::post('update-status/{userId}', [AdminUserController::class, 'nonActiveUsers']);
     });
 
-    // TODO: make get all mentors
-    // TODO: make get mentor details
-    // TODO: make update mentor credential status
-
     // TODO: make set user material
-    // TODO: make classes (get, add, update, delete)
     // TODO: make mentor payment (get, add, update)
     // TODO: make confirmation user payment (get, add, update)
     // TODO: make user schedule (get, add, update, delete)

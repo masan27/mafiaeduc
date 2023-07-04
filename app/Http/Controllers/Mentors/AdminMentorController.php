@@ -39,4 +39,10 @@ class AdminMentorController extends Controller
         $data = $this->mentorService->nonActiveMentors($request);
         return response()->json($data, $data['code']);
     }
+
+    public function resetPassword(int $mentorId): JsonResponse
+    {
+        $data = $this->mentorService->resetPassword($mentorId);
+        return response()->json($data, $data['code']);
+    }
 }

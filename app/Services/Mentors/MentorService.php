@@ -4,10 +4,12 @@ namespace App\Services\Mentors;
 
 use App\Helpers\FileHelper;
 use App\Helpers\ResponseHelper;
+use App\Models\Mentors\MentorCredentials;
 use App\Repository\Mentors\MentorRepoInterface;
 use App\Validators\MentorValidator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -250,5 +252,29 @@ class MentorService implements MentorServiceInterface
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
+
+    public function resetPassword(int $mentorId): array
+    {
+        DB::beginTransaction();
+        try {
+            $mentor = MentorCredentials::where('mentor_id', $mentorId)->first();
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $newPassword = '123456';
+            $mentor->password = Hash::make($newPassword);
+            $mentor->save();
+
+            $data = [
+                'email' => $mentor->email,
+                'password' => $newPassword,
+            ];
+
+            return ResponseHelper::success('Berhasil mereset password mentor', $data);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
     }
 }

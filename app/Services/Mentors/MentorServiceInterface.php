@@ -19,4 +19,6 @@ interface MentorServiceInterface
     public function getProfileDetails(Request $request): array;
 
     public function updateMentorProfile(Request $request): array;
+
+    public function resetPassword(int $mentorId): array;
 }

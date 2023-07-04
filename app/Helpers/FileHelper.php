@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class FileHelper
 {
@@ -13,27 +14,42 @@ class FileHelper
 
     public static function uploadFile($file, $folderName = null, $filePrefix = null): string
     {
-        $defaultFileName = Carbon::now()->timestamp . '-' . $file->getClientOriginalName();
-        $fileName = $filePrefix ? $filePrefix . '.' . $file->getClientOriginalExtension() : $defaultFileName;
+        if (!$filePrefix) {
+            $defaultFileName = Carbon::now()->timestamp . '-' . $file->getClientOriginalName();
+            $fileName = $defaultFileName;
+        } else {
+            $fileName = $filePrefix . '.' . $file->getClientOriginalExtension();
+        }
+
         return $file->storeAs(self::getPath($folderName), $fileName, ['disk' => 'public']);
     }
 
-    public static function downloadFile(string $filePath):
-    bool|\Symfony\Component\HttpFoundation\BinaryFileResponse
+    public static function getDownloadFileUrl(string $filePath, string $filename)
     {
-        if (file_exists($filePath)) {
-            return response()->download($filePath);
+        if (!self::isFileExist($filePath)) {
+            return false;
         }
 
-        return false;
+        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+        $filename = $filename . '.' . $fileExtension;
+
+        return Storage::disk('public')->download($filePath, $filename);
     }
 
-    public static function deleteFile($folderName, $fileName): bool
+    public static function isFileExist($filePath): bool
     {
-        $filePath = self::getPath($folderName) . $fileName;
+        return Storage::disk('public')->exists($filePath);
+    }
 
-        if (file_exists($filePath)) {
-            @unlink($filePath);
+    public static function getFileUrl(string|null $filePath): string
+    {
+        return url(Storage::url($filePath));
+    }
+
+    public static function deleteFile($filePath): bool
+    {
+        if (Storage::disk('public')->exists($filePath)) {
+            Storage::disk('public')->delete($filePath);
         }
 
         return true;

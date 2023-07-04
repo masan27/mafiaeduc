@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('cover_image');
             $table->foreignId('admin_id')->constrained('admins')->cascadeOnDelete();
             $table->foreignId('grade_id')->constrained('grades')->cascadeOnDelete();
             $table->decimal('price', 20);

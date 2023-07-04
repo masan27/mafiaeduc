@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\MentorAuthController;
+use App\Http\Controllers\Materials\AdminMaterialController;
 use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Mentors\MentorPaymentMethodController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
 use App\Http\Controllers\Subjects\AdminSubjectController;
 use App\Http\Controllers\Subjects\SubjectController;
+use App\Http\Controllers\Users\AdminUserController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +68,11 @@ Route::prefix('v1')->group(function () {
         Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
     });
 
+    Route::prefix('material')->group(function () {
+        Route::get('download/{materialId}/preview', [AdminMaterialController::class, 'downloadMaterialPreview']);
+        Route::get('download/{materialId}/source', [AdminMaterialController::class, 'downloadMaterialSource']);
+    });
+
     // TODO: make get recommended mentors
     // TODO: make get all active classes
     // TODO: make get all mentor active classes
@@ -111,15 +118,31 @@ Route::prefix('v1/admin')->group(function () {
     Route::post('payment-methods', [AdminPaymentMethodController::class, 'addPaymentMethod']);
     Route::post('payment-methods/non-active', [AdminPaymentMethodController::class, 'nonActivePaymentMethod']);
 
-    // TODO: make get all users
-    // TODO: make get user details
-    // TODO: make update user status
+    Route::middleware('auth:sanctum,admin')->group(function () {
+        Route::prefix('material')->group(function () {
+            Route::get('/', [AdminMaterialController::class, 'getAllMaterial']);
+            Route::post('add', [AdminMaterialController::class, 'addMaterial']);
+            Route::delete('{materialId}', [AdminMaterialController::class, 'deleteMaterial']);
+            Route::post('update/{materialId}', [AdminMaterialController::class, 'updateMaterial']);
+        });
+    });
+
+    Route::prefix('material')->group(function () {
+        Route::get('download/{materialId}/preview', [AdminMaterialController::class, 'downloadMaterialPreview']);
+        Route::get('download/{materialId}/source', [AdminMaterialController::class, 'downloadMaterialSource']);
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [AdminUserController::class, 'getAllUsers']);
+        Route::get('{userId}', [AdminUserController::class, 'getUserDetails']);
+        Route::post('reset-password/{userId}', [AdminUserController::class, 'resetPassword']);
+        Route::post('update-status/{userId}', [AdminUserController::class, 'nonActiveUsers']);
+    });
 
     // TODO: make get all mentors
     // TODO: make get mentor details
     // TODO: make update mentor credential status
 
-    // TODO: make material (get, add, update, delete)
     // TODO: make set user material
     // TODO: make classes (get, add, update, delete)
     // TODO: make mentor payment (get, add, update)

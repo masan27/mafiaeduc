@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
             'email' => 'user@email.com',
             'password' => Hash::make('user123'),
             'role' => 3,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         DB::table('user_details')->insert([
@@ -30,12 +32,16 @@ class UserSeeder extends Seeder
             'address' => 'Jl. User Default',
             'school_origin' => 'Sutomo 1',
             'birth_date' => '2001-03-02',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $userMentorId = DB::table('users')->insertGetId([
             'email' => 'mentor@email.com',
             'password' => Hash::make('user123'),
             'role' => 2,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         DB::table('user_details')->insert([
@@ -46,6 +52,8 @@ class UserSeeder extends Seeder
             'address' => 'Jl. User Mentor',
             'school_origin' => 'SMA Sutomo 2',
             'birth_date' => '1998-03-02',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

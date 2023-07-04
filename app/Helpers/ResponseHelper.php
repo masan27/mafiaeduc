@@ -6,7 +6,8 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class ResponseHelper
 {
-    public static function success($message = null, $data = null, $code = ResponseAlias::HTTP_OK): array
+    public static function success($message = 'Berhasil mendapatkan data', $data = null, $code =
+    ResponseAlias::HTTP_OK): array
     {
         $res = [
             'code' => $code,
@@ -21,7 +22,7 @@ class ResponseHelper
         return $res;
     }
 
-    public static function error($message = null, $error = null, $code =
+    public static function error($message = 'Network Error', $error = null, $code =
     ResponseAlias::HTTP_BAD_REQUEST): array
     {
         $res = [
@@ -37,7 +38,7 @@ class ResponseHelper
         return $res;
     }
 
-    public static function notFound($message = null, $code = ResponseAlias::HTTP_OK): array
+    public static function notFound($message = 'Data tidak di temukan', $code = ResponseAlias::HTTP_OK): array
     {
         return [
             'code' => $code,

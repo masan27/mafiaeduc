@@ -26,7 +26,7 @@ class AuthRepo implements AuthRepoInterface
         return $userId;
     }
 
-    private static function getDbTable()
+    private static function getDbTable(): object
     {
         return DB::table('users');
     }

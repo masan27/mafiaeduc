@@ -13,6 +13,7 @@ class Material extends Model
 
     protected $fillable = [
         'title',
+        'cover_image',
         'admin_id',
         'grade_id',
         'price',

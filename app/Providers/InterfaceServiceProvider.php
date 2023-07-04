@@ -77,6 +77,16 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Mentors\PaymentMethod\MentorPaymentMethodService::class
         );
 
+        $this->app->bind(
+            \App\Services\Admins\Materials\AdminMaterialServiceInterface::class,
+            \App\Services\Admins\Materials\AdminMaterialService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Admins\Users\AdminUserServiceInterface::class,
+            \App\Services\Admins\Users\AdminUserService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

@@ -10,5 +10,5 @@ interface MentorPaymentMethodServiceInterface
 
     public function addMentorPaymentMethod(Request $request): array;
 
-    public function deleteMentorPaymentMethod(Request $request): array;
+    public function deleteMentorPaymentMethod(int $mentorPaymentMethodId, Request $request): array;
 }

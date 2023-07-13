@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\MentorAuthController;
+use App\Http\Controllers\Checkouts\CheckoutController;
 use App\Http\Controllers\GroupClasses\AdminGroupClassController;
 use App\Http\Controllers\Materials\AdminMaterialController;
 use App\Http\Controllers\Mentors\AdminMentorController;
@@ -69,6 +70,11 @@ Route::prefix('v1')->group(function () {
         Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
         Route::post('mentor-register', [MentorController::class, 'mentorRegister']);
         Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
+
+        Route::post('checkout', [CheckoutController::class, 'makeCheckout']);
+        Route::get('invoice/{salesId}', [CheckoutController::class, 'getInvoiceDetails']);
+        Route::post('payment-confirmation', [CheckoutController::class, 'paymentConfirmation']);
+        Route::post('cancel-payment', [CheckoutController::class, 'cancelPayment']);
     });
 
     Route::prefix('material')->group(function () {
@@ -81,9 +87,6 @@ Route::prefix('v1')->group(function () {
     // TODO: make get all mentor active classes
     // TODO: make get all users schedule
     // TODO: make get all users materials
-    // TODO: make post checkout
-    // TODO: make post payment
-    // TODO: make post payment confirmation
 });
 
 // Admin Routes
@@ -176,16 +179,15 @@ Route::prefix('v1/mentor')->group(function () {
     });
 
     Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
-
     Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
 
-    Route::put('profile/update', [MentorController::class, 'updateProfile']);
-
-    Route::get('mentor-payment-methods', [MentorPaymentMethodController::class, 'getMentorPaymentMethods']);
-    Route::post('mentor-payment-methods', [MentorPaymentMethodController::class, 'addMentorPaymentMethod']);
-    Route::delete('mentor-payment-methods/{mentorPaymentMethodId}', [MentorPaymentMethodController::class, 'deleteMentorPaymentMethod']);
-
     Route::middleware('checkMentorToken')->group(function () {
+        Route::put('profile/update', [MentorController::class, 'updateProfile']);
+
+        Route::get('mentor-payment-methods', [MentorPaymentMethodController::class, 'getMentorPaymentMethods']);
+        Route::post('mentor-payment-methods', [MentorPaymentMethodController::class, 'addMentorPaymentMethod']);
+        Route::delete('mentor-payment-methods/{mentorPaymentMethodId}', [MentorPaymentMethodController::class, 'deleteMentorPaymentMethod']);
+
         Route::prefix('private-classes')->group(function () {
             Route::get('/', [MentorPrivateClassController::class, 'getMentorPrivateClasses']);
             Route::get('{privateClassId}', [MentorPrivateClassController::class, 'getMentorPrivateClassDetails']);

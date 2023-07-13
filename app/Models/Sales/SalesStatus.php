@@ -16,4 +16,14 @@ class SalesStatus extends Model
         'description',
         'status',
     ];
+
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
 }

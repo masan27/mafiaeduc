@@ -11,13 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('sales_confirmations', function (Blueprint $table) {
-            $table->foreignId('sales_id')->constrained('sales')->cascadeOnDelete();
+            $table->string('sales_id')->primary();
             $table->foreignId('payment_method_id')->constrained('payment_methods');
             $table->string('account_name');
             $table->dateTime('payment_date');
             $table->decimal('amount', 20, 0);
             $table->string('proof_of_payment');
-            $table->primary('sales_id');
             $table->timestamps();
         });
     }

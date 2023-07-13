@@ -28,9 +28,9 @@ class MentorPaymentMethodController extends Controller
         return response()->json($data, $data['code']);
     }
 
-    public function deleteMentorPaymentMethod(Request $request): JsonResponse
+    public function deleteMentorPaymentMethod(int $mentorPaymentMethodId, Request $request): JsonResponse
     {
-        $data = $this->mentorPaymentMethodService->deleteMentorPaymentMethod($request);
+        $data = $this->mentorPaymentMethodService->deleteMentorPaymentMethod($mentorPaymentMethodId, $request);
         return response()->json($data, $data['code']);
     }
 }

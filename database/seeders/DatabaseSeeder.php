@@ -8,6 +8,7 @@ use Database\Seeders\Days\DaySeeder;
 use Database\Seeders\Grades\GradeSeeder;
 use Database\Seeders\LearningMethods\LearningMethodSeeder;
 use Database\Seeders\Mentor\MentorSeeder;
+use Database\Seeders\PaymentMethods\PaymentMethodSeeder;
 use Database\Seeders\Roles\RoleSeeder;
 use Database\Seeders\Sales\SalesStatusSeeder;
 use Database\Seeders\Subjects\SubjectSeeder;
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MentorSeeder::class,
             SalesStatusSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders\Sales;
 
-use App\Entities\SalesEntities;
 use App\Models\Sales\SalesStatus;
 use Illuminate\Database\Seeder;
 
@@ -21,22 +20,32 @@ class SalesStatusSeeder extends Seeder
             [
                 'name' => 'Menunggu Pembayaran',
                 'description' => 'Sales Status Menunggu Pembayaran',
-                'status' => SalesEntities::SALES_STATUS_NOT_PAID,
+                'status' => 1,
+            ],
+            [
+                'name' => 'Sedang Diproses',
+                'description' => 'Sales Status Sedang Diproses',
+                'status' => 1,
             ],
             [
                 'name' => 'Dibayar',
                 'description' => 'Sales Status Sudah Dibayar',
-                'status' => SalesEntities::SALES_STATUS_PAID,
+                'status' => 1,
             ],
             [
                 'name' => 'Kadaluarsa',
                 'description' => 'Sales Status Kadaluarsa',
-                'status' => SalesEntities::SALES_STATUS_EXPIRED,
+                'status' => 1,
             ],
             [
                 'name' => 'Dibatalkan',
                 'description' => 'Sales Status Dibatalkan',
-                'status' => SalesEntities::SALES_STATUS_CANCELLED,
+                'status' => 1,
+            ],
+            [
+                'name' => 'Gagal',
+                'description' => 'Sales Status Gagal',
+                'status' => 1,
             ],
         ];
 

@@ -9,7 +9,7 @@ use App\Validators\ScheduleValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class MentorScheduleService implements MentorScheduleInterface
+class MentorScheduleService implements MentorScheduleServiceInterface
 {
     protected ScheduleValidator $scheduleValidator;
 

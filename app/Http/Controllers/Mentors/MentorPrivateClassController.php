@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Mentors;
 
 use App\Http\Controllers\Controller;
-use App\Services\Mentors\PrivateClasses\MentorPrivateClassInterface;
+use App\Services\Mentors\PrivateClasses\MentorPrivateClassServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MentorPrivateClassController extends Controller
 {
-    protected MentorPrivateClassInterface $mentorPrivateClass;
+    protected MentorPrivateClassServiceInterface $mentorPrivateClass;
 
-    public function __construct(MentorPrivateClassInterface $mentorPrivateClass)
+    public function __construct(MentorPrivateClassServiceInterface $mentorPrivateClass)
     {
         $this->mentorPrivateClass = $mentorPrivateClass;
     }

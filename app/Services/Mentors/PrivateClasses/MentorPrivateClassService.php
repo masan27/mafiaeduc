@@ -8,7 +8,7 @@ use App\Validators\PrivateClassValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class MentorPrivateClass implements MentorPrivateClassInterface
+class MentorPrivateClassService implements MentorPrivateClassServiceInterface
 {
 
     protected PrivateClassValidator $privateClassValidator;

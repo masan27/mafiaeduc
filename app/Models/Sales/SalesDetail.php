@@ -23,6 +23,12 @@ class SalesDetail extends Model
         'sub_total',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+
     public function sales(): BelongsTo
     {
         return $this->belongsTo(Sales::class);
@@ -40,7 +46,7 @@ class SalesDetail extends Model
 
     public function privateClasses(): BelongsTo
     {
-        return $this->belongsTo(PrivateClass::class);
+        return $this->belongsTo(PrivateClass::class, 'private_classes_id');
     }
 
     public function groupClasses(): BelongsTo

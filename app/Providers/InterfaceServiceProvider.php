@@ -88,8 +88,8 @@ class InterfaceServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \App\Services\Mentors\PrivateClasses\MentorPrivateClassInterface::class,
-            \App\Services\Mentors\PrivateClasses\MentorPrivateClass::class
+            \App\Services\Mentors\PrivateClasses\MentorPrivateClassServiceInterface::class,
+            \App\Services\Mentors\PrivateClasses\MentorPrivateClassService::class
         );
 
         $this->app->bind(
@@ -98,8 +98,13 @@ class InterfaceServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \App\Services\Mentors\Schedules\MentorScheduleInterface::class,
+            \App\Services\Mentors\Schedules\MentorScheduleServiceInterface::class,
             \App\Services\Mentors\Schedules\MentorScheduleService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Checkouts\CheckoutServiceInterface::class,
+            \App\Services\Checkouts\CheckoutService::class
         );
 
         // Register the Repository Interfaces

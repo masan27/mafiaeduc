@@ -4,7 +4,7 @@ namespace App\Services\Mentors\Schedules;
 
 use Illuminate\Http\Request;
 
-interface MentorScheduleInterface
+interface MentorScheduleServiceInterface
 {
     public function getMentorSchedules(int $privateClassId, Request $request): array;
 

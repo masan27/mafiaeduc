@@ -57,7 +57,7 @@ class MentorValidator
     {
         $validator = Validator::make($request->all(), [
             'mentor_id' => 'required|integer',
-            'payment_method_id' => 'required|integer',
+            'payment_method_id' => 'required|integer|exists:payment_methods,id',
             'account_number' => 'required|string|max:45',
             'account_name' => 'required|string|max:45',
             'bank_name' => 'required|string|max:45',

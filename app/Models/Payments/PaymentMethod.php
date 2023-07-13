@@ -25,6 +25,12 @@ class PaymentMethod extends Model
 
     protected $casts = [
         'fee' => 'integer',
+        'status' => 'boolean',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 
     public function scopeActive($query)

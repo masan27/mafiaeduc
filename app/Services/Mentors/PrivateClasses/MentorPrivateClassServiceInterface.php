@@ -4,7 +4,7 @@ namespace App\Services\Mentors\PrivateClasses;
 
 use Illuminate\Http\Request;
 
-interface MentorPrivateClassInterface
+interface MentorPrivateClassServiceInterface
 {
     public function getMentorPrivateClasses(Request $request): array;
 

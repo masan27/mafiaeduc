@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('sales_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sales_id');
+            $table->string('sales_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('material_id');
-            $table->unsignedBigInteger('private_classes_id');
-            $table->unsignedBigInteger('group_classes_id');
+            $table->unsignedBigInteger('material_id')->nullable();
+            $table->unsignedBigInteger('private_classes_id')->nullable();
+            $table->unsignedBigInteger('group_classes_id')->nullable();
             $table->decimal('sub_total', 20, 0);
             $table->timestamps();
         });

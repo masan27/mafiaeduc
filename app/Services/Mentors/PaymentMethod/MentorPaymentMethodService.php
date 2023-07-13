@@ -58,14 +58,15 @@ class MentorPaymentMethodService implements MentorPaymentMethodServiceInterface
         }
     }
 
-    public function deleteMentorPaymentMethod($request): array
+    public function deleteMentorPaymentMethod($mentorPaymentMethodId, $request): array
     {
         DB::beginTransaction();
         try {
-            $mentorId = $request->input('mentor_id');
-            $mentorPaymentMethodId = $request->input('mentor_payment_method_id');
+            $mentorId = $request->mentor->mentor_id;
+            $isSuccess = $this->mentorPaymentMethodRepo->deleteMentorPaymentMethod($mentorId,
+                $mentorPaymentMethodId);
 
-            $this->mentorPaymentMethodRepo->deleteMentorPaymentMethod($mentorId, $mentorPaymentMethodId);
+            if (!$isSuccess) return ResponseHelper::notFound('Payment method tidak ditemukan');
 
             DB::commit();
             return ResponseHelper::success('Berhasil menghapus payment method');

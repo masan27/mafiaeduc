@@ -21,6 +21,15 @@ class PrivateClass extends Model
         'address',
         'price',
         'total_slot',
+        'status',
+    ];
+
+    protected $casts = [
+        'price' => 'integer',
+        'subject_id' => 'integer',
+        'learning_method_id' => 'integer',
+        'status' => 'boolean',
+        'total_slot' => 'integer',
     ];
 
     public function mentor(): BelongsTo

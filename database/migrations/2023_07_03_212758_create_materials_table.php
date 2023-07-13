@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('cover_image');
             $table->foreignId('admin_id')->constrained('admins')->cascadeOnDelete();
             $table->foreignId('grade_id')->constrained('grades')->cascadeOnDelete();
-            $table->decimal('price', 20);
+            $table->decimal('price', 20, 0);
             $table->string('description');
             $table->integer('total_page')->default(1);
             $table->string('benefits');

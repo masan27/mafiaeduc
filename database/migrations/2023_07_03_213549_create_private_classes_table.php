@@ -17,8 +17,9 @@ return new class extends Migration {
             $table->foreignId('learning_method_id')->constrained('learning_methods')->cascadeOnDelete();
             $table->string('description');
             $table->string('address');
-            $table->decimal('price', 20);
+            $table->decimal('price', 20, 0);
             $table->integer('total_slot')->default(1);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

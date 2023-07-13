@@ -3,10 +3,13 @@
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\MentorAuthController;
+use App\Http\Controllers\GroupClasses\AdminGroupClassController;
 use App\Http\Controllers\Materials\AdminMaterialController;
 use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Mentors\MentorPaymentMethodController;
+use App\Http\Controllers\Mentors\MentorPrivateClassController;
+use App\Http\Controllers\Mentors\MentorScheduleController;
 use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
@@ -140,8 +143,17 @@ Route::prefix('v1/admin')->group(function () {
         Route::post('update-status/{userId}', [AdminUserController::class, 'nonActiveUsers']);
     });
 
-    // TODO: make set user material
+    Route::prefix('group-classes')->group(function () {
+        Route::get('/', [AdminGroupClassController::class, 'getAllGroupClasses']);
+        Route::get('{groupClassId}', [AdminGroupClassController::class, 'getGroupClassDetails']);
+        Route::post('add', [AdminGroupClassController::class, 'addGroupClass']);
+        Route::patch('{groupClassId}', [AdminGroupClassController::class, 'updateGroupClass']);
+        Route::delete('{groupClassId}', [AdminGroupClassController::class, 'deleteGroupClass']);
+        Route::post('update-status/{groupClassId}', [AdminGroupClassController::class, 'updateStatusGroupClass']);
+    });
+
     // TODO: make mentor payment (get, add, update)
+    // TODO: make set user material
     // TODO: make confirmation user payment (get, add, update)
     // TODO: make user schedule (get, add, update, delete)
 });
@@ -173,5 +185,21 @@ Route::prefix('v1/mentor')->group(function () {
     Route::post('mentor-payment-methods', [MentorPaymentMethodController::class, 'addMentorPaymentMethod']);
     Route::delete('mentor-payment-methods/{mentorPaymentMethodId}', [MentorPaymentMethodController::class, 'deleteMentorPaymentMethod']);
 
-    // TODO: make mentor schedule (get, add, update, delete)
+    Route::middleware('checkMentorToken')->group(function () {
+        Route::prefix('private-classes')->group(function () {
+            Route::get('/', [MentorPrivateClassController::class, 'getMentorPrivateClasses']);
+            Route::get('{privateClassId}', [MentorPrivateClassController::class, 'getMentorPrivateClassDetails']);
+            Route::post('add', [MentorPrivateClassController::class, 'addMentorPrivateClass']);
+            Route::patch('{privateClassId}', [MentorPrivateClassController::class, 'editMentorPrivateClass']);
+            Route::post('{privateClassId}/change-status', [MentorPrivateClassController::class, 'changeMentorPrivateClassStatus']);
+            Route::delete('{privateClassId}', [MentorPrivateClassController::class, 'deleteMentorPrivateClass']);
+        });
+
+        Route::prefix('schedules')->group(function () {
+            Route::get('{privateClassId}', [MentorScheduleController::class, 'getMentorSchedules']);
+            Route::post('{privateClassId}/add', [MentorScheduleController::class, 'addMentorSchedule']);
+            Route::patch('{scheduleId}', [MentorScheduleController::class, 'editMentorSchedule']);
+            Route::delete('{scheduleId}', [MentorScheduleController::class, 'deleteMentorSchedule']);
+        });
+    });
 });

@@ -22,7 +22,7 @@ class MentorToken
 
         if (empty($token)) return response()->json($unauthorized, $unauthorized['code']);
 
-        $mentor = MentorCredentials::where('token', $token)->first();
+        $mentor = MentorCredentials::where('api_token', $token)->first();
 
         if (!$mentor) return response()->json($unauthorized, $unauthorized['code']);
 

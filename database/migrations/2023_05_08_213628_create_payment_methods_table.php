@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('type')->default(PaymentMethodEntities::PAYMENT_METHOD_TYPE_BANK);
             $table->string('status')->default(PaymentMethodEntities::PAYMENT_METHOD_STATUS_ACTIVE);
             $table->string('description')->nullable();
-            $table->decimal('fee', 20)->nullable();
+            $table->decimal('fee', 20, 0)->nullable();
             $table->string('account_number')->nullable();
             $table->timestamps();
         });

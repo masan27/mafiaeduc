@@ -21,6 +21,14 @@ class GroupClass extends Model
         'description',
         'additional_info',
         'price',
+        'status',
+    ];
+
+    protected $casts = [
+        'price' => 'integer',
+        'grade_id' => 'integer',
+        'subject_id' => 'integer',
+        'learning_method_id' => 'integer',
     ];
 
     public function grade(): BelongsTo

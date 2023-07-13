@@ -23,6 +23,10 @@ class PaymentMethod extends Model
         'account_number',
     ];
 
+    protected $casts = [
+        'fee' => 'integer',
+    ];
+
     public function scopeActive($query)
     {
         return $query->where('status', PaymentMethodEntities::PAYMENT_METHOD_STATUS_ACTIVE);

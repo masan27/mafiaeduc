@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->string('cv');
             $table->string('teaching_video');
             $table->string('phone', 16);
-            $table->decimal('salary', 20);
+            $table->decimal('salary', 20, 0);
             $table->boolean('status')->default(MentorEntities::MENTOR_STATUS_PENDING_APPROVAL);
             $table->string('linkedin')->nullable();
             $table->timestamps();

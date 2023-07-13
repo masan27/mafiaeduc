@@ -13,6 +13,8 @@ class MentorCredentials extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $primaryKey = 'mentor_id';
+
     protected $fillable = [
         'mentor_id',
         'email',

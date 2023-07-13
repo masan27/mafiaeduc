@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('description');
             $table->string('additional_info')->nullable();
             $table->decimal('price', 20);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

@@ -87,6 +87,21 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Admins\Users\AdminUserService::class
         );
 
+        $this->app->bind(
+            \App\Services\Mentors\PrivateClasses\MentorPrivateClassInterface::class,
+            \App\Services\Mentors\PrivateClasses\MentorPrivateClass::class
+        );
+
+        $this->app->bind(
+            \App\Services\Admins\GroupClasses\AdminGroupClassesInterface::class,
+            \App\Services\Admins\GroupClasses\AdminGroupClassesService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Mentors\Schedules\MentorScheduleInterface::class,
+            \App\Services\Mentors\Schedules\MentorScheduleService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('material_id');
             $table->unsignedBigInteger('private_classes_id');
             $table->unsignedBigInteger('group_classes_id');
-            $table->decimal('sub_total', 20);
+            $table->decimal('sub_total', 20, 0);
             $table->timestamps();
         });
     }

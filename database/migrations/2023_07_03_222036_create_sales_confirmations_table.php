@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('payment_method_id')->constrained('payment_methods');
             $table->string('account_name');
             $table->dateTime('payment_date');
-            $table->decimal('amount', 10);
+            $table->decimal('amount', 20, 0);
             $table->string('proof_of_payment');
             $table->primary('sales_id');
             $table->timestamps();

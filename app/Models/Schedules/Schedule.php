@@ -8,9 +8,11 @@ use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Mentors\Mentor;
 use App\Models\Subjects\Subject;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Schedule extends Model
 {
@@ -33,6 +35,11 @@ class Schedule extends Model
     protected $casts = [
         'date' => 'date:d F Y',
     ];
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_schedule', 'schedule_id', 'user_id');
+    }
 
     public function learningMethod(): BelongsTo
     {

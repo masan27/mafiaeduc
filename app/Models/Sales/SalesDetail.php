@@ -28,6 +28,15 @@ class SalesDetail extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'sub_total' => 'integer',
+        'sales_id' => 'string',
+        'user_id' => 'integer',
+        'material_id' => 'integer',
+        'private_classes_id' => 'integer',
+        'group_classes_id' => 'integer',
+    ];
+
 
     public function sales(): BelongsTo
     {

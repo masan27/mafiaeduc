@@ -3,9 +3,11 @@
 namespace App\Models\Materials;
 
 use App\Models\Admins\Admin;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Material extends Model
 {
@@ -28,5 +30,10 @@ class Material extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(Admin::class);
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_material', 'material_id', 'user_id');
     }
 }

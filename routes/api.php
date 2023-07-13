@@ -16,6 +16,7 @@ use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
 use App\Http\Controllers\Subjects\AdminSubjectController;
 use App\Http\Controllers\Subjects\SubjectController;
+use App\Http\Controllers\Transactions\AdminTransactionController;
 use App\Http\Controllers\Users\AdminUserController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Welcome\WelcomeController;
@@ -155,9 +156,14 @@ Route::prefix('v1/admin')->group(function () {
         Route::post('update-status/{groupClassId}', [AdminGroupClassController::class, 'updateStatusGroupClass']);
     });
 
+    Route::prefix('transactions')->group(function () {
+        Route::get('/', [AdminTransactionController::class, 'getAllTransactions']);
+        Route::get('{salesId}', [AdminTransactionController::class, 'getTransactionDetails']);
+        Route::post('confirm', [AdminTransactionController::class, 'confirmTransaction']);
+    });
+
     // TODO: make mentor payment (get, add, update)
     // TODO: make set user material
-    // TODO: make confirmation user payment (get, add, update)
     // TODO: make user schedule (get, add, update, delete)
 });
 

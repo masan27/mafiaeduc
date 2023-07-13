@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->boolean('is_active')->default(true);
             $table->boolean('is_downloaded')->default(false);
             $table->primary(['user_id', 'material_id']);
-            $table->timestamps();
         });
     }
 

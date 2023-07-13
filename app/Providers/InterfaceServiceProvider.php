@@ -107,6 +107,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Checkouts\CheckoutService::class
         );
 
+        $this->app->bind(
+            \App\Services\Admins\Transactions\AdminTransactionServiceInterface::class,
+            \App\Services\Admins\Transactions\AdminTransactionService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

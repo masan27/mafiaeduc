@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('mentor_id')->constrained('mentors')->cascadeOnDelete();
             $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
             $table->foreignId('learning_method_id')->constrained('learning_methods')->cascadeOnDelete();
+            $table->foreignId('grade_id')->constrained('grades')->cascadeOnDelete();
             $table->string('description');
             $table->string('address');
             $table->decimal('price', 20, 0);

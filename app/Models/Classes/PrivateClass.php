@@ -2,6 +2,7 @@
 
 namespace App\Models\Classes;
 
+use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Mentors\Mentor;
 use App\Models\Subjects\Subject;
@@ -16,6 +17,7 @@ class PrivateClass extends Model
     protected $fillable = [
         'mentor_id',
         'subject_id',
+        'grade_id',
         'learning_method_id',
         'description',
         'address',
@@ -27,6 +29,7 @@ class PrivateClass extends Model
     protected $casts = [
         'price' => 'integer',
         'subject_id' => 'integer',
+        'grade_id' => 'integer',
         'learning_method_id' => 'integer',
         'status' => 'boolean',
         'total_slot' => 'integer',
@@ -45,5 +48,10 @@ class PrivateClass extends Model
     public function learningMethod(): BelongsTo
     {
         return $this->belongsTo(LearningMethod::class);
+    }
+
+    public function grade(): BelongsTo
+    {
+        return $this->belongsTo(Grade::class);
     }
 }

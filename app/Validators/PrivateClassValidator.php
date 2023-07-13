@@ -19,6 +19,7 @@ class PrivateClassValidator
         $validator = Validator::make($request->all(), [
             'subject_id' => 'required|integer|exists:subjects,id',
             'learning_method_id' => 'required|integer|exists:learning_methods,id',
+            'grade_id' => 'required|integer|exists:grades,id',
             'description' => 'required|string',
             'address' => 'required|string',
             'price' => 'required|integer',
@@ -33,6 +34,7 @@ class PrivateClassValidator
         $validator = Validator::make($request->all(), [
             'subject_id' => 'required|integer|exists:subjects,id',
             'learning_method_id' => 'required|integer|exists:learning_methods,id',
+            'grade_id' => 'required|integer|exists:grades,id',
             'description' => 'required|string',
             'address' => 'required|string',
             'price' => 'required|integer',

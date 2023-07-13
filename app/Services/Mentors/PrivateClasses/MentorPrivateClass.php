@@ -22,7 +22,7 @@ class MentorPrivateClass implements MentorPrivateClassInterface
     {
         try {
             $mentorId = $request->mentor->id;
-            $privateClasses = PrivateClass::with('subject', 'learningMethod')
+            $privateClasses = PrivateClass::with('subject', 'learningMethod', 'grade')
                 ->where('mentor_id', $mentorId)
                 ->get();
 
@@ -63,6 +63,7 @@ class MentorPrivateClass implements MentorPrivateClassInterface
         try {
             $mentorId = $request->mentor->id;
             $subjectId = $request->input('subject_id');
+            $gradeId = $request->input('grade_id');
             $learningMethodId = $request->input('learning_method_id');
             $description = $request->input('description');
             $address = $request->input('address');
@@ -72,6 +73,7 @@ class MentorPrivateClass implements MentorPrivateClassInterface
             $privateClass = PrivateClass::create([
                 'mentor_id' => $mentorId,
                 'subject_id' => $subjectId,
+                'grade_id' => $gradeId,
                 'learning_method_id' => $learningMethodId,
                 'description' => $description,
                 'address' => $address,
@@ -139,7 +141,7 @@ class MentorPrivateClass implements MentorPrivateClassInterface
     public function getMentorPrivateClassDetails(int $privateClassId): array
     {
         try {
-            $privateClass = PrivateClass::with('subject', 'learningMethod')
+            $privateClass = PrivateClass::with('subject', 'learningMethod', 'grade')
                 ->where('id', $privateClassId)
                 ->first();
 

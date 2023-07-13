@@ -21,7 +21,7 @@ class MentorScheduleService implements MentorScheduleInterface
     public function getMentorSchedules(int $privateClassId, Request $request): array
     {
         try {
-            $mentorId = $request->user()->id;
+            $mentorId = $request->mentor->mentor_id;
 
             $privateClass = PrivateClass::find($privateClassId);
 
@@ -57,7 +57,7 @@ class MentorScheduleService implements MentorScheduleInterface
 
 //            if ($privateClass->status == 0) return ResponseHelper::notFound('Kelas privat tidak aktif');
 
-            $mentorId = $request->user()->id;
+            $mentorId = $request->mentor->mentor_id;
             $meetingLink = $request->input('meeting_link');
             $meetingPlatform = $request->input('meeting_platform');
             $date = $request->input('date');

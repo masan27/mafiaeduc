@@ -31,7 +31,7 @@ class Schedule extends Model
     ];
 
     protected $casts = [
-        'date' => 'date',
+        'date' => 'date:d F Y',
     ];
 
     public function learningMethod(): BelongsTo
@@ -53,7 +53,7 @@ class Schedule extends Model
     {
         return $this->belongsTo(Mentor::class);
     }
-    
+
     public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);

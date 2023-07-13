@@ -141,7 +141,7 @@ class MentorPrivateClass implements MentorPrivateClassInterface
     public function getMentorPrivateClassDetails(int $privateClassId): array
     {
         try {
-            $privateClass = PrivateClass::with('subject', 'learningMethod', 'grade')
+            $privateClass = PrivateClass::with('subject', 'learningMethod', 'grade', 'schedules:id,private_classes_id,meeting_link,meeting_platform,address,date,time')
                 ->where('id', $privateClassId)
                 ->first();
 

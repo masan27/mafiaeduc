@@ -14,4 +14,8 @@ class SalesEntities
     const PRIVATE_CLASSES_TYPE = 1;
     const GROUP_CLASSES_TYPE = 2;
     const MATERIALS_TYPE = 3;
+
+    const PRIVATE_CLASSES_TYPE_PREFIX = 'PC';
+    const GROUP_CLASSES_TYPE_PREFIX = 'GC';
+    const MATERIALS_TYPE_PREFIX = 'MA';
 }

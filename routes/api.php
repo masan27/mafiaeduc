@@ -17,6 +17,7 @@ use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
 use App\Http\Controllers\PrivateClasses\PrivateClassController;
+use App\Http\Controllers\Reviews\ReviewController;
 use App\Http\Controllers\Schedules\AdminScheduleController;
 use App\Http\Controllers\Schedules\ScheduleController;
 use App\Http\Controllers\Subjects\AdminSubjectController;
@@ -182,6 +183,8 @@ Route::prefix('v1/admin')->group(function () {
     });
 
     Route::post('assign-user-material', [AdminMaterialController::class, 'assignUserMaterial']);
+
+    Route::post('reviews', [ReviewController::class, 'addTransactionReview']);
 
     // TODO: make mentor payment (get, add, update)
 });

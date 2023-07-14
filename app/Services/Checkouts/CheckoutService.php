@@ -129,13 +129,13 @@ class CheckoutService implements CheckoutServiceInterface
 
         switch ($type) {
             case SalesEntities::PRIVATE_CLASSES_TYPE:
-                $prefix = 'PC';
+                $prefix = SalesEntities::PRIVATE_CLASSES_TYPE_PREFIX;
                 break;
             case SalesEntities::GROUP_CLASSES_TYPE:
-                $prefix = 'GC';
+                $prefix = SalesEntities::GROUP_CLASSES_TYPE_PREFIX;
                 break;
             case SalesEntities::MATERIALS_TYPE:
-                $prefix = 'MA';
+                $prefix = SalesEntities::MATERIALS_TYPE_PREFIX;
                 break;
         }
 

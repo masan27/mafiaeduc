@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->dateTime('payment_date')->nullable();
             $table->foreignId('sales_status_id')->constrained('sales_status');
             $table->tinyInteger('type');
+            $table->boolean('feedback')->default(false);
             $table->decimal('total_price', 20, 0);
             $table->timestamps();
         });

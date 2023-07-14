@@ -6,6 +6,7 @@ namespace App\Models\Users;
 use App\Entities\UserEntities;
 use App\Models\Materials\Material;
 use App\Models\Notifications\Notification;
+use App\Models\Schedules\Schedule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,5 +51,10 @@ class User extends Authenticatable
     public function materials(): BelongsToMany
     {
         return $this->belongsToMany(Material::class, 'user_material', 'user_id', 'material_id');
+    }
+
+    public function schedules(): BelongsToMany
+    {
+        return $this->belongsToMany(Schedule::class, 'user_schedule', 'user_id', 'schedule_id');
     }
 }

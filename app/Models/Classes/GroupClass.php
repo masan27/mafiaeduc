@@ -33,6 +33,16 @@ class GroupClass extends Model
         'learning_method_id' => 'integer',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);

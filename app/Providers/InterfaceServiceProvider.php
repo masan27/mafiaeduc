@@ -117,6 +117,26 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Admins\Schedules\AdminScheduleService::class
         );
 
+        $this->app->bind(
+            \App\Services\GroupClasses\GroupClassServiceInterface::class,
+            \App\Services\GroupClasses\GroupClassService::class
+        );
+
+        $this->app->bind(
+            \App\Services\PrivateClasses\PrivateClassServiceInterface::class,
+            \App\Services\PrivateClasses\PrivateClassService::class,
+        );
+
+        $this->app->bind(
+            \App\Services\Materials\MaterialServiceInterface::class,
+            \App\Services\Materials\MaterialService::class,
+        );
+
+        $this->app->bind(
+            \App\Services\Schedules\ScheduleServiceInterface::class,
+            \App\Services\Schedules\ScheduleService::class,
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

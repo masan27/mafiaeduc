@@ -5,7 +5,9 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\MentorAuthController;
 use App\Http\Controllers\Checkouts\CheckoutController;
 use App\Http\Controllers\GroupClasses\AdminGroupClassController;
+use App\Http\Controllers\GroupClasses\GroupClassController;
 use App\Http\Controllers\Materials\AdminMaterialController;
+use App\Http\Controllers\Materials\MaterialController;
 use App\Http\Controllers\Mentors\AdminMentorController;
 use App\Http\Controllers\Mentors\MentorController;
 use App\Http\Controllers\Mentors\MentorPaymentMethodController;
@@ -14,7 +16,9 @@ use App\Http\Controllers\Mentors\MentorScheduleController;
 use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
+use App\Http\Controllers\PrivateClasses\PrivateClassController;
 use App\Http\Controllers\Schedules\AdminScheduleController;
+use App\Http\Controllers\Schedules\ScheduleController;
 use App\Http\Controllers\Subjects\AdminSubjectController;
 use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\Transactions\AdminTransactionController;
@@ -67,6 +71,9 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [UserController::class, 'getUserDetails']);
             Route::put('update', [UserController::class, 'updateUserDetails']);
             Route::post('change-password', [UserController::class, 'changePassword']);
+
+            Route::get('materials', [MaterialController::class, 'getUserMaterial']);
+            Route::get('schedules', [ScheduleController::class, 'getUserSchedules']);
         });
 
         Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
@@ -79,15 +86,19 @@ Route::prefix('v1')->group(function () {
         Route::post('cancel-payment', [CheckoutController::class, 'cancelPayment']);
     });
 
-    Route::prefix('material')->group(function () {
+    Route::prefix('materials')->group(function () {
+        Route::get('/', [MaterialController::class, 'getActiveMaterial']);
+        Route::get('{materialId}', [MaterialController::class, 'getMaterialDetails']);
         Route::get('download/{materialId}/preview', [AdminMaterialController::class, 'downloadMaterialPreview']);
         Route::get('download/{materialId}/source', [AdminMaterialController::class, 'downloadMaterialSource']);
     });
 
-    // TODO: make get all active classes
-    // TODO: make get all mentor active classes
-    // TODO: make get all users schedule
-    // TODO: make get all users materials
+    Route::get('group-classes', [GroupClassController::class, 'getAllGroupClasses']);
+    Route::get('group-classes/{groupClassId}', [GroupClassController::class, 'getGroupClassDetails']);
+
+    Route::get('private-classes', [PrivateClassController::class, 'getAllPrivateClasses']);
+    Route::get('private-classes/{privateClassId}', [PrivateClassController::class, 'getPrivateClassDetails']);
+
     // TODO: make get recommended mentors
 });
 

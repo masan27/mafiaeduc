@@ -37,6 +37,11 @@ class PrivateClass extends Model
         'total_slot' => 'integer',
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public function mentor(): BelongsTo
     {
         return $this->belongsTo(Mentor::class);

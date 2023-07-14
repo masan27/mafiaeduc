@@ -48,12 +48,12 @@ class Schedule extends Model
 
     public function privateClass(): BelongsTo
     {
-        return $this->belongsTo(PrivateClass::class);
+        return $this->belongsTo(PrivateClass::class, 'private_classes_id');
     }
 
     public function groupClass(): BelongsTo
     {
-        return $this->belongsTo(GroupClass::class);
+        return $this->belongsTo(GroupClass::class, 'group_classes_id');
     }
 
     public function mentor(): BelongsTo

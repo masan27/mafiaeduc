@@ -3,6 +3,7 @@
 namespace App\Models\Materials;
 
 use App\Models\Admins\Admin;
+use App\Models\Grades\Grade;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,16 @@ class Material extends Model
         'source_file',
         'status',
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function grade(): BelongsTo
+    {
+        return $this->belongsTo(Grade::class);
+    }
 
     public function author(): BelongsTo
     {

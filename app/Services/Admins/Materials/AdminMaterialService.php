@@ -5,7 +5,9 @@ namespace App\Services\Admins\Materials;
 use App\Helpers\FileHelper;
 use App\Helpers\ResponseHelper;
 use App\Models\Materials\Material;
+use App\Models\Users\User;
 use App\Validators\MaterialValidator;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminMaterialService implements AdminMaterialServiceInterface
@@ -175,6 +177,40 @@ class AdminMaterialService implements AdminMaterialServiceInterface
 
             DB::commit();
             return ResponseHelper::success('Berhasil merubah data material');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function assignUserMaterial(Request $request): array
+    {
+        $validator = $this->materialValidator->validateAssignUserMaterial($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $userId = $request->input('user_id');
+            $materialId = $request->input('material_id');
+
+            $user = User::find($userId);
+
+            if (!$user) {
+                return ResponseHelper::notFound('User tidak ditemukan');
+            }
+
+            $material = Material::find($materialId);
+
+            if (!$material) {
+                return ResponseHelper::notFound('Material tidak ditemukan');
+            }
+
+            $user->materials()->attach($materialId);
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil menambahkan material ke user');
         } catch (\Exception $e) {
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());

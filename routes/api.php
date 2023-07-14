@@ -84,11 +84,11 @@ Route::prefix('v1')->group(function () {
         Route::get('download/{materialId}/source', [AdminMaterialController::class, 'downloadMaterialSource']);
     });
 
-    // TODO: make get recommended mentors
     // TODO: make get all active classes
     // TODO: make get all mentor active classes
     // TODO: make get all users schedule
     // TODO: make get all users materials
+    // TODO: make get recommended mentors
 });
 
 // Admin Routes
@@ -170,8 +170,9 @@ Route::prefix('v1/admin')->group(function () {
         Route::delete('{scheduleId}', [AdminScheduleController::class, 'deleteSchedule']);
     });
 
+    Route::post('assign-user-material', [AdminMaterialController::class, 'assignUserMaterial']);
+
     // TODO: make mentor payment (get, add, update)
-    // TODO: make set user material
 });
 
 // Mentor Routes

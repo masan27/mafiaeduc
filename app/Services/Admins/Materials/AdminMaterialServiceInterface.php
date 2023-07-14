@@ -14,6 +14,8 @@ interface AdminMaterialServiceInterface
 
     public function deleteMaterial(int $id): array;
 
+    public function assignUserMaterial(Request $request): array;
+
     public function downloadMaterialPreview(int $materialId);
 
     public function downloadMaterialSource(int $materialId);

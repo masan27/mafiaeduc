@@ -48,6 +48,16 @@ class MaterialValidator
         return $this->validationHelper->getValidationResponse($validator);
     }
 
+    public function validateAssignUserMaterial($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
+            'material_id' => 'required|integer|exists:materials,id',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
     public function validateDownloadMaterial($request): bool|array
     {
         $validator = Validator::make([

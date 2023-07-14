@@ -4,8 +4,10 @@ namespace App\Models\Users;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Entities\UserEntities;
+use App\Models\Materials\Material;
 use App\Models\Notifications\Notification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,5 +45,10 @@ class User extends Authenticatable
     public function notification(): HasMany
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function materials(): BelongsToMany
+    {
+        return $this->belongsToMany(Material::class, 'user_material', 'user_id', 'material_id');
     }
 }

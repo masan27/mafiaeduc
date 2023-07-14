@@ -40,6 +40,12 @@ class AdminMaterialController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function assignUserMaterial(Request $request): JsonResponse
+    {
+        $data = $this->adminMaterialService->assignUserMaterial($request);
+        return response()->json($data, $data['code']);
+    }
+
     public function downloadMaterialPreview(int $materialId)
     {
         return $this->adminMaterialService->downloadMaterialPreview($materialId);

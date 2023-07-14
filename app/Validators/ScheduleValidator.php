@@ -37,4 +37,36 @@ class ScheduleValidator
 
         return $this->validationHelper->getValidationResponse($validator);
     }
+
+    public function validateCreateGroupClassSchedules($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'mentor_id' => 'required|integer|exists:mentors,id',
+            'subject_id' => 'required|integer|exists:subjects,id',
+            'meeting_link' => 'nullable|string',
+            'meeting_platform' => 'nullable|string',
+            'address' => 'nullable|string',
+            'date' => 'required|date_format:Y-m-d|after_or_equal:today',
+            'time' => 'required|date_format:H:i',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
+    public function validateEditGroupClassSchedules($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'mentor_id' => 'required|integer|exists:mentors,id',
+            'subject_id' => 'required|integer|exists:subjects,id',
+            'meeting_link' => 'nullable|string',
+            'meeting_platform' => 'nullable|string',
+            'address' => 'nullable|string',
+            'date' => 'required|date_format:Y-m-d|after_or_equal:today',
+            'time' => 'required|date_format:H:i',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
+
 }

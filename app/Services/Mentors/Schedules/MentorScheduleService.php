@@ -94,7 +94,6 @@ class MentorScheduleService implements MentorScheduleServiceInterface
 
             if ($validator) return $validator;
 
-            DB::beginTransaction();
             $meetingLink = $request->input('meeting_link');
             $meetingPlatform = $request->input('meeting_platform');
             $date = $request->input('date');

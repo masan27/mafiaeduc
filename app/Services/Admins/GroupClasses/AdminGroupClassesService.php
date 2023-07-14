@@ -138,7 +138,8 @@ class AdminGroupClassesService implements AdminGroupClassesInterface
     public function getGroupClassDetails(int $groupClassId): array
     {
         try {
-            $groupClass = GroupClass::with('subject', 'learningMethod', 'grade')->find($groupClassId);
+            $groupClass = GroupClass::with('subject', 'learningMethod', 'grade', 'schedules')->find
+            ($groupClassId);
 
             if (!$groupClass) return ResponseHelper::notFound('Kelas grup tidak ditemukan');
 

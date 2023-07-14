@@ -112,6 +112,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Admins\Transactions\AdminTransactionService::class
         );
 
+        $this->app->bind(
+            \App\Services\Admins\Schedules\AdminScheduleServiceInterface::class,
+            \App\Services\Admins\Schedules\AdminScheduleService::class
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

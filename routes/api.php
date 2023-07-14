@@ -14,6 +14,7 @@ use App\Http\Controllers\Mentors\MentorScheduleController;
 use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Payments\AdminPaymentMethodController;
 use App\Http\Controllers\Payments\PaymentMethodController;
+use App\Http\Controllers\Schedules\AdminScheduleController;
 use App\Http\Controllers\Subjects\AdminSubjectController;
 use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\Transactions\AdminTransactionController;
@@ -162,9 +163,15 @@ Route::prefix('v1/admin')->group(function () {
         Route::post('confirm', [AdminTransactionController::class, 'confirmTransaction']);
     });
 
+    Route::prefix('schedules')->group(function () {
+        Route::get('{groupClassId}', [AdminScheduleController::class, 'getSchedules']);
+        Route::post('{groupClassId}/add', [AdminScheduleController::class, 'addSchedule']);
+        Route::patch('{scheduleId}', [AdminScheduleController::class, 'editSchedule']);
+        Route::delete('{scheduleId}', [AdminScheduleController::class, 'deleteSchedule']);
+    });
+
     // TODO: make mentor payment (get, add, update)
     // TODO: make set user material
-    // TODO: make user schedule (get, add, update, delete)
 });
 
 // Mentor Routes

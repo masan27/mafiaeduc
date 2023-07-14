@@ -4,10 +4,12 @@ namespace App\Models\Classes;
 
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
+use App\Models\Schedules\Schedule;
 use App\Models\Subjects\Subject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GroupClass extends Model
 {
@@ -44,5 +46,10 @@ class GroupClass extends Model
     public function learningMethod(): BelongsTo
     {
         return $this->belongsTo(LearningMethod::class);
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class, 'group_classes_id');
     }
 }

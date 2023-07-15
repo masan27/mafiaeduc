@@ -44,7 +44,7 @@ class MentorAuthService implements MentorAuthServiceInterface
     {
         DB::beginTransaction();
         try {
-            $mentorId = $request->user()->id;
+            $mentorId = $request->mentor->id;
             $token = $request->header('X-Mentor-Token');
 
             $this->accessLogRepo->updateLogoutLogs($mentorId, $token, AccessLogEntities::MENTOR_LOGIN_TYPE);
@@ -70,15 +70,15 @@ class MentorAuthService implements MentorAuthServiceInterface
 
             $mentor = $this->mentorRepo->getMentorByEmail($email);
 
-            if (!$mentor) return ResponseHelper::error('Username atau password salah');
+            if (!$mentor) return ResponseHelper::error('Emailp atau password salah');
 
             if ($mentor->status == MentorEntities::INACTIVE_CREDENTIALS) return ResponseHelper::error('Akun dinonaktifkan sementara');
 
-            if (!Hash::check($password, $mentor->password)) return ResponseHelper::error('Username atau password salah');
+            if (!Hash::check($password, $mentor->password)) return ResponseHelper::error('Email atau password salah');
 
             $data = [
                 'token' => $mentor->api_token,
-                'admin' => $mentor
+                'mentor' => $mentor
             ];
 
             $clientIP = $request->ip();

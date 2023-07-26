@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             DaySeeder::class,
             UserSeeder::class,
-            MentorSeeder::class,
-            SalesStatusSeeder::class,
             PaymentMethodSeeder::class,
+            SalesStatusSeeder::class,
+            MentorSeeder::class,
         ]);
     }
 }

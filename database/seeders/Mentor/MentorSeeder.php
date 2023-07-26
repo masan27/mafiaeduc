@@ -44,5 +44,26 @@ class MentorSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        DB::table('mentor_subjects')->insert([
+            'mentor_id' => $mentorId,
+            'subject_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('mentor_subjects')->insert([
+            'mentor_id' => $mentorId,
+            'subject_id' => 2,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('mentor_subjects')->insert([
+            'mentor_id' => $mentorId,
+            'subject_id' => 3,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

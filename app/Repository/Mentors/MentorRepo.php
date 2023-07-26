@@ -3,6 +3,7 @@
 namespace App\Repository\Mentors;
 
 use App\Entities\MentorEntities;
+use App\Entities\SalesEntities;
 use App\Models\Mentors\MentorCredentials;
 use App\Traits\RepoTrait;
 use Illuminate\Support\Facades\DB;
@@ -236,5 +237,37 @@ class MentorRepo implements MentorRepoInterface
                 'default_password',
             )
             ->first();
+    }
+
+    public static function getRecommendedMentors(): object
+    {
+        return DB::table('mentors')
+            ->join('reviews', 'mentors.id', '=', 'reviews.mentor_id')
+            ->where('reviews.type', SalesEntities::PRIVATE_CLASSES_TYPE)
+            ->select(
+                'mentors.id',
+                'mentors.photo',
+                'mentors.full_name',
+                'mentors.address',
+                DB::raw('AVG(reviews.rating) as rating')
+            )
+            ->orderBy('rating', 'desc')
+            ->groupBy('mentors.id')
+            ->limit(5)
+            ->get();
+    }
+
+    public static function getAllMentorClass(int $mentorId)
+    {
+        return DB::table('mentors')
+            ->join('private_classes', 'mentors.id', '=', 'private_classes.mentor_id')
+            ->join('subjects', 'private_classes.subject_id', '=', 'subjects.id')
+            ->join('grades', 'private_classes.grade_id', '=', 'grades.id')
+            ->join('learning_methods', 'private_classes.learning_method_id', '=', 'learning_methods.id')
+            ->where([
+                ['mentors.id', $mentorId],
+                ['private_classes.status', 1]
+            ])
+            ->get();
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('grade_id')->constrained('grades')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('learning_method_id')->constrained('learning_methods')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('full_name');
+            $table->string('address');
             $table->string('photo');
             $table->string('certificate');
             $table->string('identity_card');

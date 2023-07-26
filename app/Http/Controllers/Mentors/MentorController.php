@@ -27,4 +27,16 @@ class MentorController extends Controller
         $data = $this->mentorService->updateMentorProfile($request);
         return response()->json($data, $data['code']);
     }
+
+    public function getRecommendedMentors(): JsonResponse
+    {
+        $data = $this->mentorService->getRecommendedMentors();
+        return response()->json($data, $data['code']);
+    }
+
+    public function getAllMentorClass(int $mentorId): JsonResponse
+    {
+        $data = $this->mentorService->getAllMentorClass($mentorId);
+        return response()->json($data, $data['code']);
+    }
 }

@@ -50,4 +50,8 @@ interface MentorRepoInterface
     public static function updateRememberToken(int $mentorCredentialId, string $token): bool;
 
     public static function updateMentorProfile(int $mentorId, string $fullName): bool;
+
+    public static function getRecommendedMentors(): object;
+
+    public static function getAllMentorClass(int $mentorId);
 }

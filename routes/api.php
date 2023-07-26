@@ -100,7 +100,10 @@ Route::prefix('v1')->group(function () {
     Route::get('private-classes', [PrivateClassController::class, 'getAllPrivateClasses']);
     Route::get('private-classes/{privateClassId}', [PrivateClassController::class, 'getPrivateClassDetails']);
 
-    // TODO: make get recommended mentors
+    Route::post('reviews', [ReviewController::class, 'addTransactionReview']);
+
+    Route::get('recommended-mentors', [MentorController::class, 'getRecommendedMentors']);
+    Route::get('mentors/{mentorId}/classes', [MentorController::class, 'getAllMentorClass']);
 });
 
 // Admin Routes
@@ -183,8 +186,6 @@ Route::prefix('v1/admin')->group(function () {
     });
 
     Route::post('assign-user-material', [AdminMaterialController::class, 'assignUserMaterial']);
-
-    Route::post('reviews', [ReviewController::class, 'addTransactionReview']);
 
     // TODO: make mentor payment (get, add, update)
 });

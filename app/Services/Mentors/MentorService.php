@@ -4,6 +4,7 @@ namespace App\Services\Mentors;
 
 use App\Helpers\FileHelper;
 use App\Helpers\ResponseHelper;
+use App\Models\Mentors\Mentor;
 use App\Models\Mentors\MentorCredentials;
 use App\Repository\Mentors\MentorRepoInterface;
 use App\Validators\MentorValidator;
@@ -272,6 +273,41 @@ class MentorService implements MentorServiceInterface
             ];
 
             return ResponseHelper::success('Berhasil mereset password mentor', $data);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function getRecommendedMentors(): array
+    {
+        try {
+            $mentors = $this->mentorRepo->getRecommendedMentors();
+
+            if ($mentors->isEmpty()) return ResponseHelper::notFound('Tidak ada rekomendasi mentor');
+
+            foreach ($mentors as $mentor) {
+                $mentor->photo = FileHelper::getFileUrl($mentor->photo);
+                $mentor->subjects = $this->mentorRepo->getMentorSubjects($mentor->id);
+            }
+
+            return ResponseHelper::success('Berhasil mengambil data mentor', $mentors);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
+
+    public function getAllMentorClass(int $mentorId): array
+    {
+        try {
+            $mentor = Mentor::find($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $mentor->photo = FileHelper::getFileUrl($mentor->photo);
+            $mentor->classes = $this->mentorRepo->getAllMentorClass($mentorId);
+
+            return ResponseHelper::success('Berhasil mengambil data kelas mentor', $mentor);
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }

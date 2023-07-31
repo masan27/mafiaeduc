@@ -25,4 +25,8 @@ interface MentorServiceInterface
     public function getAllMentorClass(int $mentorId): array;
 
     public function resetPassword(int $mentorId): array;
+
+    public function changePassword(Request $request): array;
+
+    public function changePhoto(Request $request): array;
 }

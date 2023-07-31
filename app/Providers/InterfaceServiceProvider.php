@@ -137,6 +137,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Schedules\ScheduleService::class,
         );
 
+        $this->app->bind(
+            \App\Services\Grades\GradeServiceInterface::class,
+            \App\Services\Grades\GradeService::class,
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

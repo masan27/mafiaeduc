@@ -39,4 +39,16 @@ class MentorController extends Controller
         $data = $this->mentorService->getAllMentorClass($mentorId);
         return response()->json($data, $data['code']);
     }
+
+    public function changePassword(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->changePassword($request);
+        return response()->json($data, $data['code']);
+    }
+
+    public function changePhoto(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->changePhoto($request);
+        return response()->json($data, $data['code']);
+    }
 }

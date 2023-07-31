@@ -48,6 +48,29 @@ class MentorValidator
     {
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|max:45',
+            'email' => 'required|email|max:45|unique:mentor_credentials,email,' . $request->mentor->mentor_id,
+            'phone' => 'required|string|max:16',
+            'linkedin' => 'nullable|string',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
+    public function validateChangePhotoInput($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'picture' => 'required|image|mimes:jpeg,png,jpg|max:2024',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
+    public function validateChangePasswordInput($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required|string|min:6|max:30',
+            'new_password' => 'required|string|min:6|max:30|different:old_password',
+            'confirm_new_password' => 'required|string|min:6|max:30|same:new_password',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);

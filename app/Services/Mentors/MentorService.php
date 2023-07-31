@@ -2,6 +2,7 @@
 
 namespace App\Services\Mentors;
 
+use App\Entities\FileFolderEntities;
 use App\Helpers\FileHelper;
 use App\Helpers\ResponseHelper;
 use App\Models\Mentors\Mentor;
@@ -244,15 +245,55 @@ class MentorService implements MentorServiceInterface
         try {
             $mentorId = $request->mentor->mentor_id;
             $fullName = $request->input('full_name');
+            $email = $request->input('email');
+            $phone = $request->input('phone');
+            $linkedinUrl = $request->input('linkedin');
 
-            $this->mentorRepo->updateMentorProfile($mentorId, $fullName);
+            $mentor = $this->mentorRepo->updateMentorProfile($mentorId, $fullName, $email, $phone,
+                $linkedinUrl);
 
             DB::commit();
-            return ResponseHelper::success('Berhasil merubah profile');
+            return ResponseHelper::success('Berhasil merubah profile', $mentor);
         } catch (\Exception $e) {
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
+
+    public function changePhoto($request): array
+    {
+        $validator = $this->mentorValidator->validateChangePhotoInput($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $mentorId = $request->mentor->mentor_id;
+            $photo = $request->file('picture');
+
+            $mentor = $this->mentorRepo->getMentorById($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $oldPhoto = $mentor->photo;
+
+            $oldPhotoExist = FileHelper::isFileExist($oldPhoto);
+
+            if ($oldPhotoExist) FileHelper::deleteFile($oldPhoto);
+
+            $folderPath = FileFolderEntities::MENTOR_FOLDER . '/' . $mentorId;
+
+            $photoPath = FileHelper::uploadFile($photo, $folderPath, 'photo');
+
+            $this->mentorRepo->updateMentorPhoto($mentorId, $photoPath);
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil mengubah foto mentor');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
     }
 
     public function resetPassword(int $mentorId): array
@@ -274,6 +315,36 @@ class MentorService implements MentorServiceInterface
 
             return ResponseHelper::success('Berhasil mereset password mentor', $data);
         } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function changePassword($request): array
+    {
+        $validator = $this->mentorValidator->validateChangePasswordInput($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $mentorId = $request->mentor->mentor_id;
+            $oldPassword = $request->input('old_password');
+            $newPassword = $request->input('new_password');
+
+            $mentor = MentorCredentials::where('mentor_id', $mentorId)->first();
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            if (!Hash::check($oldPassword, $mentor->password)) return ResponseHelper::error('Password lama tidak sesuai');
+
+            $mentor->password = Hash::make($newPassword);
+            $mentor->save();
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil merubah password mentor');
+        } catch (\Exception $e) {
+            DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
 

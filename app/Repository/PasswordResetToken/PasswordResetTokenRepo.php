@@ -14,11 +14,12 @@ class PasswordResetTokenRepo implements PasswordResetTokenRepoInterface
         return DB::table('password_reset_tokens');
     }
 
-    public static function insertOrUpdateToken($email, $token, $expiredAt = null): void
+    public static function insertOrUpdateToken($email, $token, $type, $expiredAt = null): void
     {
         $data = [
             'email' => $email,
             'token' => $token,
+            'type' => $type,
             'expired_at' => $expiredAt,
             'created_at' => now(),
         ];

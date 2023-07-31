@@ -108,7 +108,9 @@ class MentorAuthService implements MentorAuthServiceInterface
             if (!$mentorCredentials) return ResponseHelper::error('Email tidak terdaftar');
 
             $token = self::createNewResetPasswordToken();
-            $this->passwordResetTokenRepo->insertOrUpdateToken($email, $token);
+            $expiredAt = now()->addMinutes(5);
+            $type = 'mentor';
+            $this->passwordResetTokenRepo->insertOrUpdateToken($email, $token, $type, $expiredAt);
 
             $mentorFullName = $this->mentorRepo->getMentorFullName($mentorCredentials->mentor_id);
             Mail::to($email)->send(new ForgotPasswordTokenMail($token, $email, $mentorFullName));
@@ -152,10 +154,10 @@ class MentorAuthService implements MentorAuthServiceInterface
 
             if (!$tokenStatus) return ResponseHelper::error('Token tidak valid', null, ResponseAlias::HTTP_UNAUTHORIZED);
 
-            $mentorCredentialId = $mentorCredentials->id;
+            $mentorCredentialId = $mentorCredentials->mentor_id;
             $rememberToken = $this->mentorRepo->getCurrentRememberToken($mentorCredentialId);
 
-            if ($rememberToken && $rememberToken === $token) {
+            if ($rememberToken === $token) {
                 return ResponseHelper::error('Token tidak valid', null, ResponseAlias::HTTP_UNAUTHORIZED);
             }
 

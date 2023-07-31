@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\MentorAuthController;
 use App\Http\Controllers\Checkouts\CheckoutController;
+use App\Http\Controllers\Grades\GradeController;
 use App\Http\Controllers\GroupClasses\AdminGroupClassController;
 use App\Http\Controllers\GroupClasses\GroupClassController;
 use App\Http\Controllers\Materials\AdminMaterialController;
@@ -208,10 +209,13 @@ Route::prefix('v1/mentor')->group(function () {
     });
 
     Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
+    Route::get('grades', [GradeController::class, 'getGrades']);
     Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
 
     Route::middleware('checkMentorToken')->group(function () {
         Route::put('profile/update', [MentorController::class, 'updateProfile']);
+        Route::post('profile/change-password', [MentorController::class, 'changePassword']);
+        Route::post('profile/change-photo', [MentorController::class, 'changePhoto']);
 
         Route::get('mentor-payment-methods', [MentorPaymentMethodController::class, 'getMentorPaymentMethods']);
         Route::post('mentor-payment-methods', [MentorPaymentMethodController::class, 'addMentorPaymentMethod']);

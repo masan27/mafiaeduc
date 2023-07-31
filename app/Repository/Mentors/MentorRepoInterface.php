@@ -43,15 +43,17 @@ interface MentorRepoInterface
 
     public static function getMentorFullName(int $mentorId): string;
 
-    public static function getCurrentRememberToken(int $mentorCredentialId): string;
+    public static function getCurrentRememberToken(int $mentorCredentialId): string|null;
 
     public static function updatePassword(int $mentorCredentialId, string $password): bool;
 
     public static function updateRememberToken(int $mentorCredentialId, string $token): bool;
 
-    public static function updateMentorProfile(int $mentorId, string $fullName): bool;
+    public static function updateMentorProfile(int $mentorId, string $fullName, string $email, string $phone, string $linkedinUrl);
 
     public static function getRecommendedMentors(): object;
+
+    public static function updateMentorPhoto(int $mentorId, string $photoPath): bool;
 
     public static function getAllMentorClass(int $mentorId);
 }

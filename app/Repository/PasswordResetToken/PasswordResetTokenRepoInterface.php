@@ -4,7 +4,7 @@ namespace App\Repository\PasswordResetToken;
 
 interface PasswordResetTokenRepoInterface
 {
-    public static function insertOrUpdateToken(string $email, string $token, string $expiredAt = null): void;
+    public static function insertOrUpdateToken(string $email, string $token, string $type, string $expiredAt = null): void;
 
     public static function deleteToken(string $email, string $token): bool;
 

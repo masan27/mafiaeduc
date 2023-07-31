@@ -32,7 +32,7 @@ class MentorRepo implements MentorRepoInterface
             ->full_name;
     }
 
-    public static function getCurrentRememberToken($mentorCredentialId): string
+    public static function getCurrentRememberToken($mentorCredentialId): string|null
     {
         return DB::table('mentor_credentials')
             ->where('id', $mentorCredentialId)
@@ -60,12 +60,31 @@ class MentorRepo implements MentorRepoInterface
             ]);
     }
 
-    public static function updateMentorProfile($mentorId, $fullName): bool
+    public static function updateMentorProfile($mentorId, $fullName, $email, $phone, $linkedinUrl)
+    {
+        $query = self::getDbTable()
+            ->where('id', $mentorId)
+            ->update([
+                'full_name' => $fullName,
+                'phone' => $phone,
+                'linkedin' => $linkedinUrl,
+            ]);
+
+        DB::table('mentor_credentials')
+            ->where('mentor_id', $mentorId)
+            ->update([
+                'email' => $email,
+            ]);
+
+        return $query;
+    }
+
+    public static function updateMentorPhoto(int $mentorId, string $photoPath): bool
     {
         return self::getDbTable()
             ->where('id', $mentorId)
             ->update([
-                'full_name' => $fullName
+                'photo' => $photoPath,
             ]);
     }
 

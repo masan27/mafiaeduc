@@ -16,7 +16,8 @@ interface MentorRepoInterface
         string $teaching_video,
         string $phone,
         int    $salary,
-        string $linkedin
+        string $linkedin,
+        string $address
     ): int;
 
     public static function checkMentorCanRegister(int $userId): bool;

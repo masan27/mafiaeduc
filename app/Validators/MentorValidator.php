@@ -20,6 +20,7 @@ class MentorValidator
             'learning_method_id' => 'required|integer|exists:learning_methods,id',
             'grade_id' => 'required|integer|exists:grades,id',
             'full_name' => 'required|string|min:3|max:255',
+            'address' => 'required|string|min:3|max:255',
             'photo' => 'required|image|mimes:jpeg,png,jpg|max:1024',
             'certificate' => 'required|image|mimes:jpeg,png,jpg|max:1024',
             'identity_card' => 'required|image|mimes:jpeg,png,jpg|max:1024',

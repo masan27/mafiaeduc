@@ -100,7 +100,8 @@ class MentorRepo implements MentorRepoInterface
         string $teaching_video,
         string $phone,
         int    $salary,
-        string $linkedin
+        string $linkedin,
+        string $address
     ): int
     {
         return self::getDbTable()
@@ -110,6 +111,7 @@ class MentorRepo implements MentorRepoInterface
                 'grade_id' => $grade_id,
                 'full_name' => $full_name,
                 'photo' => $photo,
+                'address' => $address,
                 'certificate' => $certificate,
                 'identity_card' => $identity_card,
                 'cv' => $cv,

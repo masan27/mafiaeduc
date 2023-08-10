@@ -44,6 +44,7 @@ class MentorService implements MentorServiceInterface
             $identityCard = $request->file('identity_card');
             $cv = $request->file('cv');
             $teachingVideo = $request->input('teaching_video');
+            $address = $request->input('address');
             $phone = $request->input('phone');
             $salary = $request->input('salary');
             $linkedin = $request->input('linkedin');
@@ -70,6 +71,7 @@ class MentorService implements MentorServiceInterface
                 'photo' => $photoPath,
                 'certificate' => $certificatePath,
                 'identity_card' => $identityCardPath,
+                'address' => $address,
                 'cv' => $cvPath,
                 'teaching_video' => $teachingVideo,
                 'phone' => $phone,

@@ -205,4 +205,32 @@ class MentorScheduleService implements MentorScheduleServiceInterface
         }
 
     }
+
+    public function doneMentorSchedule(int $scheduleId, Request $request): array
+    {
+        DB::beginTransaction();
+        try {
+            $schedule = Schedule::find($scheduleId);
+
+            if (!$schedule) return ResponseHelper::notFound('Jadwal tidak ditemukan');
+
+            if ($schedule->is_done) return ResponseHelper::error('Jadwal sudah diselesaikan');
+
+            // if schedule date and time is not passed yet
+            if ($schedule->date > date('Y-m-d') || ($schedule->date == date('Y-m-d') && $schedule->time > date('H:i:s'))) {
+                return ResponseHelper::error('Jadwal belum berakhir');
+            }
+
+            $schedule->update([
+                'is_done' => true,
+            ]);
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil menyelesaikan jadwal');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
 }

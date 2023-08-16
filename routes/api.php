@@ -237,6 +237,7 @@ Route::prefix('v1/mentor')->group(function () {
             Route::get('recent', [MentorScheduleController::class, 'getRecentSchedules']);
             Route::get('{privateClassId}', [MentorScheduleController::class, 'getMentorSchedules']);
             Route::post('{privateClassId}/add', [MentorScheduleController::class, 'addMentorSchedule']);
+            Route::post('done/{scheduleId}', [MentorScheduleController::class, 'doneMentorSchedule']);
             Route::patch('{scheduleId}', [MentorScheduleController::class, 'editMentorSchedule']);
             Route::delete('{scheduleId}', [MentorScheduleController::class, 'deleteMentorSchedule']);
         });

@@ -15,4 +15,6 @@ interface MentorScheduleServiceInterface
     public function deleteMentorSchedule(int $scheduleId): array;
 
     public function getRecentSchedules(Request $request): array;
+
+    public function doneMentorSchedule(int $scheduleId, Request $request): array;
 }

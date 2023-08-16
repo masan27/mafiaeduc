@@ -39,4 +39,10 @@ class MentorScheduleController extends Controller
         $data = $this->mentorSchedule->deleteMentorSchedule($scheduleId);
         return response()->json($data, $data['code']);
     }
+
+    public function getRecentSchedules(Request $request): JsonResponse
+    {
+        $data = $this->mentorSchedule->getRecentSchedules($request);
+        return response()->json($data, $data['code']);
+    }
 }

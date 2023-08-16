@@ -17,10 +17,10 @@ class ScheduleValidator
     public function validateCreateMentorPrivateClassSchedules($request): bool|array
     {
         $validator = Validator::make($request->all(), [
-            'meeting_link' => 'required|string',
-            'meeting_platform' => 'required|string',
             'date' => 'required|date_format:Y-m-d|after_or_equal:today',
             'time' => 'required|date_format:H:i',
+            'meeting_link' => 'nullable|string|url',
+            'meeting_platform' => 'nullable|string',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);

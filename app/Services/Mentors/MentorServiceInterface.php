@@ -29,4 +29,6 @@ interface MentorServiceInterface
     public function changePassword(Request $request): array;
 
     public function changePhoto(Request $request): array;
+
+    public function getMentorStats(Request $request): array;
 }

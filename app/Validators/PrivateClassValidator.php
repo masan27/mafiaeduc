@@ -21,7 +21,7 @@ class PrivateClassValidator
             'learning_method_id' => 'required|integer|exists:learning_methods,id',
             'grade_id' => 'required|integer|exists:grades,id',
             'description' => 'required|string',
-            'address' => 'required|string',
+            'address' => 'nullable|string',
             'price' => 'required|integer',
             'total_slot' => 'required|integer',
         ], ValidationHelper::VALIDATION_MESSAGES);
@@ -36,7 +36,7 @@ class PrivateClassValidator
             'learning_method_id' => 'required|integer|exists:learning_methods,id',
             'grade_id' => 'required|integer|exists:grades,id',
             'description' => 'required|string',
-            'address' => 'required|string',
+            'address' => 'nullable|string',
             'price' => 'required|integer',
             'total_slot' => 'required|integer',
             'status' => 'required|boolean',

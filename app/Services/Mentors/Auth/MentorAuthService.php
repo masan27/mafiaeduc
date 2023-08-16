@@ -70,7 +70,7 @@ class MentorAuthService implements MentorAuthServiceInterface
 
             $mentor = $this->mentorRepo->getMentorByEmail($email);
 
-            if (!$mentor) return ResponseHelper::error('Emailp atau password salah');
+            if (!$mentor) return ResponseHelper::error('Email atau password salah');
 
             if ($mentor->status == MentorEntities::INACTIVE_CREDENTIALS) return ResponseHelper::error('Akun dinonaktifkan sementara');
 

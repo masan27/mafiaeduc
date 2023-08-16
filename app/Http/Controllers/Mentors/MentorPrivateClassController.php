@@ -22,6 +22,12 @@ class MentorPrivateClassController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function getMentorPrivateClassOrders(Request $request): JsonResponse
+    {
+        $data = $this->mentorPrivateClass->getMentorPrivateClassOrders($request);
+        return response()->json($data, $data['code']);
+    }
+
     public function addMentorPrivateClass(Request $request): JsonResponse
     {
         $data = $this->mentorPrivateClass->addMentorPrivateClass($request);

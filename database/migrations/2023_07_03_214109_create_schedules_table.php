@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->date('date');
             $table->string('time');
+            $table->boolean('is_done')->default(false);
             $table->timestamps();
         });
     }

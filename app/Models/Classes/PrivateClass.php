@@ -5,12 +5,15 @@ namespace App\Models\Classes;
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Mentors\Mentor;
+use App\Models\Sales\Sales;
+use App\Models\Sales\SalesDetail;
 use App\Models\Schedules\Schedule;
 use App\Models\Subjects\Subject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class PrivateClass extends Model
 {
@@ -65,5 +68,16 @@ class PrivateClass extends Model
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class, 'private_classes_id');
+    }
+
+    public function sales(): HasManyThrough
+    {
+        return $this->hasManyThrough(Sales::class, SalesDetail::class, 'private_classes_id', 'id', 'id',
+            'sales_id');
+    }
+
+    public function salesDetails(): HasMany
+    {
+        return $this->hasMany(SalesDetail::class, 'private_classes_id');
     }
 }

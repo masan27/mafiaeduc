@@ -5,6 +5,7 @@ namespace App\Models\Mentors;
 use App\Models\Classes\PrivateClass;
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
+use App\Models\Schedules\Schedule;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -54,5 +55,10 @@ class Mentor extends Model
     public function privateClasses(): HasMany
     {
         return $this->hasMany(PrivateClass::class);
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
     }
 }

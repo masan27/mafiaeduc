@@ -51,4 +51,10 @@ class MentorController extends Controller
         $data = $this->mentorService->changePhoto($request);
         return response()->json($data, $data['code']);
     }
+
+    public function getMentorStats(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->getMentorStats($request);
+        return response()->json($data, $data['code']);
+    }
 }

@@ -10,6 +10,7 @@ use App\Models\Mentors\MentorCredentials;
 use App\Repository\Mentors\MentorRepoInterface;
 use App\Validators\MentorValidator;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -381,6 +382,43 @@ class MentorService implements MentorServiceInterface
             $mentor->classes = $this->mentorRepo->getAllMentorClass($mentorId);
 
             return ResponseHelper::success('Berhasil mengambil data kelas mentor', $mentor);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function getMentorStats(Request $request): array
+    {
+        try {
+            $mentorId = $request->mentor->mentor_id;
+
+            $mentor = Mentor::find($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $totalPrivateClass = $mentor->privateClasses()->count();
+            $totalScheduledClass = $mentor->schedules()->count();
+            $totalOrder = $mentor->privateClasses()->whereHas('salesDetails')->count();
+            $totalFinishedClass = $mentor->privateClasses()->whereHas('salesDetails', function ($query) {
+                $query->whereHas('privateClasses', function ($query) {
+                    $query->whereHas('schedules', function ($query) {
+                        $query->where([
+                            ['date', '<', Carbon::now()],
+                            ['time', '<', Carbon::now()->format('H:i:s')],
+                        ]);
+                    });
+                });
+            })->count();
+
+            $data = [
+                'total_private_class' => $totalPrivateClass,
+                'total_scheduled_class' => $totalScheduledClass,
+                'total_order' => $totalOrder,
+                'total_finished_class' => $totalFinishedClass,
+            ];
+
+            return ResponseHelper::success('Berhasil mengambil data statistik mentor', $data);
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }

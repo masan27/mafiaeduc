@@ -2,8 +2,10 @@
 
 namespace App\Services\Mentors\PrivateClasses;
 
+use App\Entities\SalesEntities;
 use App\Helpers\ResponseHelper;
 use App\Models\Classes\PrivateClass;
+use App\Models\Sales\Sales;
 use App\Validators\PrivateClassValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,10 +23,23 @@ class MentorPrivateClassService implements MentorPrivateClassServiceInterface
     public function getMentorPrivateClasses(Request $request): array
     {
         try {
+            $count = $request->input('count', 10);
+            $search = $request->input('search');
             $mentorId = $request->mentor->id;
+
             $privateClasses = PrivateClass::with('subject', 'learningMethod', 'grade')
+                ->when($search, function ($query, $search) {
+                    $query->whereHas('subject', function ($query) use ($search) {
+                        $query->where('name', 'like', "%$search%");
+                    })->orWhereHas('grade', function ($query) use ($search) {
+                        $query->where('name', 'like', "%$search%");
+                    })->orWhereHas('learningMethod', function ($query) use ($search) {
+                        $query->where('name', 'like', "%$search%");
+                    })->orWhere('created_at', 'like', "%$search%");
+                })
                 ->where('mentor_id', $mentorId)
-                ->get();
+                ->orderBy('created_at', 'desc')
+                ->paginate($count);
 
             if ($privateClasses->isEmpty()) return ResponseHelper::notFound('Tiada kelas privat');
 
@@ -32,6 +47,44 @@ class MentorPrivateClassService implements MentorPrivateClassServiceInterface
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
+
+    public function getMentorPrivateClassOrders(Request $request): array
+    {
+        try {
+            $count = $request->input('count', 10);
+            $search = $request->input('search');
+            $mentorId = $request->mentor->id;
+
+            $orders = Sales::with('details.privateClasses.learningMethod', 'details.privateClasses.grade', 'details.privateClasses.subject',
+                'user.detail')
+                ->whereHas('details.privateClasses', function ($q) use ($mentorId) {
+                    return $q->where('mentor_id', $mentorId);
+                })
+                ->where('sales_status_id', SalesEntities::SALES_STATUS_PAID)
+                ->when($search, function ($query, $search) {
+                    $query->where('sales_id', 'like', "%$search")
+                        ->orWhereHas('user.detail', function ($query) use ($search) {
+                            $query->where('full_name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('details.privateClasses.subject', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })->orWhereHas('details.privateClasses.grade', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })->orWhereHas('details.privateClasses.learningMethod', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })->orWhere('sales_id', 'like', "%$search%");
+                })
+                ->orderBy('sales_date', 'desc')
+                ->paginate($count);
+
+            if ($orders->isEmpty()) return ResponseHelper::notFound('Tiada kelas privat');
+
+            return ResponseHelper::success('Berhasil mendapatkan data pesanan', $orders);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
     }
 
     public function deleteMentorPrivateClass(int $privateClassId): array

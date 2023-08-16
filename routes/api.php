@@ -217,12 +217,15 @@ Route::prefix('v1/mentor')->group(function () {
         Route::post('profile/change-password', [MentorController::class, 'changePassword']);
         Route::post('profile/change-photo', [MentorController::class, 'changePhoto']);
 
+        Route::get('stats', [MentorController::class, 'getMentorStats']);
+
         Route::get('mentor-payment-methods', [MentorPaymentMethodController::class, 'getMentorPaymentMethods']);
         Route::post('mentor-payment-methods', [MentorPaymentMethodController::class, 'addMentorPaymentMethod']);
         Route::delete('mentor-payment-methods/{mentorPaymentMethodId}', [MentorPaymentMethodController::class, 'deleteMentorPaymentMethod']);
 
         Route::prefix('private-classes')->group(function () {
             Route::get('/', [MentorPrivateClassController::class, 'getMentorPrivateClasses']);
+            Route::get('orders', [MentorPrivateClassController::class, 'getMentorPrivateClassOrders']);
             Route::get('{privateClassId}', [MentorPrivateClassController::class, 'getMentorPrivateClassDetails']);
             Route::post('add', [MentorPrivateClassController::class, 'addMentorPrivateClass']);
             Route::patch('{privateClassId}', [MentorPrivateClassController::class, 'editMentorPrivateClass']);
@@ -231,6 +234,7 @@ Route::prefix('v1/mentor')->group(function () {
         });
 
         Route::prefix('schedules')->group(function () {
+            Route::get('recent', [MentorScheduleController::class, 'getRecentSchedules']);
             Route::get('{privateClassId}', [MentorScheduleController::class, 'getMentorSchedules']);
             Route::post('{privateClassId}/add', [MentorScheduleController::class, 'addMentorSchedule']);
             Route::patch('{scheduleId}', [MentorScheduleController::class, 'editMentorSchedule']);

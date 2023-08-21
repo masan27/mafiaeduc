@@ -2,6 +2,7 @@
 
 namespace App\Models\Classes;
 
+use App\Entities\PrivateClassEntities;
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Mentors\Mentor;
@@ -36,13 +37,13 @@ class PrivateClass extends Model
         'subject_id' => 'integer',
         'grade_id' => 'integer',
         'learning_method_id' => 'integer',
-        'status' => 'boolean',
+        'status' => 'integer',
         'total_slot' => 'integer',
     ];
 
     public function scopeActive($query)
     {
-        return $query->where('status', 1);
+        return $query->where('status', PrivateClassEntities::STATUS_PUBLISHED);
     }
 
     public function mentor(): BelongsTo

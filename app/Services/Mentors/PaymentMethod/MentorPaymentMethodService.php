@@ -21,7 +21,7 @@ class MentorPaymentMethodService implements MentorPaymentMethodServiceInterface
     public function getMentorPaymentMethod($request): array
     {
         try {
-            $mentorId = $request->input('mentor_id');
+            $mentorId = $request->mentor->mentor_id;
 
             $data = $this->mentorPaymentMethodRepo->getAllMentorPaymentMethod($mentorId);
 
@@ -41,7 +41,7 @@ class MentorPaymentMethodService implements MentorPaymentMethodServiceInterface
 
         DB::beginTransaction();
         try {
-            $mentorId = $request->input('mentor_id');
+            $mentorId = $request->mentor->mentor_id;
             $paymentMethodId = $request->input('payment_method_id');
             $accountNumber = $request->input('account_number');
             $accountName = $request->input('account_name');

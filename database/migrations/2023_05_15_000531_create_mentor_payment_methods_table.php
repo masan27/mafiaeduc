@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('payment_method_id')->constrained('payment_methods')->cascadeOnDelete();
             $table->string('account_number');
             $table->string('account_name');
-            $table->string('bank_name');
+            $table->string('bank_name')->nullable();
             $table->timestamps();
         });
     }

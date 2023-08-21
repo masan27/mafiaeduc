@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->decimal('price', 20, 0);
             $table->integer('total_slot')->default(1);
-            $table->boolean('status')->default(true);
+            $table->tinyInteger('status')->default(\App\Entities\PrivateClassEntities::STATUS_PUBLISHED);
             $table->timestamps();
         });
     }

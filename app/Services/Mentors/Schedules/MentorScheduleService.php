@@ -8,6 +8,7 @@ use App\Models\Classes\PrivateClass;
 use App\Models\Mentors\Mentor;
 use App\Models\Schedules\Schedule;
 use App\Validators\ScheduleValidator;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -217,7 +218,8 @@ class MentorScheduleService implements MentorScheduleServiceInterface
             if ($schedule->is_done) return ResponseHelper::error('Jadwal sudah diselesaikan');
 
             // if schedule date and time is not passed yet
-            if ($schedule->date > date('Y-m-d') || ($schedule->date == date('Y-m-d') && $schedule->time > date('H:i:s'))) {
+            if ($schedule->date > date('Y-m-d') || ($schedule->date == date('Y-m-d') && $schedule->time >
+                    Carbon::now()->addHour()->format('H:i:s'))) {
                 return ResponseHelper::error('Jadwal belum berakhir');
             }
 

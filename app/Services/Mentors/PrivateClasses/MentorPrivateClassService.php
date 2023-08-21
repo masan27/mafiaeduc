@@ -63,7 +63,7 @@ class MentorPrivateClassService implements MentorPrivateClassServiceInterface
                 })
                 ->where('sales_status_id', SalesEntities::SALES_STATUS_PAID)
                 ->when($search, function ($query, $search) {
-                    $query->where('sales_id', 'like', "%$search")
+                    $query->where('id', 'like', "%$search%")
                         ->orWhereHas('user.detail', function ($query) use ($search) {
                             $query->where('full_name', 'like', "%$search%");
                         })
@@ -73,7 +73,7 @@ class MentorPrivateClassService implements MentorPrivateClassServiceInterface
                             $query->where('name', 'like', "%$search%");
                         })->orWhereHas('details.privateClasses.learningMethod', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
-                        })->orWhere('sales_id', 'like', "%$search%");
+                        });
                 })
                 ->orderBy('sales_date', 'desc')
                 ->paginate($count);

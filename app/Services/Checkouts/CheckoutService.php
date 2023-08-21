@@ -4,6 +4,7 @@ namespace App\Services\Checkouts;
 
 use App\Entities\FileFolderEntities;
 use App\Entities\PaymentMethodEntities;
+use App\Entities\PrivateClassEntities;
 use App\Entities\SalesEntities;
 use App\Helpers\FileHelper;
 use App\Helpers\ResponseHelper;
@@ -109,6 +110,10 @@ class CheckoutService implements CheckoutServiceInterface
             }
 
             SalesDetail::create($salesDetailData);
+
+            PrivateClass::where('id', $productId)->update([
+                'status' => PrivateClassEntities::STATUS_PURCHASED
+            ]);
 
             $data = [
                 'sales_id' => $salesId

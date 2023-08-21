@@ -14,9 +14,9 @@ class MentorPaymentMethodRepo implements MentorPaymentMethodRepoInterface
         return DB::table('mentor_payment_methods');
     }
 
-    public static function getAllMentorPaymentMethod($mentorId): object
+    public static function getAllMentorPaymentMethod($mentorId, $search): object
     {
-        return self::getDbTable()
+        $query = self::getDbTable()
             ->leftJoin('payment_methods', 'mentor_payment_methods.payment_method_id', '=', 'payment_methods.id')
             ->where('mentor_id', $mentorId)
             ->select(
@@ -29,8 +29,15 @@ class MentorPaymentMethodRepo implements MentorPaymentMethodRepoInterface
                 'payment_methods.type',
                 'mentor_payment_methods.account_number',
                 'mentor_payment_methods.account_name',
-                'mentor_payment_methods.bank_name',
-            )->get();
+            );
+
+        if ($search) {
+            $query->where('mentor_payment_methods.account_number', 'like', '%' . $search . '%')
+                ->orWhere('mentor_payment_methods.account_name', 'like', '%' . $search . '%')
+                ->orWhere('payment_methods.name', 'like', '%' . $search . '%');
+        }
+
+        return $query->get();
     }
 
     public static function addMentorPaymentMethod($mentorId, $paymentMethodId, $accountNumber,

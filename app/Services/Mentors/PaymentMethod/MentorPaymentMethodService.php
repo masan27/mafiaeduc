@@ -22,8 +22,9 @@ class MentorPaymentMethodService implements MentorPaymentMethodServiceInterface
     {
         try {
             $mentorId = $request->mentor->mentor_id;
+            $search = $request->input('search');
 
-            $data = $this->mentorPaymentMethodRepo->getAllMentorPaymentMethod($mentorId);
+            $data = $this->mentorPaymentMethodRepo->getAllMentorPaymentMethod($mentorId, $search);
 
             if ($data->isEmpty()) return ResponseHelper::notFound('Tidak ada payment method yang aktif');
 

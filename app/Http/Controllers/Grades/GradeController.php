@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Grades;
 use App\Http\Controllers\Controller;
 use App\Services\Grades\GradeServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class GradeController extends Controller
 {
@@ -15,9 +16,9 @@ class GradeController extends Controller
         $this->gradeService = $gradeService;
     }
 
-    public function getGrades(): JsonResponse
+    public function getGrades(Request $request): JsonResponse
     {
-        $data = $this->gradeService->getGrades();
+        $data = $this->gradeService->getGrades($request);
         return response()->json($data, $data['code']);
     }
 }

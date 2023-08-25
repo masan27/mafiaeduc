@@ -140,8 +140,13 @@ Route::prefix('v1/admin')->group(function () {
         Route::delete('{subjectId}', [AdminSubjectController::class, 'deleteSubject']);
     });
 
-    Route::post('payment-methods', [AdminPaymentMethodController::class, 'addPaymentMethod']);
-    Route::post('payment-methods/non-active', [AdminPaymentMethodController::class, 'nonActivePaymentMethod']);
+    Route::get('grades', [GradeController::class, 'getGrades']);
+    
+    Route::prefix('payment-methods')->group(function () {
+        Route::get('/', [PaymentMethodController::class, 'getPaymentMethods']);
+        Route::post('/', [AdminPaymentMethodController::class, 'addPaymentMethod']);
+        Route::post('non-active', [AdminPaymentMethodController::class, 'nonActivePaymentMethod']);
+    });
 
     Route::middleware('auth:sanctum,admin')->group(function () {
         Route::prefix('material')->group(function () {

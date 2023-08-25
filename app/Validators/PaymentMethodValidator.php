@@ -21,9 +21,22 @@ class PaymentMethodValidator
             'fee' => 'required|numeric',
             'code' => 'required|string|max:10|unique:payment_methods,code',
             'account_number' => 'required|string|max:45',
-            'icon' => 'required|string',
-            'type' => 'required|string|max:45',
-            'description' => 'required|string|max:255',
+            'type' => 'nullable|string|max:45',
+            'description' => 'nullable|string|max:255',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
+    public function validateEditPaymentMethodInput($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'fee' => 'required|numeric',
+            'code' => 'required|string|max:10',
+            'account_number' => 'required|string|max:45',
+            'type' => 'nullable|string|max:45',
+            'description' => 'nullable|string|max:255',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);

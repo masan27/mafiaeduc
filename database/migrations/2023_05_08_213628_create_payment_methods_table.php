@@ -14,7 +14,6 @@ return new class extends Migration {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('icon');
             $table->string('code');
             $table->string('type')->default(PaymentMethodEntities::PAYMENT_METHOD_TYPE_BANK);
             $table->string('status')->default(PaymentMethodEntities::PAYMENT_METHOD_STATUS_ACTIVE);

@@ -19,7 +19,6 @@ class PaymentMethodSeeder extends Seeder
         $paymentMethods = [
             [
                 'name' => 'BCA',
-                'icon' => 'bca.png',
                 'code' => 'bca',
                 'type' => 'bank',
                 'status' => 1,

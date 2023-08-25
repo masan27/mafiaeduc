@@ -141,11 +141,13 @@ Route::prefix('v1/admin')->group(function () {
     });
 
     Route::get('grades', [GradeController::class, 'getGrades']);
-    
+
     Route::prefix('payment-methods')->group(function () {
-        Route::get('/', [PaymentMethodController::class, 'getPaymentMethods']);
+        Route::get('/', [AdminPaymentMethodController::class, 'getAdminPaymentMethods']);
         Route::post('/', [AdminPaymentMethodController::class, 'addPaymentMethod']);
+        Route::put('/{paymentMethodId}', [AdminPaymentMethodController::class, 'editPaymentMethod']);
         Route::post('non-active', [AdminPaymentMethodController::class, 'nonActivePaymentMethod']);
+        Route::delete('/{paymentMethodId}', [AdminPaymentMethodController::class, 'deletePaymentMethod']);
     });
 
     Route::middleware('auth:sanctum,admin')->group(function () {

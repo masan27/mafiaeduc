@@ -14,14 +14,21 @@ class SubjectRepo implements SubjectRepoInterface
         return DB::table('subjects');
     }
 
-    public static function getAllSubjects(): object
+    public static function getAllSubjects(string|null $search): object
     {
-        return self::getAll([
-            'id',
-            'name',
-            'description',
-            'status',
-        ]);
+        $query = self::getDbTable()
+            ->select(
+                'id',
+                'name',
+                'description',
+                'status',
+            );
+
+        if ($search) {
+            $query->where('name', 'like', "%$search%");
+        }
+
+        return $query->get();
     }
 
     public static function insertSubject($name, $description): bool

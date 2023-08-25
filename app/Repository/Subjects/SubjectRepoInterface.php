@@ -4,7 +4,7 @@ namespace App\Repository\Subjects;
 
 interface SubjectRepoInterface
 {
-    public static function getAllSubjects(): object;
+    public static function getAllSubjects(string|null $search): object;
 
     public static function insertSubject(string $name, string $description): bool;
 

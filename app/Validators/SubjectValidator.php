@@ -27,9 +27,9 @@ class SubjectValidator
     public function validateSubjectInput($request): bool|array
     {
         $validator = Validator::make($request->all(), [
-            'subject_name' => 'required|string|max:255|unique:subjects,name',
+            'subject_name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|integer|between:0,1',
+            'status' => 'required|boolean|between:0,1',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);

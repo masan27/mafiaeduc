@@ -53,11 +53,11 @@ class AdminAuthService implements AdminAuthServiceInterface
 
             $admin = $this->adminRepo->getAdminByEmail($email);
 
-            if (!$admin) return ResponseHelper::error('Username atau password salah');
+            if (!$admin) return ResponseHelper::error('Email atau password salah');
 
             if ($admin->status == AdminEntities::STATUS_INACTIVE) return ResponseHelper::error('Akun dinonaktifkan sementara');
 
-            if (!Hash::check($password, $admin->password)) return ResponseHelper::error('Username atau password salah');
+            if (!Hash::check($password, $admin->password)) return ResponseHelper::error('Email atau password salah');
 
             $token = $admin->createToken('admin_token')->plainTextToken;
 
@@ -150,7 +150,8 @@ class AdminAuthService implements AdminAuthServiceInterface
             if (!$admin) return ResponseHelper::error('Email tidak terdaftar');
 
             $token = self::createNewResetPasswordToken();
-            $this->passwordResetTokenRepo->insertOrUpdateToken($email, $token);
+            $type = 'admin';
+            $this->passwordResetTokenRepo->insertOrUpdateToken($email, $token, $type);
 
             $adminFullName = $admin->full_name;
             Mail::to($email)->send(new ForgotPasswordTokenMail($token, $email, $adminFullName));

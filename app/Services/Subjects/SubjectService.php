@@ -5,6 +5,7 @@ namespace App\Services\Subjects;
 use App\Helpers\ResponseHelper;
 use App\Repository\Subjects\SubjectRepoInterface;
 use App\Validators\SubjectValidator;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SubjectService implements SubjectServiceInterface
@@ -19,10 +20,11 @@ class SubjectService implements SubjectServiceInterface
         $this->subjectValidator = $subjectValidator;
     }
 
-    public function getAllSubjects(): array
+    public function getAllSubjects(Request $request): array
     {
         try {
-            $subjects = $this->subjectRepo->getAllSubjects();
+            $search = $request->input('search');
+            $subjects = $this->subjectRepo->getAllSubjects($search);
 
             if ($subjects->isEmpty()) return ResponseHelper::notFound('Mata pelajaran tidak ditemukan');
 

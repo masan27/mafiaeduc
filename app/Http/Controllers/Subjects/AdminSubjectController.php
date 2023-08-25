@@ -16,9 +16,9 @@ class AdminSubjectController extends Controller
         $this->subjectService = $subjectService;
     }
 
-    public function getAllSubjects(): JsonResponse
+    public function getAllSubjects(Request $request): JsonResponse
     {
-        $data = $this->subjectService->getAllSubjects();
+        $data = $this->subjectService->getAllSubjects($request);
         return response()->json($data, $data['code']);
     }
 

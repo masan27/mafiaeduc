@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 interface SubjectServiceInterface
 {
-    public function getAllSubjects(): array;
+    public function getAllSubjects(Request $request): array;
 
     public function addNewSubject(Request $request): array;
 

@@ -119,7 +119,7 @@ class CheckoutService implements CheckoutServiceInterface
                 'status' => PrivateClassEntities::STATUS_PURCHASED
             ]);
 
-            $this->notificationRepo->createUserNotification($userId, 'Menunggu Pembayaran', 'Pembelian berhasil dilakukan',
+            $this->notificationRepo->createUserNotification($userId, 'Menunggu Pembayaran', 'Mohon melakukan pembayaran selama 1x24 jam',
                 NotificationEntities::TYPE_ORDER, $salesId);
 
             $data = [
@@ -312,7 +312,7 @@ class CheckoutService implements CheckoutServiceInterface
                 'proof_of_payment' => $paymentProof ? FileHelper::getFileUrl($path) : null
             ]);
 
-            $this->notificationRepo->createUserNotification($userId, 'Sedang Diproses', 'Mohon menunggu konfirmasi pembayaran selama 1x24 jam',
+            $this->notificationRepo->createUserNotification($userId, 'Sedang Diproses', 'Mohon menunggu konfirmasi pembayaran.',
                 NotificationEntities::TYPE_ORDER, $salesId);
 
             DB::commit();

@@ -14,19 +14,19 @@ class NotificationRepo implements NotificationRepoInterface
     {
         return self::getDbTable()
             ->join('sales', 'sales.id', '=', 'notifications.sales_id')
-            ->where('user_id', $userId)
-            ->where('status', NotificationEntities::STATUS_DELIVERED)
-            ->orderBy('created_at', 'desc')
+            ->where('notifications.user_id', $userId)
+            ->where('notifications.status', NotificationEntities::STATUS_DELIVERED)
+            ->orderBy('notifications.created_at', 'desc')
             ->select(
-                'id',
+                'notifications.id',
                 'sales_id',
-                'sales.sales_status_id',
-                'title',
-                'body',
-                'type',
-                'is_read',
-                'read_at',
-                'created_at',
+                'sales.sales_status_id as sales_status',
+                'notifications.title',
+                'notifications.body',
+                'notifications.type',
+                'notifications.is_read',
+                'notifications.read_at',
+                'notifications.created_at',
             )->paginate($count);
     }
 

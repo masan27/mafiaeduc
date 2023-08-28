@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('sales_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->string('sales_id')->nullable();
             $table->string('title');
             $table->text('body')->nullable();
             $table->string('type', 10)->nullable()->default(NotificationEntities::TYPE_GENERAL);

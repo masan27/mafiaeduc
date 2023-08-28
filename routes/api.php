@@ -80,6 +80,7 @@ Route::prefix('v1')->group(function () {
 
         Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);
         Route::post('mentor-register', [MentorController::class, 'mentorRegister']);
+        Route::get('grades', [GradeController::class, 'getGrades']);
         Route::get('subjects', [SubjectController::class, 'getActiveSubjects']);
 
         Route::post('checkout', [CheckoutController::class, 'makeCheckout']);

@@ -3,6 +3,7 @@
 namespace App\Services\Checkouts;
 
 use App\Entities\FileFolderEntities;
+use App\Entities\NotificationEntities;
 use App\Entities\PaymentMethodEntities;
 use App\Entities\PrivateClassEntities;
 use App\Entities\SalesEntities;
@@ -15,6 +16,7 @@ use App\Models\Payments\PaymentMethod;
 use App\Models\Sales\Sales;
 use App\Models\Sales\SalesConfirmation;
 use App\Models\Sales\SalesDetail;
+use App\Repository\Notifications\NotificationRepoInterface;
 use App\Validators\CheckoutValidator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,10 +26,12 @@ use Illuminate\Support\Str;
 class CheckoutService implements CheckoutServiceInterface
 {
     protected CheckoutValidator $checkoutValidator;
+    protected NotificationRepoInterface $notificationRepo;
 
-    public function __construct(CheckoutValidator $checkoutValidator)
+    public function __construct(CheckoutValidator $checkoutValidator, NotificationRepoInterface $notificationRepo)
     {
         $this->checkoutValidator = $checkoutValidator;
+        $this->notificationRepo = $notificationRepo;
     }
 
     public function makeCheckout(Request $request): array
@@ -114,6 +118,9 @@ class CheckoutService implements CheckoutServiceInterface
             PrivateClass::where('id', $productId)->update([
                 'status' => PrivateClassEntities::STATUS_PURCHASED
             ]);
+
+            $this->notificationRepo->createUserNotification($userId, 'Menunggu Pembayaran', 'Pembelian berhasil dilakukan',
+                NotificationEntities::TYPE_ORDER, $salesId);
 
             $data = [
                 'sales_id' => $salesId
@@ -305,8 +312,11 @@ class CheckoutService implements CheckoutServiceInterface
                 'proof_of_payment' => $paymentProof ? FileHelper::getFileUrl($path) : null
             ]);
 
+            $this->notificationRepo->createUserNotification($userId, 'Sedang Diproses', 'Mohon menunggu konfirmasi pembayaran selama 1x24 jam',
+                NotificationEntities::TYPE_ORDER, $salesId);
+
             DB::commit();
-            return ResponseHelper::success();
+            return ResponseHelper::success('Pembayaran berhasil dikonfirmasi');
         } catch (\Exception $e) {
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
@@ -344,6 +354,9 @@ class CheckoutService implements CheckoutServiceInterface
 
             $sales->sales_status_id = SalesEntities::SALES_STATUS_CANCELLED;
             $sales->save();
+
+            $this->notificationRepo->createUserNotification($userId, 'Pembayaran Dibatalkan', 'Pembelian dibatalkan oleh pengguna',
+                NotificationEntities::TYPE_ORDER, $salesId);
 
             DB::commit();
             return ResponseHelper::success('Pembelian berhasil dibatalkan');

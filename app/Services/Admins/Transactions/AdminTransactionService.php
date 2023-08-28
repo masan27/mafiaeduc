@@ -2,9 +2,11 @@
 
 namespace App\Services\Admins\Transactions;
 
+use App\Entities\NotificationEntities;
 use App\Entities\SalesEntities;
 use App\Helpers\ResponseHelper;
 use App\Models\Sales\Sales;
+use App\Repository\Notifications\NotificationRepoInterface;
 use App\Validators\TransactionValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -13,10 +15,12 @@ use Illuminate\Support\Facades\DB;
 class AdminTransactionService implements AdminTransactionServiceInterface
 {
     protected TransactionValidator $transactionValidator;
+    protected NotificationRepoInterface $notificationRepo;
 
-    public function __construct(TransactionValidator $transactionValidator)
+    public function __construct(TransactionValidator $transactionValidator, NotificationRepoInterface $notificationRepo)
     {
         $this->transactionValidator = $transactionValidator;
+        $this->notificationRepo = $notificationRepo;
     }
 
     public function getAllTransactions(): array
@@ -169,6 +173,10 @@ class AdminTransactionService implements AdminTransactionServiceInterface
             $sales->sales_status_id = SalesEntities::SALES_STATUS_PAID;
             $sales->payment_date = Carbon::now();
             $sales->save();
+
+            $this->notificationRepo->createUserNotification($userId, 'Pembayaran Berhasil',
+                'Pembayaran Anda berhasil, silahkan cek status pembayaran Anda di halaman transaksi',
+                NotificationEntities::TYPE_PAYMENT, $salesId);
 
             DB::commit();
             return ResponseHelper::success('Berhasil mengkonfirmasi transaksi');

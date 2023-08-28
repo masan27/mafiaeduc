@@ -28,12 +28,12 @@ class UserValidator
     {
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|min:3|max:50',
-            'gender' => 'required|string|in:pria, wanita',
-            'birth_date' => 'required|date_format:Y-m-d',
-            'school_origin' => 'required|string|min:3',
-            'grade_id' => 'required|integer|exists:grades,id',
-            'address' => 'required|string|min:3',
-            'phone' => 'required|string|min:3|max:18',
+            'gender' => 'nullable|string|in:pria,wanita',
+            'birth_date' => 'nullable|date_format:Y-m-d',
+            'school_origin' => 'nullable|string|min:3',
+            'grade_id' => 'nullable|integer|exists:grades,id',
+            'address' => 'nullable|string|min:3',
+            'phone' => 'nullable|string|min:3|max:18',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);

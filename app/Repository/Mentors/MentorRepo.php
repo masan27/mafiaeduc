@@ -341,7 +341,7 @@ class MentorRepo implements MentorRepoInterface
                 DB::raw('AVG(reviews.rating) as rating')
             )
             ->orderBy('rating', 'desc')
-//            ->groupBy('mentors.id')
+            ->groupBy('mentors.id')
             ->limit(5)
             ->get();
     }

@@ -13,11 +13,14 @@ class NotificationRepo implements NotificationRepoInterface
     public static function getUserNotification($userId, $count)
     {
         return self::getDbTable()
+            ->join('sales', 'sales.id', '=', 'notifications.sales_id')
             ->where('user_id', $userId)
             ->where('status', NotificationEntities::STATUS_DELIVERED)
             ->orderBy('created_at', 'desc')
             ->select(
                 'id',
+                'sales_id',
+                'sales.sales_status_id',
                 'title',
                 'body',
                 'type',
@@ -32,10 +35,11 @@ class NotificationRepo implements NotificationRepoInterface
         return DB::table('notifications');
     }
 
-    public static function createUserNotification($userId, $title, $body, $type)
+    public static function createUserNotification($userId, $title, $body, $type, $salesId = null)
     {
         return self::getDbTable()->insert([
             'user_id' => $userId,
+            'sales_id' => $salesId,
             'title' => $title,
             'body' => $body,
             'type' => $type,

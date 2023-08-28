@@ -128,9 +128,11 @@ Route::prefix('v1/admin')->group(function () {
         Route::post('acceptance', [AdminMentorController::class, 'acceptMentorApplication']);
 
         Route::get('/', [AdminMentorController::class, 'getAllMentors']);
+        Route::get('/request', [AdminMentorController::class, 'getAllMentorRequest']);
+        Route::get('/request/{mentorId}', [AdminMentorController::class, 'getMentorRequestDetails']);
         Route::get('{mentorId}', [AdminMentorController::class, 'getMentorDetails']);
         Route::post('update-status', [AdminMentorController::class, 'nonActiveMentors']);
-        Route::post('reset-password/{mentorId}', [AdminMentorController::class, 'resetPassword']);
+        Route::post('reset-password', [AdminMentorController::class, 'resetPassword']);
     });
 
     Route::prefix('subjects')->group(function () {

@@ -10,9 +10,13 @@ interface MentorServiceInterface
 
     public function acceptMentorApplication(Request $request): array;
 
-    public function getAllMentors(): array;
+    public function getAllMentors(Request $request): array;
+
+    public function getAllMentorRequest(Request $request): array;
 
     public function getMentorDetails(int $mentorId): array;
+
+    public function getMentorRequestDetails(int $mentorId): array;
 
     public function nonActiveMentors(Request $request): array;
 
@@ -24,7 +28,7 @@ interface MentorServiceInterface
 
     public function getAllMentorClass(int $mentorId): array;
 
-    public function resetPassword(int $mentorId): array;
+    public function resetPassword(Request $request): array;
 
     public function changePassword(Request $request): array;
 

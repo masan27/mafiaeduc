@@ -3,6 +3,7 @@
 namespace App\Services\Mentors;
 
 use App\Entities\FileFolderEntities;
+use App\Entities\MentorEntities;
 use App\Helpers\FileHelper;
 use App\Helpers\ResponseHelper;
 use App\Models\Mentors\Mentor;
@@ -144,10 +145,32 @@ class MentorService implements MentorServiceInterface
         return strtoupper(Str::password($length, true, true, false));
     }
 
-    public function getAllMentors(): array
+    public function getAllMentors(Request $request): array
     {
         try {
-            $mentors = $this->mentorRepo->getAllMentors();
+            $search = $request->query('search');
+            $count = $request->query('count', 10);
+            $mentors = $this->mentorRepo->getAllMentors($search, $count);
+
+            if ($mentors->isEmpty()) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            foreach ($mentors as $mentor) {
+                $this->getMentorFile($mentor);
+            }
+
+            return ResponseHelper::success('Berhasil mengambil data mentor', $mentors);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
+
+    public function getAllMentorRequest(Request $request): array
+    {
+        try {
+            $search = $request->query('search');
+            $count = $request->query('count', 10);
+            $status = $request->query('status', MentorEntities::MENTOR_STATUS_PENDING_APPROVAL);
+            $mentors = $this->mentorRepo->getAllMentorRequest($search, $count, $status);
 
             if ($mentors->isEmpty()) return ResponseHelper::notFound('Mentor tidak ditemukan');
 
@@ -165,6 +188,23 @@ class MentorService implements MentorServiceInterface
     {
         try {
             $mentor = $this->mentorRepo->getMentorById($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            $this->getMentorFile($mentor);
+
+            $mentor->account = $this->mentorRepo->getMentorCredentials($mentorId);
+
+            return ResponseHelper::success('Berhasil mengambil data mentor', $mentor);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+    }
+
+    public function getMentorRequestDetails($mentorId): array
+    {
+        try {
+            $mentor = $this->mentorRepo->getMentorRequestDetails($mentorId);
 
             if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
 
@@ -299,15 +339,24 @@ class MentorService implements MentorServiceInterface
 
     }
 
-    public function resetPassword(int $mentorId): array
+    public function resetPassword(Request $request): array
     {
+        $validator = $this->mentorValidator->validateResetPasswordInput($request);
+
+        if ($validator) return $validator;
+
         DB::beginTransaction();
         try {
+            $mentorId = $request->input('mentor_id');
+            $newPassword = $request->input('new_password');
+            $cofirmNewPassword = $request->input('confirm_new_password');
+
             $mentor = MentorCredentials::where('mentor_id', $mentorId)->first();
 
             if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
 
-            $newPassword = '123456';
+            if ($newPassword != $cofirmNewPassword) return ResponseHelper::error('Konfirmasi password tidak sama');
+
             $mentor->password = Hash::make($newPassword);
             $mentor->save();
 

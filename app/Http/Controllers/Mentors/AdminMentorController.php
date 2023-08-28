@@ -22,9 +22,15 @@ class AdminMentorController extends Controller
         return response()->json($data, $data['code']);
     }
 
-    public function getAllMentors(): JsonResponse
+    public function getAllMentors(Request $request): JsonResponse
     {
-        $data = $this->mentorService->getAllMentors();
+        $data = $this->mentorService->getAllMentors($request);
+        return response()->json($data, $data['code']);
+    }
+
+    public function getAllMentorRequest(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->getAllMentorRequest($request);
         return response()->json($data, $data['code']);
     }
 
@@ -34,15 +40,21 @@ class AdminMentorController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function getMentorRequestDetails(int $mentorId): JsonResponse
+    {
+        $data = $this->mentorService->getMentorRequestDetails($mentorId);
+        return response()->json($data, $data['code']);
+    }
+
     public function nonActiveMentors(Request $request): JsonResponse
     {
         $data = $this->mentorService->nonActiveMentors($request);
         return response()->json($data, $data['code']);
     }
 
-    public function resetPassword(int $mentorId): JsonResponse
+    public function resetPassword(Request $request): JsonResponse
     {
-        $data = $this->mentorService->resetPassword($mentorId);
+        $data = $this->mentorService->resetPassword($request);
         return response()->json($data, $data['code']);
     }
 }

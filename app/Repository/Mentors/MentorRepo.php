@@ -149,6 +149,32 @@ class MentorRepo implements MentorRepoInterface
         return self::getDbTable()
             ->join('users', 'users.id', '=', 'mentors.user_id')
             ->where('mentors.id', $mentorId)
+            ->where('mentors.status', MentorEntities::MENTOR_STATUS_APPROVED)
+            ->select(
+                'mentors.id',
+                'users.email',
+                'mentors.user_id',
+                'mentors.learning_method_id',
+                'mentors.grade_id',
+                'mentors.full_name',
+                'mentors.photo',
+                'mentors.certificate',
+                'mentors.identity_card',
+                'mentors.cv',
+                'mentors.status',
+                'mentors.teaching_video',
+                'mentors.phone',
+                'mentors.salary',
+                'mentors.linkedin',
+            )->first();
+    }
+
+    public static function getMentorRequestDetails(int $mentorId): object
+    {
+        return self::getDbTable()
+            ->join('users', 'users.id', '=', 'mentors.user_id')
+            ->where('mentors.id', $mentorId)
+            ->where('mentors.status', '!=', MentorEntities::MENTOR_STATUS_APPROVED)
             ->select(
                 'mentors.id',
                 'users.email',
@@ -202,12 +228,14 @@ class MentorRepo implements MentorRepoInterface
             ]);
     }
 
-    public static function getAllMentors(): object
+    public static function getAllMentors(string|null $search, int $count): object
     {
-        return self::getDbTable()
+        $query = self::getDbTable()
+            ->join('learning_methods', 'learning_methods.id', '=', 'mentors.learning_method_id')
+            ->join('grades', 'grades.id', '=', 'mentors.grade_id')
             ->where('status', MentorEntities::MENTOR_STATUS_APPROVED)
             ->select(
-                'id',
+                'mentors.id',
                 'user_id',
                 'status',
                 'learning_method_id',
@@ -221,7 +249,47 @@ class MentorRepo implements MentorRepoInterface
                 'phone',
                 'salary',
                 'linkedin',
-            )->get();
+                'learning_methods.name as learning_method',
+                'grades.name as grade'
+            );
+
+        if ($search) {
+            $query->where('full_name', 'like', "%$search%");
+        }
+
+        return $query->paginate($count);
+    }
+
+    public static function getAllMentorRequest(string|null $search, int $count, $status = MentorEntities::MENTOR_STATUS_PENDING_APPROVAL): object
+    {
+        $query = self::getDbTable()
+            ->join('learning_methods', 'learning_methods.id', '=', 'mentors.learning_method_id')
+            ->join('grades', 'grades.id', '=', 'mentors.grade_id')
+            ->where('status', $status)
+            ->select(
+                'mentors.id',
+                'user_id',
+                'status',
+                'learning_method_id',
+                'grade_id',
+                'full_name',
+                'photo',
+                'certificate',
+                'identity_card',
+                'cv',
+                'teaching_video',
+                'phone',
+                'salary',
+                'linkedin',
+                'learning_methods.name as learning_method',
+                'grades.name as grade'
+            );
+
+        if ($search) {
+            $query->where('full_name', 'like', "%$search%");
+        }
+
+        return $query->paginate($count);
     }
 
     public static function getMentorTeachingDays(int $mentorId): object

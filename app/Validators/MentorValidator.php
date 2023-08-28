@@ -77,6 +77,16 @@ class MentorValidator
         return $this->validationHelper->getValidationResponse($validator);
     }
 
+    public function validateResetPasswordInput($request): bool|array
+    {
+        $validator = Validator::make($request->all(), [
+            'new_password' => 'required|string|min:6|max:30',
+            'confirm_new_password' => 'required|string|min:6|max:30|same:new_password',
+        ], ValidationHelper::VALIDATION_MESSAGES);
+
+        return $this->validationHelper->getValidationResponse($validator);
+    }
+
     public function validateAddMentorPaymentMethod($request): bool|array
     {
         $validator = Validator::make($request->all(), [

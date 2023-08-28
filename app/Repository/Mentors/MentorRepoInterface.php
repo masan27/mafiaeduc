@@ -26,11 +26,15 @@ interface MentorRepoInterface
 
     public static function getMentorById(int $mentorId): object;
 
+    public static function getMentorRequestDetails(int $mentorId): object;
+
     public static function acceptMentorApplication(int $mentorId): bool;
 
     public static function createMentorCredential(int $mentorId, string $mentorEmail, string $mentorPassword, string $mentorApiToken);
 
-    public static function getAllMentors(): object;
+    public static function getAllMentors(string|null $search, int $count): object;
+
+    public static function getAllMentorRequest(string|null $search, int $count, int $status): object;
 
     public static function getMentorSubjects(int $mentorId): object;
 

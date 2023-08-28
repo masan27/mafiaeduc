@@ -24,7 +24,7 @@ class NotificationRepo implements NotificationRepoInterface
                 'is_read',
                 'read_at',
                 'created_at',
-            )->simplePaginate($count);
+            )->paginate($count);
     }
 
     private static function getDbTable()

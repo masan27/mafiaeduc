@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 interface AdminMaterialServiceInterface
 {
-    public function getAllMaterial(): array;
+    public function getAllMaterial(Request $request): array;
+
+    public function getMaterialDetails(int $id): array;
 
     public function addMaterial(Request $request): array;
 

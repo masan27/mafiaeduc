@@ -35,7 +35,7 @@ class MaterialValidator
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
-            'cover' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'cover' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'grade_id' => 'required|integer',
             'price' => 'required|integer',
             'description' => 'required|string',

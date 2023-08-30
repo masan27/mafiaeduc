@@ -19,10 +19,21 @@ class AdminMaterialService implements AdminMaterialServiceInterface
         $this->materialValidator = $materialValidator;
     }
 
-    public function getAllMaterial(): array
+    public function getAllMaterial(Request $request): array
     {
         try {
-            $materials = Material::all();
+            $search = $request->query('search');
+            $count = $request->query('count');
+            $materials = Material::with('grade')
+                ->when($search, function ($query, $search) {
+                    return $query->where('title', 'like', "%$search%")
+                        ->orWhere('description', 'like', "%$search%")
+                        ->orWhere('benefits', 'like', "%$search%")
+                        ->orWhereHas('grade', function ($query) use ($search) {
+                            return $query->where('name', 'like', "%$search%");
+                        });
+                })
+                ->paginate($count);
 
             if ($materials->isEmpty()) {
                 return ResponseHelper::notFound('Tidak ada material');
@@ -35,6 +46,26 @@ class AdminMaterialService implements AdminMaterialServiceInterface
             }
 
             return ResponseHelper::success('Berhasil mendapatkan data material', $materials);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function getMaterialDetails(int $id): array
+    {
+        try {
+            $material = Material::with('grade')->find($id);
+
+            if (!$material) {
+                return ResponseHelper::notFound('Material tidak ditemukan');
+            }
+            
+            $material->cover_image = FileHelper::getFileUrl($material->cover_image);
+            $material->preview_file = url('/v1/admin/material/download/' . $material->id . '/preview');
+            $material->source_file = url('/v1/admin/material/download/' . $material->id . '/source');
+
+            return ResponseHelper::success('Berhasil mendapatkan detail material', $material);
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }

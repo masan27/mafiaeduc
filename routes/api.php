@@ -43,6 +43,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect('/v1'));
 
+Route::get('/storage/link', function () {
+    \Illuminate\Support\Facades\File::link(
+        storage_path('app/public'), public_path('storage')
+    );
+    return 'success';
+});
+
 // Public Routes
 Route::prefix('v1')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);

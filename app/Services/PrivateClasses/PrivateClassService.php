@@ -80,7 +80,7 @@ class PrivateClassService implements PrivateClassServiceInterface
             $privateClass = PrivateClass::active()
                 ->with('learningMethod', 'grade', 'subject', 'mentor:id,full_name,photo,phone')
                 ->where('id', $privateClassId)
-                ->get();
+                ->first();
 
             if (!$privateClass) return ResponseHelper::error('Kelas tidak ditemukan');
 

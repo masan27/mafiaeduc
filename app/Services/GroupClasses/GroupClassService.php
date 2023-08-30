@@ -70,7 +70,7 @@ class GroupClassService implements GroupClassServiceInterface
             $groupClass = GroupClass::active()
                 ->with('learningMethod', 'grade', 'subject')
                 ->where('id', $groupClassId)
-                ->get();
+                ->first();
 
             if (!$groupClass) return ResponseHelper::error('Kelas tidak ditemukan');
 

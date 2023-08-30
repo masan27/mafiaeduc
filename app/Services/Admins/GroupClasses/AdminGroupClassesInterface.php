@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 interface AdminGroupClassesInterface
 {
-    public function getAllGroupClasses(): array;
+    public function getAllGroupClasses(Request $request): array;
 
     public function deleteGroupClass(int $groupClassId): array;
 

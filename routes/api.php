@@ -44,9 +44,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn() => redirect('/v1'));
 
 Route::get('/storage/link', function () {
-    \Illuminate\Support\Facades\File::link(
-        storage_path('app/public'), public_path('storage')
-    );
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
     return 'success';
 });
 

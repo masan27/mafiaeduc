@@ -18,10 +18,26 @@ class AdminGroupClassesService implements AdminGroupClassesInterface
         $this->groupClassValidator = $groupClassValidator;
     }
 
-    public function getAllGroupClasses(): array
+    public function getAllGroupClasses(Request $request): array
     {
         try {
-            $groupClasses = GroupClass::with('subject', 'learningMethod', 'grade')->get();
+            $search = $request->query('search');
+            $count = $request->query('count', 10);
+            $groupClasses = GroupClass::with('subject', 'learningMethod', 'grade')
+                ->when($search, function ($query) use ($search) {
+                    $query->where('title', 'like', "%$search%")
+                        ->orWhere('price', 'like', "%$search%")
+                        ->orWhereHas('subject', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('learningMethod', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('grade', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        });
+                })
+                ->paginate($count);
 
             if ($groupClasses->isEmpty()) return ResponseHelper::notFound('Kelas grup tidak ditemukan');
 

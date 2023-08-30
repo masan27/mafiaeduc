@@ -16,9 +16,9 @@ class AdminGroupClassController extends Controller
         $this->adminGroupClasses = $adminGroupClasses;
     }
 
-    public function getAllGroupClasses(): JsonResponse
+    public function getAllGroupClasses(Request $request): JsonResponse
     {
-        $data = $this->adminGroupClasses->getAllGroupClasses();
+        $data = $this->adminGroupClasses->getAllGroupClasses($request);
         return response()->json($data, $data['code']);
     }
 

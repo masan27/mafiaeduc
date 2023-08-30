@@ -154,15 +154,16 @@ Route::prefix('v1/admin')->group(function () {
     });
 
     Route::middleware('auth:sanctum,admin')->group(function () {
-        Route::prefix('material')->group(function () {
+        Route::prefix('materials')->group(function () {
             Route::get('/', [AdminMaterialController::class, 'getAllMaterial']);
+            Route::get('{materialId}', [AdminMaterialController::class, 'getMaterialDetails']);
             Route::post('add', [AdminMaterialController::class, 'addMaterial']);
             Route::delete('{materialId}', [AdminMaterialController::class, 'deleteMaterial']);
             Route::post('update/{materialId}', [AdminMaterialController::class, 'updateMaterial']);
         });
     });
 
-    Route::prefix('material')->group(function () {
+    Route::prefix('materials')->group(function () {
         Route::get('download/{materialId}/preview', [AdminMaterialController::class, 'downloadMaterialPreview']);
         Route::get('download/{materialId}/source', [AdminMaterialController::class, 'downloadMaterialSource']);
     });

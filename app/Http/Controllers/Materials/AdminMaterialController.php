@@ -16,9 +16,15 @@ class AdminMaterialController extends Controller
         $this->adminMaterialService = $adminMaterialService;
     }
 
-    public function getAllMaterial(): JsonResponse
+    public function getAllMaterial(Request $request): JsonResponse
     {
-        $data = $this->adminMaterialService->getAllMaterial();
+        $data = $this->adminMaterialService->getAllMaterial($request);
+        return response()->json($data, $data['code']);
+    }
+
+    public function getMaterialDetails(int $materialId): JsonResponse
+    {
+        $data = $this->adminMaterialService->getMaterialDetails($materialId);
         return response()->json($data, $data['code']);
     }
 
@@ -39,6 +45,7 @@ class AdminMaterialController extends Controller
         $data = $this->adminMaterialService->deleteMaterial($materialId);
         return response()->json($data, $data['code']);
     }
+
 
     public function assignUserMaterial(Request $request): JsonResponse
     {

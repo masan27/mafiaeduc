@@ -24,6 +24,7 @@ class AdminGroupClassesService implements AdminGroupClassesInterface
             $search = $request->query('search');
             $count = $request->query('count', 10);
             $groupClasses = GroupClass::with('subject', 'learningMethod', 'grade')
+                ->withCount('schedules')
                 ->when($search, function ($query) use ($search) {
                     $query->where('title', 'like', "%$search%")
                         ->orWhere('price', 'like', "%$search%")

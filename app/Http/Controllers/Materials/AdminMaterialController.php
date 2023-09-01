@@ -40,6 +40,12 @@ class AdminMaterialController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function updateStatusMaterial(int $materialId): JsonResponse
+    {
+        $data = $this->adminMaterialService->updateStatusMaterial($materialId);
+        return response()->json($data, $data['code']);
+    }
+
     public function deleteMaterial(int $materialId): JsonResponse
     {
         $data = $this->adminMaterialService->deleteMaterial($materialId);

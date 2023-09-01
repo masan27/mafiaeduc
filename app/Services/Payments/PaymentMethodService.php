@@ -31,6 +31,10 @@ class PaymentMethodService implements PaymentMethodServiceInterface
                 return ResponseHelper::notFound('Tidak ada metode pembayaran yang aktif');
             }
 
+            foreach ($paymentMethods as $paymentMethod) {
+                $paymentMethod->id = (int)$paymentMethod->id;
+            }
+
             return ResponseHelper::success('Berhasil mendapatkan metode pembayaran', $paymentMethods);
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());

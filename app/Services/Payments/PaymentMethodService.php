@@ -25,14 +25,10 @@ class PaymentMethodService implements PaymentMethodServiceInterface
     public function getPaymentMethods(): array
     {
         try {
-            $paymentMethods = $this->paymentMethodRepo->getActivePaymentMethods();
+            $paymentMethods = PaymentMethod::active()->get();
 
             if ($paymentMethods->isEmpty()) {
                 return ResponseHelper::notFound('Tidak ada metode pembayaran yang aktif');
-            }
-
-            foreach ($paymentMethods as $paymentMethod) {
-                $paymentMethod->id = (int)$paymentMethod->id;
             }
 
             return ResponseHelper::success('Berhasil mendapatkan metode pembayaran', $paymentMethods);

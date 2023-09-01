@@ -22,6 +22,12 @@ class NotificationController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function getNewInfo(Request $request): JsonResponse
+    {
+        $data = $this->notificationService->getNewInfo($request);
+        return response()->json($data, $data['code']);
+    }
+
     public function markAsRead(Request $request): JsonResponse
     {
         $data = $this->notificationService->markNotificationAsRead($request);

@@ -60,13 +60,35 @@ class AdminMaterialService implements AdminMaterialServiceInterface
             if (!$material) {
                 return ResponseHelper::notFound('Material tidak ditemukan');
             }
-            
+
             $material->cover_image = FileHelper::getFileUrl($material->cover_image);
             $material->preview_file = url('/v1/admin/material/download/' . $material->id . '/preview');
             $material->source_file = url('/v1/admin/material/download/' . $material->id . '/source');
 
             return ResponseHelper::success('Berhasil mendapatkan detail material', $material);
         } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function updateStatusMaterial(int $id): array
+    {
+        DB::beginTransaction();
+        try {
+            $material = Material::find($id);
+
+            if (!$material) {
+                return ResponseHelper::notFound('Material tidak ditemukan');
+            }
+
+            $material->status = !$material->status;
+            $material->save();
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil mengubah status material');
+        } catch (\Exception $e) {
+            DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
 

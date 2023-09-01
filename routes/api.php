@@ -166,6 +166,7 @@ Route::prefix('v1/admin')->group(function () {
             Route::post('add', [AdminMaterialController::class, 'addMaterial']);
             Route::delete('{materialId}', [AdminMaterialController::class, 'deleteMaterial']);
             Route::post('update/{materialId}', [AdminMaterialController::class, 'updateMaterial']);
+            Route::post('update-status/{materialId}', [AdminMaterialController::class, 'updateStatusMaterial']);
         });
     });
 

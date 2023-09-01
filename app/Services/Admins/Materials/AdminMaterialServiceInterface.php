@@ -14,6 +14,8 @@ interface AdminMaterialServiceInterface
 
     public function updateMaterial(int $id, Request $request): array;
 
+    public function updateStatusMaterial(int $id): array;
+
     public function deleteMaterial(int $id): array;
 
     public function assignUserMaterial(Request $request): array;

@@ -30,6 +30,7 @@ class GroupClassService implements GroupClassServiceInterface
 
             $groupClasses = GroupClass::active()
                 ->with('learningMethod', 'grade', 'subject')
+                ->whereHas('schedules')
                 ->when($gradeId, function ($query, $gradeId) {
                     return $query->where('grade_id', $gradeId);
                 })
@@ -69,6 +70,7 @@ class GroupClassService implements GroupClassServiceInterface
         try {
             $groupClass = GroupClass::active()
                 ->with('learningMethod', 'grade', 'subject')
+                ->whereHas('schedules')
                 ->where('id', $groupClassId)
                 ->first();
 

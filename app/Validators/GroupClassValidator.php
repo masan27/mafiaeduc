@@ -21,8 +21,8 @@ class GroupClassValidator
             'grade_id' => 'required|integer|exists:grades,id',
             'subject_id' => 'required|integer|exists:subjects,id',
             'learning_method_id' => 'required|integer|exists:learning_methods,id',
-            'description' => 'required|string',
-            'additional_info' => 'required|string',
+            'description' => 'nullable|string',
+            'additional_info' => 'nullable|string',
             'price' => 'required|integer',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
@@ -36,10 +36,10 @@ class GroupClassValidator
             'grade_id' => 'required|integer|exists:grades,id',
             'subject_id' => 'required|integer|exists:subjects,id',
             'learning_method_id' => 'required|integer|exists:learning_methods,id',
-            'description' => 'required|string',
-            'additional_info' => 'required|string',
+            'description' => 'nullable|string',
+            'additional_info' => 'nullable|string',
             'price' => 'required|integer',
-            'status' => 'required|boolean',
+            'status' => 'nullable|integer',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);
@@ -48,7 +48,7 @@ class GroupClassValidator
     public function validateChangeGroupClasses($request): bool|array
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|boolean',
+            'status' => 'required|integer',
         ], ValidationHelper::VALIDATION_MESSAGES);
 
         return $this->validationHelper->getValidationResponse($validator);

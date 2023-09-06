@@ -109,7 +109,7 @@ class MentorService implements MentorServiceInterface
 
             if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
 
-            if ($mentor->status == 1) return ResponseHelper::error('Lamaran mentor sudah diterima');
+            if ($mentor->status === MentorEntities::MENTOR_STATUS_APPROVED) return ResponseHelper::error('Lamaran mentor sudah diterima');
 
             $this->mentorRepo->acceptMentorApplication($mentorId);
 
@@ -133,6 +133,32 @@ class MentorService implements MentorServiceInterface
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
+
+    public function declineMentorApplication(Request $request): array
+    {
+        $validator = $this->mentorValidator->validateMentorId($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $mentorId = $request->input('mentor_id');
+            $mentor = $this->mentorRepo->getMentorById($mentorId);
+
+            if (!$mentor) return ResponseHelper::notFound('Mentor tidak ditemukan');
+
+            if ($mentor->status === MentorEntities::MENTOR_STATUS_REJECTED) return ResponseHelper::error('Lamaran mentor sudah ditolak');
+
+            $this->mentorRepo->declineMentorApplication($mentorId);
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil menolak lamaran mentor');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
     }
 
     private function generateApiToken($mentorId, $mentorEmail): string

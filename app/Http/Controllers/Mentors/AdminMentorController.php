@@ -22,6 +22,12 @@ class AdminMentorController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function declineMentorApplication(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->declineMentorApplication($request);
+        return response()->json($data, $data['code']);
+    }
+
     public function getAllMentors(Request $request): JsonResponse
     {
         $data = $this->mentorService->getAllMentors($request);

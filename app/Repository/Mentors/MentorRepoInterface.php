@@ -24,11 +24,13 @@ interface MentorRepoInterface
 
     public static function insertMentorSubject(int $mentorId, int $subjectIds): bool;
 
-    public static function getMentorById(int $mentorId): object;
+    public static function getMentorById(int $mentorId): object|null;
 
-    public static function getMentorRequestDetails(int $mentorId): object;
+    public static function getMentorRequestDetails(int $mentorId): object|null;
 
     public static function acceptMentorApplication(int $mentorId): bool;
+
+    public static function declineMentorApplication(int $mentorId): bool;
 
     public static function createMentorCredential(int $mentorId, string $mentorEmail, string $mentorPassword, string $mentorApiToken);
 
@@ -40,7 +42,7 @@ interface MentorRepoInterface
 
     public static function getMentorTeachingDays(int $mentorId): object;
 
-    public static function getMentorCredentials(int $mentorId): object;
+    public static function getMentorCredentials(int $mentorId): object|null;
 
     public static function updateMentorAccountStatus(int $mentorId, int $status);
 

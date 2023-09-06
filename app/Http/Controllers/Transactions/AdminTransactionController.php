@@ -16,9 +16,9 @@ class AdminTransactionController extends Controller
         $this->adminTransactionService = $adminTransactionService;
     }
 
-    public function getAllTransactions(): JsonResponse
+    public function getAllTransactions(Request $request): JsonResponse
     {
-        $data = $this->adminTransactionService->getAllTransactions();
+        $data = $this->adminTransactionService->getAllTransactions($request);
         return response()->json($data, $data['code']);
     }
 
@@ -31,6 +31,12 @@ class AdminTransactionController extends Controller
     public function confirmTransaction(Request $request): JsonResponse
     {
         $data = $this->adminTransactionService->confirmTransaction($request);
+        return response()->json($data, $data['code']);
+    }
+
+    public function declineTransaction(Request $request): JsonResponse
+    {
+        $data = $this->adminTransactionService->declineTransaction($request);
         return response()->json($data, $data['code']);
     }
 }

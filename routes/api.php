@@ -134,6 +134,7 @@ Route::prefix('v1/admin')->group(function () {
 
     Route::prefix('mentors')->group(function () {
         Route::post('acceptance', [AdminMentorController::class, 'acceptMentorApplication']);
+        Route::post('declined', [AdminMentorController::class, 'declineMentorApplication']);
 
         Route::get('/', [AdminMentorController::class, 'getAllMentors']);
         Route::get('/request', [AdminMentorController::class, 'getAllMentorRequest']);
@@ -196,6 +197,7 @@ Route::prefix('v1/admin')->group(function () {
         Route::get('/', [AdminTransactionController::class, 'getAllTransactions']);
         Route::get('{salesId}', [AdminTransactionController::class, 'getTransactionDetails']);
         Route::post('confirm', [AdminTransactionController::class, 'confirmTransaction']);
+        Route::post('decline', [AdminTransactionController::class, 'declineTransaction']);
     });
 
     Route::prefix('schedules')->group(function () {

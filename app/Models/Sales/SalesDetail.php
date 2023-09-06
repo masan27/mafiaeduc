@@ -4,7 +4,11 @@ namespace App\Models\Sales;
 
 use App\Models\Classes\GroupClass;
 use App\Models\Classes\PrivateClass;
+use App\Models\Grades\Grade;
+use App\Models\LearningMethods\LearningMethod;
 use App\Models\Materials\Material;
+use App\Models\Mentors\Mentor;
+use App\Models\Subjects\Subject;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -61,5 +65,25 @@ class SalesDetail extends Model
     public function groupClasses(): BelongsTo
     {
         return $this->belongsTo(GroupClass::class);
+    }
+
+    public function learningMethod(): BelongsTo
+    {
+        return $this->belongsTo(LearningMethod::class);
+    }
+
+    public function subject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function mentor(): BelongsTo
+    {
+        return $this->belongsTo(Mentor::class);
+    }
+
+    public function grade(): BelongsTo
+    {
+        return $this->belongsTo(Grade::class);
     }
 }

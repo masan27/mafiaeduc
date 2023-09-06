@@ -10,6 +10,8 @@ interface MentorServiceInterface
 
     public function acceptMentorApplication(Request $request): array;
 
+    public function declineMentorApplication(Request $request): array;
+
     public function getAllMentors(Request $request): array;
 
     public function getAllMentorRequest(Request $request): array;

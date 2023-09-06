@@ -23,34 +23,75 @@ class AdminTransactionService implements AdminTransactionServiceInterface
         $this->notificationRepo = $notificationRepo;
     }
 
-    public function getAllTransactions(): array
+    public function getAllTransactions(Request $request): array
     {
         try {
-            $type = request()->query('type', 'all');
+            $search = $request->query('search');
+            $count = $request->query('count', 10);
+            $type = $request->query('type', 'all');
 
             switch ($type) {
                 case 'pending':
-                    $transactions = Sales::with('user.detail', 'status')->where('sales_status_id',
-                        SalesEntities::SALES_STATUS_NOT_PAID)->get();
+                    $transactions = Sales::with('user.detail', 'status')
+                        ->where('sales_status_id', SalesEntities::SALES_STATUS_NOT_PAID)
+                        ->when($search, function ($q) use ($search) {
+                            $q->where('sales_id', $search)
+                                ->orWhere('sales_date', $search);
+                        })
+                        ->paginate($count);
                     break;
                 case 'process':
-                    $transactions = Sales::with('user.detail', 'status')->where('sales_status_id', SalesEntities::SALES_STATUS_PROCESSING)->get();
+                    $transactions = Sales::with('user.detail', 'status')
+                        ->where('sales_status_id', SalesEntities::SALES_STATUS_PROCESSING)
+                        ->when($search, function ($q) use ($search) {
+                            $q->where('sales_id', $search)
+                                ->orWhere('sales_date', $search);
+                        })
+                        ->paginate($count);
                     break;
                 case 'paid':
-                    $transactions = Sales::with('user.detail', 'status')->where('sales_status_id', SalesEntities::SALES_STATUS_PAID)->get();
+                    $transactions = Sales::with('user.detail', 'status')
+                        ->where('sales_status_id', SalesEntities::SALES_STATUS_PAID)
+                        ->when($search, function ($q) use ($search) {
+                            $q->where('sales_id', $search)
+                                ->orWhere('sales_date', $search);
+                        })
+                        ->paginate($count);
                     break;
                 case 'expired':
-                    $transactions = Sales::with('user.detail', 'status')->where('sales_status_id', SalesEntities::SALES_STATUS_EXPIRED)->get();
+                    $transactions = Sales::with('user.detail', 'status')
+                        ->where('sales_status_id', SalesEntities::SALES_STATUS_EXPIRED)
+                        ->when($search, function ($q) use ($search) {
+                            $q->where('sales_id', $search)
+                                ->orWhere('sales_date', $search);
+                        })
+                        ->paginate($count);
                     break;
                 case 'cancelled':
-                    $transactions = Sales::with('user.detail', 'status')->where('sales_status_id', SalesEntities::SALES_STATUS_CANCELLED)->get();
+                    $transactions = Sales::with('user.detail', 'status')
+                        ->where('sales_status_id', SalesEntities::SALES_STATUS_CANCELLED)
+                        ->when($search, function ($q) use ($search) {
+                            $q->where('sales_id', $search)
+                                ->orWhere('sales_date', $search);
+                        })
+                        ->paginate($count);
                     break;
                 case 'failed':
-                    $transactions = Sales::with('user.detail', 'status')->where('sales_status_id',
-                        SalesEntities::SALES_STATUS_FAILED)->get();
+                    $transactions = Sales::with('user.detail', 'status')
+                        ->where('sales_status_id', SalesEntities::SALES_STATUS_FAILED)
+                        ->when($search, function ($q) use ($search) {
+                            $q->where('sales_id', $search)
+                                ->orWhere('sales_date', $search);
+                        })
+                        ->paginate($count);
                     break;
                 default:
-                    $transactions = Sales::with('user.detail', 'status')->get();
+                    $transactions = Sales::with('user.detail', 'status')
+                        ->when($search, function ($q) use ($search) {
+                            $q->where('sales_id', $search)
+                                ->orWhere('sales_date', $search);
+                        })
+                        ->paginate($count);
                     break;
             }
 
@@ -67,13 +108,23 @@ class AdminTransactionService implements AdminTransactionServiceInterface
     public function getTransactionDetails(string $salesId): array
     {
         try {
-            $transaction = Sales::with('user.detail', 'status', 'details', 'paymentMethod')->find
-            ($salesId);
+            $transaction = Sales::with(
+                'user.detail',
+                'status',
+                'details.privateClasses.learningMethod',
+                'details.privateClasses.subject',
+                'details.privateClasses.mentor',
+                'details.privateClasses.grade',
+                'details.groupClasses.learningMethod',
+                'details.groupClasses.subject',
+                'details.groupClasses.grade',
+                'paymentMethod',
+                'details.material.grade'
+            )->find($salesId);
 
             if (!$transaction) {
                 return ResponseHelper::notFound('Transaksi tidak ditemukan');
             }
-
 
             $transaction->status_info = self::getSalesStatusInfo($transaction->sales_status_id);
 
@@ -176,6 +227,39 @@ class AdminTransactionService implements AdminTransactionServiceInterface
 
             $this->notificationRepo->createUserNotification($userId, 'Pembayaran Berhasil',
                 'Pembayaran Anda berhasil, silahkan cek status pembayaran Anda di halaman transaksi',
+                NotificationEntities::TYPE_PAYMENT, $salesId);
+
+            DB::commit();
+            return ResponseHelper::success('Berhasil mengkonfirmasi transaksi');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function declineTransaction(Request $request): array
+    {
+        $validator = $this->transactionValidator->validateSalesId($request);
+
+        if ($validator) return $validator;
+
+        DB::beginTransaction();
+        try {
+            $salesId = $request->input('sales_id');
+
+            $sales = Sales::find($salesId);
+
+            if (!$sales) return ResponseHelper::error('Transaksi tidak ditemukan');
+
+            $userId = $sales->user_id;
+
+            $sales->sales_status_id = SalesEntities::SALES_STATUS_PAID;
+            $sales->payment_date = Carbon::now();
+            $sales->save();
+
+            $this->notificationRepo->createUserNotification($userId, 'Pembayaran Gagal',
+                'Pembayaran Anda gagal, silahkan tunggu pengembalian dana Anda dalam 1x24 jam',
                 NotificationEntities::TYPE_PAYMENT, $salesId);
 
             DB::commit();

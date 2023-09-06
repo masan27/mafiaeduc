@@ -144,7 +144,7 @@ class MentorRepo implements MentorRepoInterface
             ->exists();
     }
 
-    public static function getMentorById(int $mentorId): object
+    public static function getMentorById(int $mentorId): object|null
     {
         return self::getDbTable()
             ->join('users', 'users.id', '=', 'mentors.user_id')
@@ -169,7 +169,7 @@ class MentorRepo implements MentorRepoInterface
             )->first();
     }
 
-    public static function getMentorRequestDetails(int $mentorId): object
+    public static function getMentorRequestDetails(int $mentorId): object|null
     {
         return self::getDbTable()
             ->join('users', 'users.id', '=', 'mentors.user_id')
@@ -224,6 +224,16 @@ class MentorRepo implements MentorRepoInterface
             ->where('id', $mentorId)
             ->update([
                 'status' => MentorEntities::MENTOR_STATUS_APPROVED,
+                'updated_at' => now()
+            ]);
+    }
+
+    public static function declineMentorApplication(int $mentorId): bool
+    {
+        return self::getDbTable()
+            ->where('id', $mentorId)
+            ->update([
+                'status' => MentorEntities::MENTOR_STATUS_REJECTED,
                 'updated_at' => now()
             ]);
     }
@@ -316,7 +326,7 @@ class MentorRepo implements MentorRepoInterface
             ->get();
     }
 
-    public static function getMentorCredentials(int $mentorId): object
+    public static function getMentorCredentials(int $mentorId): object|null
     {
         return DB::table('mentor_credentials')
             ->where('mentor_id', $mentorId)

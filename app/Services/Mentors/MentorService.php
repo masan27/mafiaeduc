@@ -78,7 +78,7 @@ class MentorService implements MentorServiceInterface
                 'teaching_video' => $teachingVideo,
                 'phone' => $phone,
                 'salary' => $salary,
-                'linkedin' => $linkedin,
+                'linkedin' => $linkedin ?? '',
             ];
 
             $mentorId = $this->mentorRepo->registerMentor(...$registerData);

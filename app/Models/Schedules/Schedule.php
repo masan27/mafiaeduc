@@ -2,6 +2,7 @@
 
 namespace App\Models\Schedules;
 
+use App\enums\ScheduleStatusEnum;
 use App\Models\Classes\GroupClass;
 use App\Models\Classes\PrivateClass;
 use App\Models\Grades\Grade;
@@ -30,10 +31,12 @@ class Schedule extends Model
         'address',
         'date',
         'time',
+        'is_done',
     ];
 
     protected $casts = [
         'date' => 'date:d F Y',
+        'is_done' => ScheduleStatusEnum::class,
     ];
 
     public function users(): BelongsToMany

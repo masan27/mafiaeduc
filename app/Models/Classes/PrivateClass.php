@@ -3,6 +3,7 @@
 namespace App\Models\Classes;
 
 use App\Entities\PrivateClassEntities;
+use App\enums\PrivateClassStatusEnum;
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Mentors\Mentor;
@@ -37,7 +38,7 @@ class PrivateClass extends Model
         'subject_id' => 'integer',
         'grade_id' => 'integer',
         'learning_method_id' => 'integer',
-        'status' => 'integer',
+        'status' => PrivateClassStatusEnum::class,
         'total_slot' => 'integer',
     ];
 

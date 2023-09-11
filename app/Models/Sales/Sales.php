@@ -2,6 +2,7 @@
 
 namespace App\Models\Sales;
 
+use App\enums\SalesTypeEnum;
 use App\Models\Payments\PaymentMethod;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,6 +37,7 @@ class Sales extends Model
         'payment_date' => 'datetime:Y-m-d H:i:s',
         'total_price' => 'integer',
         'sales_status_id' => 'integer',
+        'type' => SalesTypeEnum::class
     ];
 
     protected $hidden = [

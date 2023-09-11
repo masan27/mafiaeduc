@@ -2,15 +2,19 @@
 
 namespace App\Models\Mentors;
 
+use App\enums\MentorStatusEnum;
 use App\Models\Classes\PrivateClass;
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Schedules\Schedule;
+use App\Models\Subjects\Subject;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Mentor extends Model
 {
@@ -34,7 +38,7 @@ class Mentor extends Model
 
     protected $casts = [
         'salary' => 'integer',
-        'status' => 'boolean',
+        'status' => MentorStatusEnum::class
     ];
 
     public function user(): BelongsTo
@@ -57,8 +61,23 @@ class Mentor extends Model
         return $this->hasMany(PrivateClass::class);
     }
 
+    public function subjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Subject::class, 'mentor_subjects');
+    }
+
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    public function credentials(): HasOne
+    {
+        return $this->hasOne(MentorCredentials::class);
+    }
+
+    public function paymentMethod(): HasMany
+    {
+        return $this->hasMany(MentorPaymentMethod::class);
     }
 }

@@ -4,11 +4,13 @@ namespace App\Services\Mentors;
 
 use App\Entities\FileFolderEntities;
 use App\Entities\MentorEntities;
+use App\Entities\NotificationEntities;
 use App\Helpers\FileHelper;
 use App\Helpers\ResponseHelper;
 use App\Models\Mentors\Mentor;
 use App\Models\Mentors\MentorCredentials;
 use App\Repository\Mentors\MentorRepoInterface;
+use App\Repository\Notifications\NotificationRepoInterface;
 use App\Validators\MentorValidator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,13 +22,15 @@ use Illuminate\Support\Str;
 class MentorService implements MentorServiceInterface
 {
     protected MentorRepoInterface $mentorRepo;
-
     protected MentorValidator $mentorValidator;
+    protected NotificationRepoInterface $notificationRepo;
 
-    public function __construct(MentorRepoInterface $mentorRepo, MentorValidator $mentorValidator)
+    public function __construct(MentorRepoInterface       $mentorRepo, MentorValidator $mentorValidator,
+                                NotificationRepoInterface $notificationRepo)
     {
         $this->mentorRepo = $mentorRepo;
         $this->mentorValidator = $mentorValidator;
+        $this->notificationRepo = $notificationRepo;
     }
 
     public function registerMentor($request): array
@@ -127,6 +131,9 @@ class MentorService implements MentorServiceInterface
                 'password' => $mentorPassword,
             ];
 
+            $this->notificationRepo->createUserNotification($mentorId, 'Selamat, lamaran mentor anda diterima',
+                'Selamat, Silahkan hubungi kami untuk informasi lebih lanjut', NotificationEntities::TYPE_GENERAL);
+
             DB::commit();
             return ResponseHelper::success('Lamaran mentor berhasil diterima', $mentorAuthData);
         } catch (\Exception $e) {
@@ -151,6 +158,9 @@ class MentorService implements MentorServiceInterface
             if ($mentor->status === MentorEntities::MENTOR_STATUS_REJECTED) return ResponseHelper::error('Lamaran mentor sudah ditolak');
 
             $this->mentorRepo->declineMentorApplication($mentorId);
+
+            $this->notificationRepo->createUserNotification($mentorId, 'Maaf, lamaran mentor anda ditolak',
+                'Maaf, Silahkan ajukan lamaran kembali pada lain waktu', NotificationEntities::TYPE_GENERAL);
 
             DB::commit();
             return ResponseHelper::success('Berhasil menolak lamaran mentor');
@@ -494,6 +504,37 @@ class MentorService implements MentorServiceInterface
             ];
 
             return ResponseHelper::success('Berhasil mengambil data statistik mentor', $data);
+        } catch (\Exception $e) {
+            return ResponseHelper::serverError($e->getMessage());
+        }
+
+    }
+
+    public function getMentorRegisterStatus(Request $request): array
+    {
+        try {
+            $userId = $request->user()->id;
+
+            $mentor = Mentor::where('user_id', $userId)->first();
+
+            if ($mentor) {
+                if ($mentor->status == MentorEntities::MENTOR_STATUS_PENDING_APPROVAL) return
+                    ResponseHelper::success('Lamaran anda sedang diproses', [
+                        'status' => false,
+                    ]);
+                if ($mentor->status == MentorEntities::MENTOR_STATUS_APPROVED) return
+                    ResponseHelper::success('Lamaran anda diterima', [
+                        'status' => false,
+                    ]);
+                if ($mentor->status == MentorEntities::MENTOR_STATUS_REJECTED) return
+                    ResponseHelper::success('Lamaran anda ditolak', [
+                        'status' => false,
+                    ]);
+            }
+
+            return ResponseHelper::success('Silahkan daftar menjadi mentor', [
+                'status' => true,
+            ]);
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }

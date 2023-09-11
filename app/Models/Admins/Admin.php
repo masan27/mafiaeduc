@@ -32,6 +32,6 @@ class Admin extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->status === 1;
+        return (int)$this->status === 1;
     }
 }

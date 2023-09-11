@@ -225,9 +225,9 @@ class AdminTransactionService implements AdminTransactionServiceInterface
             $sales->payment_date = Carbon::now();
             $sales->save();
 
-            $this->notificationRepo->createUserNotification($userId, 'Pembayaran Berhasil',
+            $this->notificationRepo->updateUserNotification($salesId, 'Pembayaran Berhasil',
                 'Pembayaran Anda berhasil, silahkan cek status pembayaran Anda di halaman transaksi',
-                NotificationEntities::TYPE_PAYMENT, $salesId);
+                NotificationEntities::TYPE_PAYMENT);
 
             DB::commit();
             return ResponseHelper::success('Berhasil mengkonfirmasi transaksi');
@@ -252,15 +252,13 @@ class AdminTransactionService implements AdminTransactionServiceInterface
 
             if (!$sales) return ResponseHelper::error('Transaksi tidak ditemukan');
 
-            $userId = $sales->user_id;
-
             $sales->sales_status_id = SalesEntities::SALES_STATUS_PAID;
             $sales->payment_date = Carbon::now();
             $sales->save();
 
-            $this->notificationRepo->createUserNotification($userId, 'Pembayaran Gagal',
+            $this->notificationRepo->updateUserNotification($salesId, 'Pembayaran Gagal',
                 'Pembayaran Anda gagal, silahkan tunggu pengembalian dana Anda dalam 1x24 jam',
-                NotificationEntities::TYPE_PAYMENT, $salesId);
+                NotificationEntities::TYPE_PAYMENT);
 
             DB::commit();
             return ResponseHelper::success('Berhasil mengkonfirmasi transaksi');

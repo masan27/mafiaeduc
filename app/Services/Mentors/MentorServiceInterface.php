@@ -37,4 +37,6 @@ interface MentorServiceInterface
     public function changePhoto(Request $request): array;
 
     public function getMentorStats(Request $request): array;
+
+    public function getMentorRegisterStatus(Request $request): array;
 }

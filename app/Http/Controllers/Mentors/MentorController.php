@@ -57,4 +57,10 @@ class MentorController extends Controller
         $data = $this->mentorService->getMentorStats($request);
         return response()->json($data, $data['code']);
     }
+
+    public function getMentorRegisterStatus(Request $request): JsonResponse
+    {
+        $data = $this->mentorService->getMentorRegisterStatus($request);
+        return response()->json($data, $data['code']);
+    }
 }

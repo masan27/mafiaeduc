@@ -83,6 +83,7 @@ Route::prefix('v1')->group(function () {
 
             Route::get('materials', [MaterialController::class, 'getUserMaterial']);
             Route::get('schedules', [ScheduleController::class, 'getUserSchedules']);
+            Route::get('proposal-status', [MentorController::class, 'getMentorRegisterStatus']);
         });
 
         Route::get('payment-methods', [PaymentMethodController::class, 'getPaymentMethods']);

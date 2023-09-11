@@ -312,8 +312,8 @@ class CheckoutService implements CheckoutServiceInterface
                 'proof_of_payment' => $paymentProof ? FileHelper::getFileUrl($path) : null
             ]);
 
-            $this->notificationRepo->createUserNotification($userId, 'Sedang Diproses', 'Mohon menunggu konfirmasi pembayaran.',
-                NotificationEntities::TYPE_ORDER, $salesId);
+            $this->notificationRepo->updateUserNotification($salesId, 'Sedang Diproses', 'Mohon menunggu konfirmasi pembayaran.',
+                NotificationEntities::TYPE_ORDER);
 
             DB::commit();
             return ResponseHelper::success('Pembayaran berhasil dikonfirmasi');
@@ -355,8 +355,8 @@ class CheckoutService implements CheckoutServiceInterface
             $sales->sales_status_id = SalesEntities::SALES_STATUS_CANCELLED;
             $sales->save();
 
-            $this->notificationRepo->createUserNotification($userId, 'Pembayaran Dibatalkan', 'Pembelian dibatalkan oleh pengguna',
-                NotificationEntities::TYPE_ORDER, $salesId);
+            $this->notificationRepo->updateUserNotification($salesId, 'Pembayaran Dibatalkan', 'Pembelian dibatalkan oleh pengguna',
+                NotificationEntities::TYPE_ORDER);
 
             DB::commit();
             return ResponseHelper::success('Pembelian berhasil dibatalkan');

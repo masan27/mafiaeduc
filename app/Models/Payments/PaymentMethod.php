@@ -3,6 +3,7 @@
 namespace App\Models\Payments;
 
 use App\Entities\PaymentMethodEntities;
+use App\enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,6 @@ class PaymentMethod extends Model
 
     protected $fillable = [
         'name',
-        'icon',
         'code',
         'type',
         'status',
@@ -25,7 +25,7 @@ class PaymentMethod extends Model
 
     protected $casts = [
         'fee' => 'integer',
-        'status' => 'boolean',
+        'status' => StatusEnum::class,
     ];
 
     protected $hidden = [

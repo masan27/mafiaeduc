@@ -2,13 +2,15 @@
 
 namespace App\Models\Admins;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -16,7 +18,7 @@ class Admin extends Authenticatable
     protected $table = 'admins';
 
     protected $fillable = [
-        'full_name',
+        'name',
         'email',
         'password',
         'status',
@@ -27,4 +29,9 @@ class Admin extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->status === 1;
+    }
 }

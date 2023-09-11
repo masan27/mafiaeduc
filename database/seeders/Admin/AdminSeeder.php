@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
         if (Admin::count() > 0) return;
 
         Admin::create([
-            'full_name' => 'Admin Default',
+            'name' => 'Admin Default',
             'email' => 'admin@email.com',
             'password' => Hash::make('admin123'),
         ]);

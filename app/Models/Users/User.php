@@ -4,6 +4,8 @@ namespace App\Models\Users;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Entities\UserEntities;
+use App\enums\RoleEnum;
+use App\enums\StatusEnum;
 use App\Models\Materials\Material;
 use App\Models\Notifications\Notification;
 use App\Models\Schedules\Schedule;
@@ -24,6 +26,11 @@ class User extends Authenticatable
         'password',
         'status',
         'role',
+    ];
+
+    protected $casts = [
+        'role' => RoleEnum::class,
+        'status' => StatusEnum::class,
     ];
 
     protected $hidden = [

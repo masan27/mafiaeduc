@@ -161,7 +161,7 @@ class MentorService implements MentorServiceInterface
 
     }
 
-    private function generateApiToken($mentorId, $mentorEmail): string
+    public static function generateApiToken($mentorId, $mentorEmail): string
     {
         return md5($mentorId . $mentorEmail . Carbon::now()->timestamp);
     }

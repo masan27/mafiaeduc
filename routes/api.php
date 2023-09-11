@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', fn() => redirect('/v1'));
+Route::get('/', fn() => redirect('/admin'));
 
 Route::get('/storage-link', function () {
     $targetFolder = storage_path() . '/app/public';

@@ -2,6 +2,7 @@
 
 namespace App\Models\Subjects;
 
+use App\enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,10 @@ class Subject extends Model
     protected $fillable = [
         'name',
         'description',
+    ];
+
+    protected $casts = [
+        'status' => StatusEnum::class,
     ];
 
     protected $hidden = [

@@ -16,6 +16,9 @@ class MentorPaymentMethod extends Model
     protected $fillable = [
         'mentor_id',
         'payment_method_id',
+        'bank_name',
+        'account_name',
+        'account_number'
     ];
 
     public function mentor(): BelongsTo

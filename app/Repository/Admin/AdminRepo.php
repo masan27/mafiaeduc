@@ -52,7 +52,7 @@ class AdminRepo implements AdminRepoInterface
     public static function addNewAdmin($fullName, $email, $password): bool
     {
         return self::getDbTable()->insert([
-            'full_name' => $fullName,
+            'name' => $fullName,
             'email' => $email,
             'password' => Hash::make($password),
             'created_at' => now(),

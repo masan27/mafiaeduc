@@ -2,6 +2,7 @@
 
 namespace App\Models\Classes;
 
+use App\enums\StatusEnum;
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Schedules\Schedule;
@@ -31,6 +32,7 @@ class GroupClass extends Model
         'grade_id' => 'integer',
         'subject_id' => 'integer',
         'learning_method_id' => 'integer',
+        'status' => StatusEnum::class
     ];
 
     protected $hidden = [

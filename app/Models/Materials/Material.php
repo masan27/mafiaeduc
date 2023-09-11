@@ -2,6 +2,7 @@
 
 namespace App\Models\Materials;
 
+use App\enums\StatusEnum;
 use App\Models\Admins\Admin;
 use App\Models\Grades\Grade;
 use App\Models\Users\User;
@@ -26,6 +27,10 @@ class Material extends Model
         'preview_file',
         'source_file',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => StatusEnum::class,
     ];
 
     public function scopeActive($query)

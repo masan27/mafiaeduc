@@ -49,6 +49,19 @@ class NotificationRepo implements NotificationRepoInterface
         ]);
     }
 
+    public static function updateUserNotification(string $salesId, string $title, string $body, string $type)
+    {
+        return self::getDbTable()
+            ->where('sales_id', $salesId)
+            ->where('status', NotificationEntities::STATUS_DELIVERED)
+            ->update([
+                'title' => $title,
+                'body' => $body,
+                'type' => $type,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+    }
+
     public static function markNotificationAsRead($userId)
     {
         return self::getDbTable()

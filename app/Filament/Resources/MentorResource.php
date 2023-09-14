@@ -116,6 +116,12 @@ class MentorResource extends Resource
                             ->schema([
                                 Section::make('Status Mentor')
                                     ->description('Menu ini digunakan untuk mengelola status mentor')
+                                    ->hidden(function ($record) {
+                                        return $record->status->value === (string)MentorEntities::MENTOR_STATUS_REJECTED ||
+                                            $record->status->value === (string)
+                                            MentorEntities::MENTOR_STATUS_BLOCKED ||
+                                            $record->status->value === (string)MentorEntities::MENTOR_STATUS_APPROVED;
+                                    })
                                     ->schema([
                                         Radio::make('status')
                                             ->live()

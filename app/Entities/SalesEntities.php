@@ -11,6 +11,13 @@ class SalesEntities
     const SALES_STATUS_CANCELLED = 5;
     const SALES_STATUS_FAILED = 6;
 
+    const SALES_STATUS_NOT_PAID_TEXT = 'Belum Bayar';
+    const SALES_STATUS_PROCESSING_TEXT = 'Sedang Diproses';
+    const SALES_STATUS_PAID_TEXT = 'Sudah Bayar';
+    const SALES_STATUS_EXPIRED_TEXT = 'Kadaluarsa';
+    const SALES_STATUS_CANCELLED_TEXT = 'Dibatalkan';
+    const SALES_STATUS_FAILED_TEXT = 'Gagal';
+
     const PRIVATE_CLASSES_TYPE = 1;
     const GROUP_CLASSES_TYPE = 2;
     const MATERIALS_TYPE = 3;

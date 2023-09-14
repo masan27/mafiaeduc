@@ -171,10 +171,8 @@ class CheckoutService implements CheckoutServiceInterface
         return "$prefix$productId-$salesDate-$salesTime-$randomString";
     }
 
-    public function getSalesStatusInfo($salesStatus): string
+    public function getSalesStatusInfo($salesStatus, $salesDate): string
     {
-        $status = '';
-
         switch ($salesStatus) {
             case SalesEntities::SALES_STATUS_NOT_PAID:
                 $status = 'Menunggu Pembayaran';
@@ -191,6 +189,7 @@ class CheckoutService implements CheckoutServiceInterface
             case SalesEntities::SALES_STATUS_CANCELLED:
                 $status = 'Dibatalkan';
                 break;
+            case SalesEntities::SALES_STATUS_NOT_PAID && Carbon::now() > $salesDate:
             default:
                 $status = 'Gagal';
                 break;
@@ -229,20 +228,16 @@ class CheckoutService implements CheckoutServiceInterface
                 $sales->failed_reason = null;
             }
 
-            $sales->status_info = self::getSalesStatusInfo($sales->sales_status_id);
+            $sales->status_info = self::getSalesStatusInfo($sales->sales_status_id, $sales->sales_date);
 
             $products = [];
 
-            if ($sales->type == SalesEntities::PRIVATE_CLASSES_TYPE) {
-                foreach ($sales->details as $detail) {
+            foreach ($sales->details as $detail) {
+                if ((int)$sales->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
                     $products[] = $detail->privateClasses;
-                }
-            } else if ($sales->type == SalesEntities::GROUP_CLASSES_TYPE) {
-                foreach ($sales->details as $detail) {
+                } else if ((int)$sales->type->value === SalesEntities::GROUP_CLASSES_TYPE) {
                     $products[] = $detail->groupClasses;
-                }
-            } else if ($sales->type == SalesEntities::MATERIALS_TYPE) {
-                foreach ($sales->details as $detail) {
+                } else if ((int)$sales->type->value === SalesEntities::MATERIALS_TYPE) {
                     $products[] = $detail->material;
                 }
             }
@@ -289,9 +284,13 @@ class CheckoutService implements CheckoutServiceInterface
                 return ResponseHelper::error('Pembelian gagal');
             }
 
+            if ($sales->sales_date->addDays(1) < Carbon::now()) {
+                return ResponseHelper::error('Pembayaran sudah kadaluarsa');
+            }
+
             if ($paymentMethodId != $sales->payment_method_id) return ResponseHelper::error('Maaf, metode pembayaran tidak sesuai');
 
-            if ($paymentAmount < $sales->total_price) return ResponseHelper::error('Maaf, Jumlah pembayaran tidak sesuai');
+            if ((int)$paymentAmount !== (int)$sales->total_price) return ResponseHelper::error('Maaf, Jumlah pembayaran tidak sesuai');
 
             $sales->sales_status_id = SalesEntities::SALES_STATUS_PROCESSING;
             $sales->confirm_date = Carbon::now();

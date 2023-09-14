@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\PrivateClassResource\RelationManagers;
+namespace App\Filament\Resources\GroupClassResource\RelationManagers;
 
 use App\Entities\SalesEntities;
 use Carbon\Carbon;
@@ -24,6 +24,12 @@ class SchedulesRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
+                        Forms\Components\Select::make('mentor_id')
+                            ->label('Mentor')
+                            ->placeholder('Pilih Mentor')
+                            ->relationship('mentor', 'full_name')
+                            ->searchable()
+                            ->required(),
                         Forms\Components\Grid::make()
                             ->columns(2)
                             ->schema([
@@ -51,6 +57,7 @@ class SchedulesRelationManager extends RelationManager
                                 return $learningMethod === 2;
                             })
                             ->placeholder('Pilih platform')
+                            ->searchable()
                             ->label('Platform'),
                         Forms\Components\TextInput::make('meeting_link')
                             ->required()
@@ -81,8 +88,12 @@ class SchedulesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('date')
+            ->recordTitleAttribute('')
             ->columns([
+                Tables\Columns\TextColumn::make('mentor.full_name')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Mentor'),
                 Tables\Columns\TextColumn::make('subject.name')
                     ->sortable()
                     ->searchable()
@@ -110,19 +121,18 @@ class SchedulesRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['learning_method_id'] = (int)$this->ownerRecord->learning_method_id;
-                        $data['mentor_id'] = (int)$this->ownerRecord->mentor_id;
                         $data['subject_id'] = (int)$this->ownerRecord->subject_id;
                         $data['grade_id'] = (int)$this->ownerRecord->grade_id;
                         return $data;
                     })
                     ->using(function (array $data, $model): Model {
-                        $privateClassId = $data['private_classes_id'];
+                        $groupClassId = $data['group_classes_id'];
                         $modelCreated = $model::create($data);
 
                         $isBooked = DB::table('sales_details')
                             ->join('sales', 'sales_details.sales_id', '=', 'sales.id')
                             ->where([
-                                ['private_classes_id', $privateClassId],
+                                ['group_classes_id', $groupClassId],
                                 ['sales.sales_status_id', SalesEntities::SALES_STATUS_PAID],
                             ])->exists();
 
@@ -131,7 +141,7 @@ class SchedulesRelationManager extends RelationManager
                             $users = DB::table('sales_details')
                                 ->join('sales', 'sales_details.sales_id', '=', 'sales.id')
                                 ->where([
-                                    ['private_classes_id', $privateClassId],
+                                    ['group_classes_id', $groupClassId],
                                     ['sales.sales_status_id', SalesEntities::SALES_STATUS_PAID],
                                 ])->get();
 
@@ -171,20 +181,19 @@ class SchedulesRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['learning_method_id'] = (int)$this->ownerRecord->learning_method_id;
-                        $data['mentor_id'] = (int)$this->ownerRecord->mentor_id;
                         $data['subject_id'] = (int)$this->ownerRecord->subject_id;
                         $data['grade_id'] = (int)$this->ownerRecord->grade_id;
-                        $data['private_classes_id'] = (int)$this->ownerRecord->id;
+                        $data['group_classes_id'] = (int)$this->ownerRecord->id;
                         return $data;
                     })
                     ->using(function (array $data, $model): Model {
-                        $privateClassId = $data['private_classes_id'];
+                        $groupClassId = $data['group_classes_id'];
                         $modelCreated = $model::create($data);
 
                         $isBooked = DB::table('sales_details')
                             ->join('sales', 'sales_details.sales_id', '=', 'sales.id')
                             ->where([
-                                ['private_classes_id', $privateClassId],
+                                ['group_classes_id', $groupClassId],
                                 ['sales.sales_status_id', SalesEntities::SALES_STATUS_PAID],
                             ])->exists();
 
@@ -193,7 +202,7 @@ class SchedulesRelationManager extends RelationManager
                             $users = DB::table('sales_details')
                                 ->join('sales', 'sales_details.sales_id', '=', 'sales.id')
                                 ->where([
-                                    ['private_classes_id', $privateClassId],
+                                    ['group_classes_id', $groupClassId],
                                     ['sales.sales_status_id', SalesEntities::SALES_STATUS_PAID],
                                 ])->get();
 

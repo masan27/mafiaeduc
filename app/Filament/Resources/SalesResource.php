@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Entities\SalesEntities;
 use App\Filament\Resources\SalesResource\Pages;
 use App\Filament\Resources\SalesResource\RelationManagers;
 use App\Models\Sales\Sales;
@@ -102,6 +103,15 @@ class SalesResource extends Resource
                 TextColumn::make('status.name')
                     ->label('Status')
                     ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        SalesEntities::SALES_STATUS_NOT_PAID_TEXT => 'gray',
+                        SalesEntities::SALES_STATUS_PROCESSING_TEXT => 'warning',
+                        SalesEntities::SALES_STATUS_PAID_TEXT => 'success',
+                        SalesEntities::SALES_STATUS_EXPIRED_TEXT => 'danger',
+                        SalesEntities::SALES_STATUS_CANCELLED_TEXT => 'danger',
+                        SalesEntities::SALES_STATUS_FAILED_TEXT => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable()
                     ->searchable(),
             ])

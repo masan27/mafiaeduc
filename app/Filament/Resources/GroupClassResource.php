@@ -116,6 +116,7 @@ class GroupClassResource extends Resource
                     ->default(0)
                     ->label('Jumlah Jadwal'),
                 TextColumn::make('status')
+                    ->label('Status Materi')
                     ->badge(),
             ])
             ->filters([

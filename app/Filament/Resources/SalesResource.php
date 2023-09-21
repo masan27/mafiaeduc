@@ -54,6 +54,22 @@ class SalesResource extends Resource
                                     ->label('Tanggal Pembayaran')
                                     ->helperText('Tanggal pembayaran akan diisi secara otomatis ketika pembayaran dilakukan')
                                     ->disabled(),
+//                                Grid::make()
+//                                    ->relationship('status')
+//                                    ->schema([
+//                                        TextEntry::make('name')
+//                                            ->label('Status')
+//                                    ])
+//                                    ->color(fn(string $state): string => match ($state) {
+//                                        SalesEntities::SALES_STATUS_NOT_PAID_TEXT => 'gray',
+//                                        SalesEntities::SALES_STATUS_PROCESSING_TEXT => 'warning',
+//                                        SalesEntities::SALES_STATUS_PAID_TEXT => 'success',
+//                                        SalesEntities::SALES_STATUS_EXPIRED_TEXT => 'danger',
+//                                        SalesEntities::SALES_STATUS_CANCELLED_TEXT => 'danger',
+//                                        SalesEntities::SALES_STATUS_FAILED_TEXT => 'danger',
+//                                        default => 'gray',
+//                                    })
+//                                    ->badge(),
                             ]),
                         Section::make('Informasi Pembeli')
                             ->description('Berisi informasi kostumer yang melakukan pembelian')

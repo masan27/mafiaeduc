@@ -8,11 +8,13 @@ use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
 use App\Models\Materials\Material;
 use App\Models\Mentors\Mentor;
+use App\Models\Schedules\Schedule;
 use App\Models\Subjects\Subject;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class SalesDetail extends Model
 {
@@ -65,6 +67,16 @@ class SalesDetail extends Model
     public function groupClasses(): BelongsTo
     {
         return $this->belongsTo(GroupClass::class);
+    }
+
+    public function privateClassSchedule(): HasOneThrough
+    {
+        return $this->hasOneThrough(Schedule::class, PrivateClass::class, 'id', 'private_classes_id', 'private_classes_id', 'id');
+    }
+
+    public function groupClassSchedule(): HasOneThrough
+    {
+        return $this->hasOneThrough(Schedule::class, GroupClass::class, 'id', 'group_classes_id', 'group_classes_id', 'id');
     }
 
     public function learningMethod(): BelongsTo

@@ -97,6 +97,16 @@ class DetailsRelationManager extends RelationManager
                     ->hidden($type !== SalesEntities::GROUP_CLASSES_TYPE)
                     ->money('idr')
                     ->label('Harga Kelas'),
+                Tables\Columns\TextColumn::make('private_class_schedule_count')
+                    ->hidden($type !== SalesEntities::PRIVATE_CLASSES_TYPE)
+                    ->default(0)
+                    ->counts('privateClassSchedule')
+                    ->label('Total Jadwal'),
+                Tables\Columns\TextColumn::make('group_class_schedule_count')
+                    ->hidden($type !== SalesEntities::GROUP_CLASSES_TYPE)
+                    ->default(0)
+                    ->counts('groupClassSchedule')
+                    ->label('Total Jadwal'),
             ])
             ->filters([
                 //

@@ -54,6 +54,13 @@ class SalesResource extends Resource
                                     ->label('Tanggal Pembayaran')
                                     ->helperText('Tanggal pembayaran akan diisi secara otomatis ketika pembayaran dilakukan')
                                     ->disabled(),
+                                Grid::make()
+                                    ->relationship('status')
+                                    ->schema([
+                                        TextInput::make('name')
+                                            ->label('Status')
+                                            ->helperText('Status pembelian')
+                                    ])
                             ]),
                         Section::make('Informasi Pembeli')
                             ->description('Berisi informasi kostumer yang melakukan pembelian')

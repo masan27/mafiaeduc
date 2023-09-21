@@ -15,7 +15,7 @@ class UserRepo implements UserRepoInterface
     {
         return self::getDbTable()
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
-            ->join('grades as g', 'user_details.grade_id', '=', 'g.id')
+            ->leftJoin('grades as g', 'user_details.grade_id', '=', 'g.id')
             ->where('users.id', $userId)
             ->where('users.status', UserEntities::USER_ACTIVE)
             ->select(

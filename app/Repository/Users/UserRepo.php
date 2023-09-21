@@ -15,6 +15,7 @@ class UserRepo implements UserRepoInterface
     {
         return self::getDbTable()
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            ->join('grades as g', 'user_details.grade_id', '=', 'g.id')
             ->where('users.id', $userId)
             ->where('users.status', UserEntities::USER_ACTIVE)
             ->select(
@@ -22,6 +23,7 @@ class UserRepo implements UserRepoInterface
                 'users.email',
                 'users.role',
                 'user_details.full_name',
+                'g.name as grade',
                 'user_details.phone',
                 'user_details.address',
                 'user_details.school_origin',

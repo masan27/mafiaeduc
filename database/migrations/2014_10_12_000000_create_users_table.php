@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('status')->default(UserEntities::USER_ACTIVE);
-            $table->tinyInteger('role')->default(RoleEntities::GUEST_ROLE);
+            $table->tinyInteger('role')->default(RoleEntities::USER_ROLE);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -4,11 +4,11 @@ namespace App\Entities;
 
 class RoleEntities
 {
-    const GUEST_ROLE = 1;
-    const USER_ROLE = 2;
-    const MENTOR_ROLE = 3;
+    const ADMIN_ROLE = 1;
+    const MENTOR_ROLE = 2;
+    const USER_ROLE = 3;
 
-    const GUEST_ROLE_NAME = 'guest';
+    const ADMIN_ROLE_NAME = 'admin';
 
     const USER_ROLE_NAME = 'user';
 

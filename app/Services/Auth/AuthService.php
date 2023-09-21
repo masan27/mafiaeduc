@@ -52,7 +52,7 @@ class AuthService implements AuthServiceInterface
             $fullName = $request->input('full_name');
             $email = $request->input('email');
             $password = $request->input('password');
-            $role = RoleEntities::GUEST_ROLE;
+            $role = RoleEntities::USER_ROLE;
 
             $userId = $this->authRepo->registerUser($fullName, $email, $password, $role);
 

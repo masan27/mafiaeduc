@@ -72,11 +72,26 @@ class DetailsRelationManager extends RelationManager
                     ->badge()
                     ->color(Color::Blue)
                     ->label('Metode Pembelajaran'),
+                Tables\Columns\TextColumn::make('type')
+                    ->badge()
+                    ->default($type)
+                    ->label('Tipe')
+                    ->formatStateUsing(function (int $state) {
+                        if ($state === SalesEntities::PRIVATE_CLASSES_TYPE) {
+                            return 'Kelas Privat';
+                        } else if ($state === SalesEntities::GROUP_CLASSES_TYPE) {
+                            return 'Kelas Belajar';
+                        } else {
+                            return 'Materi';
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('material.price')
                     ->hidden($type !== SalesEntities::MATERIALS_TYPE)
+                    ->money('idr')
                     ->label('Harga Materi'),
                 Tables\Columns\TextColumn::make('privateClasses.price')
                     ->hidden($type !== SalesEntities::PRIVATE_CLASSES_TYPE)
+                    ->money('idr')
                     ->label('Harga Kelas'),
                 Tables\Columns\TextColumn::make('groupClasses.price')
                     ->hidden($type !== SalesEntities::GROUP_CLASSES_TYPE)

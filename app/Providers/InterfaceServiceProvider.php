@@ -142,6 +142,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Grades\GradeService::class,
         );
 
+        $this->app->bind(
+            \App\Services\Contacts\ContactServiceInterface::class,
+            \App\Services\Contacts\ContactService::class,
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

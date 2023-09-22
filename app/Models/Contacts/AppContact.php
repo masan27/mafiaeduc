@@ -19,6 +19,11 @@ class AppContact extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function getCreatedAtAttribute($value)
     {
         return date('Y-m-d H:i:s', strtotime($value));

@@ -8,7 +8,6 @@ use App\Models\Reviews\Review;
 use App\Models\Sales\Sales;
 use App\Validators\ReviewValidator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReviewService implements ReviewServiceInterface
@@ -28,7 +27,7 @@ class ReviewService implements ReviewServiceInterface
 
         DB::beginTransaction();
         try {
-            $userId = Auth::id();
+            $userId = $request->user()->id;
             $salesId = $request->input('sales_id');
             $rating = $request->input('rating');
             $comment = $request->input('comment');

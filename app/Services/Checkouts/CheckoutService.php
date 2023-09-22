@@ -234,7 +234,7 @@ class CheckoutService implements CheckoutServiceInterface
 
             foreach ($sales->details as $detail) {
                 if ((int)$sales->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
-                    $products[] = $detail->privateClasses;
+                    $products[] = $detail->privateClasses->load('mentor:id,full_name,status');
                 } else if ((int)$sales->type->value === SalesEntities::GROUP_CLASSES_TYPE) {
                     $products[] = $detail->groupClasses;
                 } else if ((int)$sales->type->value === SalesEntities::MATERIALS_TYPE) {

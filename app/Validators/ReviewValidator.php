@@ -17,7 +17,7 @@ class ReviewValidator
     public function validateAddTransactionReview($request): bool|array
     {
         $validator = Validator::make($request->all(), [
-            'sales_id' => 'required|integer',
+            'sales_id' => 'required|string',
             'rating' => 'required|decimal',
             'comment' => 'required|string',
         ], ValidationHelper::VALIDATION_MESSAGES);

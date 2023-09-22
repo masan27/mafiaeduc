@@ -147,6 +147,11 @@ class InterfaceServiceProvider extends ServiceProvider
             \App\Services\Contacts\ContactService::class,
         );
 
+        $this->app->bind(
+            \App\Services\Reviews\ReviewServiceInterface::class,
+            \App\Services\Reviews\ReviewService::class,
+        );
+
         // Register the Repository Interfaces
         // -------------------------------
 

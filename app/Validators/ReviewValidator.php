@@ -18,7 +18,7 @@ class ReviewValidator
     {
         $validator = Validator::make($request->all(), [
             'sales_id' => 'required|string',
-            'rating' => 'required|decimal',
+            'rating' => 'required|integer|between:1,5',
             'comment' => 'required|string',
         ], ValidationHelper::VALIDATION_MESSAGES);
 

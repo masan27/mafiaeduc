@@ -15,7 +15,10 @@ class AppContactResource extends Resource
 {
     protected static ?string $model = AppContact::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 8;
+    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static ?string $navigationIcon = 'heroicon-o-phone';
+    protected static ?string $modelLabel = 'Kontak Aplikasi';
 
     public static function form(Form $form): Form
     {
@@ -52,6 +55,11 @@ class AppContactResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Nomor Telepon')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal Dibuat')
+                    ->date('d F Y')
                     ->searchable()
                     ->sortable(),
             ])

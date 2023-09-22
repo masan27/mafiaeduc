@@ -216,7 +216,7 @@ class CheckoutService implements CheckoutServiceInterface
 
             $sales->failed_reason = null;
 
-            if ($expiredDate < Carbon::now()) {
+            if ($expiredDate < Carbon::now() && $sales->sales_status_id == SalesEntities::SALES_STATUS_NOT_PAID) {
                 Sales::where('id', $salesId)->update([
                     'sales_status_id' => SalesEntities::SALES_STATUS_EXPIRED
                 ]);

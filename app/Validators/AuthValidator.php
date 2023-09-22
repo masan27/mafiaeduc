@@ -17,7 +17,7 @@ class AuthValidator
     public function validateLoginInput($request): bool|array
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:255|exists:users,email',
+            'email' => 'required|email|max:255',
             'password' => 'required|string|min:6|max:25',
         ], ValidationHelper::VALIDATION_MESSAGES);
 

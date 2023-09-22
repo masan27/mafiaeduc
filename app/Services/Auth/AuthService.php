@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Entities\AccessLogEntities;
 use App\Entities\NotificationEntities;
 use App\Entities\RoleEntities;
+use App\Entities\UserEntities;
 use App\Helpers\ResponseHelper;
 use App\Repository\AccessLogs\AccessLogRepoInterface;
 use App\Repository\Auth\AuthRepoInterface;
@@ -94,7 +95,9 @@ class AuthService implements AuthServiceInterface
 
             $user = $this->authRepo->getUserByEmail($email);
 
-            if (!$user) return ResponseHelper::success('Akun kamu telah dinonaktifkan sementara, Silahkan hubungi admin untuk mengaktifkan kembali');
+            if (!$user) return ResponseHelper::success('Email atau password salah');
+
+            if ((int)$user->status !== UserEntities::USER_ACTIVE) return ResponseHelper::success('Akun kamu telah dinonaktifkan sementara, Silahkan hubungi admin untuk mengaktifkan kembali');
 
             if (!Hash::check($password, $user->password)) return ResponseHelper::error(
                 'Email atau password salah',

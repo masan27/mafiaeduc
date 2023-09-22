@@ -43,8 +43,7 @@ class AuthRepo implements AuthRepoInterface
 
     public static function getUserByEmail($email)
     {
-        return User::active()
-            ->where('email', $email)->first();
+        return User::where('email', $email)->first();
     }
 
     public static function insertOrUpdateOTP($userId, $otp)

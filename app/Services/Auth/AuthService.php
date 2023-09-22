@@ -97,7 +97,7 @@ class AuthService implements AuthServiceInterface
 
             if (!$user) return ResponseHelper::success('Email atau password salah');
 
-            if ((int)$user->status !== UserEntities::USER_ACTIVE) return ResponseHelper::success('Akun kamu telah dinonaktifkan sementara, Silahkan hubungi admin untuk mengaktifkan kembali');
+            if ($user->status !== (string)UserEntities::USER_ACTIVE) return ResponseHelper::success('Akun kamu telah dinonaktifkan sementara, Silahkan hubungi admin untuk mengaktifkan kembali');
 
             if (!Hash::check($password, $user->password)) return ResponseHelper::error(
                 'Email atau password salah',

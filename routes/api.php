@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\MentorAuthController;
 use App\Http\Controllers\Checkouts\CheckoutController;
+use App\Http\Controllers\Contacts\ContactController;
 use App\Http\Controllers\Grades\GradeController;
 use App\Http\Controllers\GroupClasses\AdminGroupClassController;
 use App\Http\Controllers\GroupClasses\GroupClassController;
@@ -98,6 +99,8 @@ Route::prefix('v1')->group(function () {
 
         Route::post('reviews', [ReviewController::class, 'addTransactionReview']);
     });
+
+    Route::get('/contacts', [ContactController::class, 'getAllContacts']);
 
     Route::prefix('materials')->group(function () {
         Route::get('/', [MaterialController::class, 'getActiveMaterial']);

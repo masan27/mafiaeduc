@@ -95,6 +95,8 @@ Route::prefix('v1')->group(function () {
         Route::get('invoice/{salesId}', [CheckoutController::class, 'getInvoiceDetails']);
         Route::post('payment-confirmation', [CheckoutController::class, 'paymentConfirmation']);
         Route::post('cancel-payment', [CheckoutController::class, 'cancelPayment']);
+
+        Route::post('reviews', [ReviewController::class, 'addTransactionReview']);
     });
 
     Route::prefix('materials')->group(function () {
@@ -109,8 +111,6 @@ Route::prefix('v1')->group(function () {
 
     Route::get('private-classes', [PrivateClassController::class, 'getAllPrivateClasses']);
     Route::get('private-classes/{privateClassId}', [PrivateClassController::class, 'getPrivateClassDetails']);
-
-    Route::post('reviews', [ReviewController::class, 'addTransactionReview']);
 
     Route::get('recommended-mentors', [MentorController::class, 'getRecommendedMentors']);
     Route::get('mentors/{mentorId}/classes', [MentorController::class, 'getAllMentorClass']);

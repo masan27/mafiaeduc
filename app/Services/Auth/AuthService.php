@@ -94,6 +94,7 @@ class AuthService implements AuthServiceInterface
             $password = $request->input('password');
 
             $user = $this->authRepo->getUserByEmail($email);
+            dd($user);
 
             if (!$user) return ResponseHelper::success('Email atau password salah');
 

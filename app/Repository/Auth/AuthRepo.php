@@ -43,7 +43,7 @@ class AuthRepo implements AuthRepoInterface
 
     public static function getUserByEmail(string $email)
     {
-        dd($email);
+        dd(User::where('email', $email)->get());
         return User::where('email', $email)->first();
     }
 

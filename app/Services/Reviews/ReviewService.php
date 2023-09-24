@@ -38,22 +38,23 @@ class ReviewService implements ReviewServiceInterface
 
             if ($sales->feedback) return ResponseHelper::error('Pembelian telah direview');
 
-            $type = substr($salesId, 1, 2);
+            $type = substr($salesId, 0, 2);
 
             switch ($type) {
                 case  SalesEntities::PRIVATE_CLASSES_TYPE_PREFIX:
                     $type = SalesEntities::PRIVATE_CLASSES_TYPE;
 
-                    foreach ($sales->details->privateClasses as $detail) {
+                    foreach ($sales->details as $detail) {
                         Review::create([
                             'sales_id' => $salesId,
                             'user_id' => $userId,
-                            'mentor_id' => $detail->mentor_id,
+                            'mentor_id' => $detail->privateClasses->mentor_id,
                             'private_classes_id' => $detail->private_classes_id,
                             'type' => $type,
                             'rating' => $rating,
                             'comment' => $comment,
                         ]);
+
                     }
 
                     break;

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('sales_id');
             $table->foreign('sales_id')->references('id')->on('sales')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('mentor_id')->constrained('mentors');
+            $table->foreignId('mentor_id')->nullable()->constrained('mentors');
             $table->foreignId('private_classes_id')->nullable()->constrained('private_classes');
             $table->foreignId('group_classes_id')->nullable()->constrained('group_classes');
             $table->foreignId('material_id')->nullable()->constrained('materials');

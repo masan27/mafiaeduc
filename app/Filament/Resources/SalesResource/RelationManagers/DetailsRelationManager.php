@@ -68,7 +68,7 @@ class DetailsRelationManager extends RelationManager
                     ->hidden($type !== SalesEntities::GROUP_CLASSES_TYPE)
                     ->label('Metode Pembelajaran'),
                 Tables\Columns\TextColumn::make('material.learningMethod.name')
-                    ->hidden($type !== SalesEntities::MATERIALS_TYPE)
+                    ->hidden($type !== SalesEntities::PRIVATE_CLASSES_TYPE)
                     ->badge()
                     ->color(Color::Blue)
                     ->label('Metode Pembelajaran'),

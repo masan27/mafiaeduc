@@ -348,7 +348,7 @@ class MentorRepo implements MentorRepoInterface
                 'mentors.photo',
                 'mentors.full_name',
                 'mentors.address',
-                DB::raw('AVG(reviews.rating) as rating')
+                DB::raw('ROUND(AVG(reviews.rating), 1) as rating')
             )
             ->orderBy('rating', 'desc')
             ->groupBy('mentors.id')

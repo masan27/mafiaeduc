@@ -59,8 +59,8 @@ class PrivateClassResource extends Resource
                             ->label('Metode Pembelajaran')
                             ->placeholder('Pilih Metode Pembelajaran'),
                         TextInput::make('price')
-                            ->label('Harga Materi')
-                            ->placeholder('Masukkan Harga Materi')
+                            ->label('Harga Kelas')
+                            ->placeholder('Masukkan Harga Kelas')
                             ->numeric()
                             ->prefix('Rp ')
                             ->required(),

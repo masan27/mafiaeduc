@@ -49,14 +49,14 @@ class UserService implements UserServiceInterface
 
             $updateData = [];
 
-            if ($request->full_name) return $updateData['full_name'] = $request->full_name;
-            if ($request->gender) return $updateData['gender'] = $request->gender;
-            if ($request->birth_date) return $updateData['birth_date'] = $request->birth_date;
-            if ($request->school_origin) return $updateData['school_origin'] = $request->school_origin;
-            if ($request->grade_id) return $updateData['grade_id'] = $request->grade_id;
-            if ($request->address) return $updateData['address'] = $request->address;
-            if ($request->phone) return $updateData['phone'] = $request->phone;
-            if ($updateData) return $updateData['updated_at'] = now();
+            if ($request->full_name){ $updateData['full_name'] = $request->full_name; }
+            if ($request->gender){ $updateData['gender'] = $request->gender; }
+            if ($request->birth_date){ $updateData['birth_date'] = $request->birth_date; }
+            if ($request->school_origin){ $updateData['school_origin'] = $request->school_origin; }
+            if ($request->grade_id){ $updateData['grade_id'] = $request->grade_id; }
+            if ($request->address){ $updateData['address'] = $request->address; }
+            if ($request->phone){ $updateData['phone'] = $request->phone; }
+            if ($updateData){ $updateData['updated_at'] = now(); }
 
             $data = $this->userRepo->updateUserDetails($userId, $updateData);
 

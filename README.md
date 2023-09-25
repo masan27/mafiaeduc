@@ -30,3 +30,4 @@ This is a REST API for the Mafia Education Application. It is built using the La
 
 -   **Reynaldo** - _Initial work_ - Flutter Developer
 -   **Juan Antonio Vivaldy Saragih** - _Initial work_ - Backend Developer
+-   **Achmad Naufal** - _Contributor_ - Fullstack Developer

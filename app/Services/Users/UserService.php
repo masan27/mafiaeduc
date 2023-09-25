@@ -47,16 +47,16 @@ class UserService implements UserServiceInterface
         try {
             $userId = $request->user()->id;
 
-            $updateData = [
-                'full_name' => $request->input('full_name'),
-                'gender' => $request->input('gender'),
-                'birth_date' => $request->input('birth_date'),
-                'school_origin' => $request->input('school_origin'),
-                'grade_id' => $request->input('grade_id'),
-                'address' => $request->input('address'),
-                'phone' => $request->input('phone'),
-                'updated_at' => now(),
-            ];
+            $updateData = [];
+
+            if ($request->full_name) return $updateData['full_name'] = $request->full_name;
+            if ($request->gender) return $updateData['gender'] = $request->gender;
+            if ($request->birth_date) return $updateData['birth_date'] = $request->birth_date;
+            if ($request->school_origin) return $updateData['school_origin'] = $request->school_origin;
+            if ($request->grade_id) return $updateData['grade_id'] = $request->grade_id;
+            if ($request->address) return $updateData['address'] = $request->address;
+            if ($request->phone) return $updateData['phone'] = $request->phone;
+            if ($updateData) return $updateData['updated_at'] = now();
 
             $data = $this->userRepo->updateUserDetails($userId, $updateData);
 
@@ -91,8 +91,11 @@ class UserService implements UserServiceInterface
             }
 
             if (Hash::check($newPassword, $user->password)) {
-                return ResponseHelper::error('Password baru tidak boleh sama dengan password lama', null,
-                    ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+                return ResponseHelper::error(
+                    'Password baru tidak boleh sama dengan password lama',
+                    null,
+                    ResponseAlias::HTTP_UNPROCESSABLE_ENTITY
+                );
             }
 
             $data = $this->userRepo->changeUserPassword($userId, $newPassword);

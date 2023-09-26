@@ -2,11 +2,14 @@
 
 namespace App\Filament\Resources\SalesResource\Pages;
 
+use App\Entities\NotificationEntities;
 use App\Entities\SalesEntities;
 use App\Filament\Resources\SalesResource;
+use App\Repository\Notifications\NotificationRepo;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\Carbon;
 
 class ViewSales extends ViewRecord
 {
@@ -58,8 +61,15 @@ class ViewSales extends ViewRecord
                             $schedule->users()->attach($userId);
                         }
                     }
+                    
+                    $salesId = $record->id;
+
+                    NotificationRepo::updateUserNotification($salesId, 'Pembayaran Berhasil',
+                        'Pembayaran Anda berhasil, silahkan cek status pembayaran Anda di halaman transaksi',
+                        NotificationEntities::TYPE_PAYMENT);
 
                     $record->sales_status_id = SalesEntities::SALES_STATUS_PAID;
+                    $record->payment_date = Carbon::now();
                     $record->save();
                 }),
             Action::make('decline')
@@ -88,6 +98,12 @@ class ViewSales extends ViewRecord
                 ->hidden(fn() => $this->record->sales_status_id !== SalesEntities::SALES_STATUS_PROCESSING
                     && $this->record->sales_status_id !== SalesEntities::SALES_STATUS_EXPIRED)
                 ->action(function ($record): void {
+                    $salesId = $record->id;
+
+                    NotificationRepo::updateUserNotification($salesId, 'Pembayaran Gagal',
+                        'Pembayaran Anda gagal, silahkan tunggu pengembalian dana Anda dalam 1x24 jam',
+                        NotificationEntities::TYPE_PAYMENT);
+
                     $record->sales_status_id = SalesEntities::SALES_STATUS_FAILED;
                     $record->save();
                 })

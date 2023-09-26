@@ -58,6 +58,7 @@ class NotificationRepo implements NotificationRepoInterface
                 'title' => $title,
                 'body' => $body,
                 'type' => $type,
+                'is_read' => NotificationEntities::STATUS_UNREAD,
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
     }
@@ -73,4 +74,5 @@ class NotificationRepo implements NotificationRepoInterface
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
     }
+
 }

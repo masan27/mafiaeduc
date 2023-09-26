@@ -76,7 +76,9 @@ class AppContactResource extends Resource
                 ]),
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->hidden(function () {
+                    return AppContact::count() >= 1;
+                }),
             ]);
     }
 

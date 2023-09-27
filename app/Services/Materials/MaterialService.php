@@ -58,7 +58,7 @@ class MaterialService implements MaterialServiceInterface
 
             if (!$material) return ResponseHelper::notFound('Data materi tidak ditemukan');
 
-            $material->cover_image = FileHelper::getFileUrl($material->cover_image);
+            // $material->cover_image = FileHelper::getFileUrl($material->cover_image);
             $material->author = 'Mafia Education';
 
             return ResponseHelper::success('Berhasil mendapatkan detail materi', $material);

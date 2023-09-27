@@ -43,6 +43,9 @@ class SalesDetail extends Model
         'group_classes_id' => 'integer',
     ];
 
+    // APPENDS
+    protected $appends = ['products', 'type_product'];
+
 
     public function sales(): BelongsTo
     {
@@ -54,16 +57,19 @@ class SalesDetail extends Model
         return $this->belongsTo(User::class);
     }
 
+    // ! Deprecated
     public function material(): BelongsTo
     {
         return $this->belongsTo(Material::class);
     }
 
+    // ! Deprecated
     public function privateClasses(): BelongsTo
     {
         return $this->belongsTo(PrivateClass::class, 'private_classes_id');
     }
 
+    // ! Deprecated
     public function groupClasses(): BelongsTo
     {
         return $this->belongsTo(GroupClass::class);
@@ -97,5 +103,40 @@ class SalesDetail extends Model
     public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);
+    }
+
+    protected function getProductsAttribute(): array
+    {
+        $products = [];
+
+        if ($this->attributes['material_id']) {
+            $data = Material::find($this->attributes['material_id']);
+            if($data) {array_push($products, $data);}
+        }
+        if ($this->attributes['private_classes_id']) {
+            $data = PrivateClass::with('mentor')->find($this->attributes['private_classes_id']);
+            if($data) {array_push($products, $data);}
+        }
+        if ($this->attributes['group_classes_id']) {
+            $data = GroupClass::find($this->attributes['group_classes_id']);
+            if($data) {array_push($products, $data);}
+        }
+        return $products;
+    }
+
+    protected function getTypeProductAttribute(): String
+    {
+        $type = null;
+
+        if ($this->attributes['material_id']) {
+            $type = 'Materi';
+        }
+        if ($this->attributes['private_classes_id']) {
+            $type = 'Kelas Private';
+        }
+        if ($this->attributes['group_classes_id']) {
+            $type = 'Kelas Belajar';
+        }
+        return $type;
     }
 }

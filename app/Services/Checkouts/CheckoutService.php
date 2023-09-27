@@ -58,6 +58,8 @@ class CheckoutService implements CheckoutServiceInterface
                 case SalesEntities::MATERIALS_TYPE:
                     $product = Material::find($productId);
                     break;
+                default:
+                    return ResponseHelper::error('Type produk tidak sesuai');
             }
 
             if (!$product) return ResponseHelper::error('Produk tidak ditemukan');
@@ -74,6 +76,8 @@ class CheckoutService implements CheckoutServiceInterface
             $subTotal = $product->price;
             $processingFee = $paymentMethod->fee;
             $totalPrice = $subTotal + $processingFee;
+
+            if (self::checkIsSold($productId, $type)) return ResponseHelper::error('Produk ini sudah dibeli sebelumnya');
 
             $salesId = self::generateSalesId($productId, $type);
 
@@ -119,8 +123,13 @@ class CheckoutService implements CheckoutServiceInterface
                 'status' => PrivateClassEntities::STATUS_PURCHASED
             ]);
 
-            $this->notificationRepo->createUserNotification($userId, 'Menunggu Pembayaran', 'Mohon melakukan pembayaran selama 1x24 jam',
-                NotificationEntities::TYPE_ORDER, $salesId);
+            $this->notificationRepo->createUserNotification(
+                $userId,
+                'Menunggu Pembayaran',
+                'Mohon melakukan pembayaran selama 1x24 jam',
+                NotificationEntities::TYPE_ORDER,
+                $salesId
+            );
 
             $data = [
                 'sales_id' => $salesId
@@ -132,7 +141,6 @@ class CheckoutService implements CheckoutServiceInterface
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
-
     }
 
     public function generateSalesId(int $productId, string $type): string
@@ -202,7 +210,7 @@ class CheckoutService implements CheckoutServiceInterface
     {
         try {
             $userId = $request->user()->id;
-            $sales = Sales::with('status', 'paymentMethod', 'details', 'user.detail')->where([
+            $sales = Sales::with('status', 'paymentMethod', 'detail', 'user.detail')->where([
                 ['id', $salesId],
                 ['user_id', $userId]
             ])->first();
@@ -230,25 +238,10 @@ class CheckoutService implements CheckoutServiceInterface
 
             $sales->status_info = self::getSalesStatusInfo($sales->sales_status_id, $sales->sales_date);
 
-            $products = [];
-
-            foreach ($sales->details as $detail) {
-                if ((int)$sales->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
-                    $products[] = $detail->privateClasses->load('mentor:id,full_name,status');
-                } else if ((int)$sales->type->value === SalesEntities::GROUP_CLASSES_TYPE) {
-                    $products[] = $detail->groupClasses;
-                } else if ((int)$sales->type->value === SalesEntities::MATERIALS_TYPE) {
-                    $products[] = $detail->material;
-                }
-            }
-
-            $sales->products = $products;
-
             return ResponseHelper::success('Berhasil mengambil invoice', $sales);
         } catch (\Exception $e) {
             return ResponseHelper::serverError($e->getMessage());
         }
-
     }
 
     public function paymentConfirmation(Request $request): array
@@ -311,8 +304,12 @@ class CheckoutService implements CheckoutServiceInterface
                 'proof_of_payment' => $paymentProof ? FileHelper::getFileUrl($path) : null
             ]);
 
-            $this->notificationRepo->updateUserNotification($salesId, 'Sedang Diproses', 'Mohon menunggu konfirmasi pembayaran.',
-                NotificationEntities::TYPE_ORDER);
+            $this->notificationRepo->updateUserNotification(
+                $salesId,
+                'Sedang Diproses',
+                'Mohon menunggu konfirmasi pembayaran.',
+                NotificationEntities::TYPE_ORDER
+            );
 
             DB::commit();
             return ResponseHelper::success('Pembayaran berhasil dikonfirmasi');
@@ -320,7 +317,6 @@ class CheckoutService implements CheckoutServiceInterface
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
-
     }
 
     public function cancelPayment(Request $request): array
@@ -354,8 +350,12 @@ class CheckoutService implements CheckoutServiceInterface
             $sales->sales_status_id = SalesEntities::SALES_STATUS_CANCELLED;
             $sales->save();
 
-            $this->notificationRepo->updateUserNotification($salesId, 'Pembayaran Dibatalkan', 'Pembelian dibatalkan oleh pengguna',
-                NotificationEntities::TYPE_ORDER);
+            $this->notificationRepo->updateUserNotification(
+                $salesId,
+                'Pembayaran Dibatalkan',
+                'Pembelian dibatalkan oleh pengguna',
+                NotificationEntities::TYPE_ORDER
+            );
 
             DB::commit();
             return ResponseHelper::success('Pembelian berhasil dibatalkan');
@@ -363,6 +363,24 @@ class CheckoutService implements CheckoutServiceInterface
             DB::rollBack();
             return ResponseHelper::serverError($e->getMessage());
         }
+    }
 
+    function checkIsSold($productId, $type): bool
+    {
+        $searchBy = '';
+        switch ($type) {
+            case SalesEntities::PRIVATE_CLASSES_TYPE:
+                $searchBy = 'private_classes_id';
+                break;
+            case SalesEntities::GROUP_CLASSES_TYPE:
+                $searchBy = 'group_classes_id';
+                break;
+            case SalesEntities::MATERIALS_TYPE:
+                $searchBy = 'material_id';
+                break;
+        }
+        $check = SalesDetail::where($searchBy, $productId)->first();
+        if ($check) return true;
+        else return false;
     }
 }

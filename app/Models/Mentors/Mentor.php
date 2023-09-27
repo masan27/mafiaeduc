@@ -3,6 +3,7 @@
 namespace App\Models\Mentors;
 
 use App\enums\MentorStatusEnum;
+use App\Helpers\FileHelper;
 use App\Models\Classes\PrivateClass;
 use App\Models\Grades\Grade;
 use App\Models\LearningMethods\LearningMethod;
@@ -40,6 +41,13 @@ class Mentor extends Model
         'salary' => 'integer',
         'status' => MentorStatusEnum::class
     ];
+
+    protected function getPhotoAttribute(): String
+    {
+        $value = $this->attributes['photo'];
+        if ($value) return FileHelper::getFileUrl($value);
+        return null;
+    }
 
     public function user(): BelongsTo
     {

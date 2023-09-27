@@ -2,6 +2,7 @@
 
 namespace App\Services\Notifications;
 
+use App\Entities\NotificationEntities;
 use App\Helpers\ResponseHelper;
 use App\Models\Notifications\Notification;
 use App\Repository\Notifications\NotificationRepoInterface;
@@ -23,7 +24,9 @@ class NotificationService implements NotificationServiceInterface
             $userId = $request->user()->id;
             $count = $request->input('count', 10);
 
-            $notifications = $this->notificationRepo->getUserNotification($userId, $count);
+            $notifications = Notification::where('user_id', $userId)
+            ->where('notifications.status', NotificationEntities::STATUS_DELIVERED)
+            ->with('sales.detail')->latest()->paginate($count);
 
             if ($notifications->isEmpty()) return ResponseHelper::notFound('Tidak ada notifikasi');
 

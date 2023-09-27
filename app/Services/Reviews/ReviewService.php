@@ -32,7 +32,7 @@ class ReviewService implements ReviewServiceInterface
             $rating = $request->input('rating');
             $comment = $request->input('comment');
 
-            $sales = Sales::with('details')->find($salesId);
+            $sales = Sales::with('detail')->find($salesId);
 
             if (!$sales) return ResponseHelper::error('Sales ID tidak ditemukan');
 

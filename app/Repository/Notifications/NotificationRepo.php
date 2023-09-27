@@ -10,6 +10,7 @@ class NotificationRepo implements NotificationRepoInterface
 {
     use RepoTrait;
 
+    // ! Deprecated
     public static function getUserNotification($userId, $count)
     {
         return self::getDbTable()

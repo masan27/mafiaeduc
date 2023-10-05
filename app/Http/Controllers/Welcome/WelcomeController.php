@@ -26,4 +26,9 @@ class WelcomeController extends Controller
     {
         return view('welcome');
     }
+
+    public function viewPrivacyPolicy(): View
+    {
+        return view('privacy-policy');
+    }
 }

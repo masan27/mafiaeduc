@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\MentorResource\Pages;
 
 use App\Filament\Resources\MentorResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListMentors extends ListRecords
@@ -13,7 +12,7 @@ class ListMentors extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+//            Actions\CreateAction::make(),
         ];
     }
 }

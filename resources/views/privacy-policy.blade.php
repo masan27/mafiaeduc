@@ -1009,7 +1009,7 @@
         <header class="bg-container">
             <div class="container-wrapper">
                 <h3 class="title">Privacy Policy</h3>
-                <p class="description">Last updated: September 14, 2023</p>
+                <p class="description">Last updated: September 04, 2023</p>
             </div>
         </header>
 

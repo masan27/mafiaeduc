@@ -51,19 +51,25 @@ class ViewSales extends ViewRecord
                     $userId = $record->user->id;
 
                     if ((int)$record->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
-                        foreach ($record->details as $detail) {
-                            $schedule = $detail->privateClassSchedule;
-                            $schedule->users()->attach($userId);
+                        foreach ($record->detail->products as $item) {
+                            if($item->getTable() == 'private_classes'){
+                                $item->users()->attach($userId);
+                                break;
+                            }
                         }
                     } else if ((int)$record->type->value === SalesEntities::GROUP_CLASSES_TYPE) {
-                        foreach ($record->details as $detail) {
-                            $schedule = $detail->groupClassSchedule;
-                            $schedule->users()->attach($userId);
+                        foreach ($record->detail->products as $item) {
+                            if($item->getTable() == 'group_classes'){
+                                $item->users()->attach($userId);
+                                break;
+                            }
                         }
                     } else {
-                        foreach ($record->details as $detail) {
-                            $schedule = $detail->material;
-                            $schedule->users()->attach($userId);
+                        foreach ($record->detail->products as $item) {
+                            if($item->getTable() == 'materials'){
+                                $item->users()->attach($userId);
+                                break;
+                            }
                         }
                     }
 

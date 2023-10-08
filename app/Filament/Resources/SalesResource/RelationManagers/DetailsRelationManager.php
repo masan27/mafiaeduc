@@ -15,7 +15,7 @@ use Filament\Tables\Table;
 
 class DetailsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'detail';
+    protected static string $relationship = 'details';
     protected static ?string $title = 'Detail Pesanan';
 
     public function form(Form $form): Form

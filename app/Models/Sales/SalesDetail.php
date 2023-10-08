@@ -44,7 +44,7 @@ class SalesDetail extends Model
     ];
 
     // APPENDS
-    protected $appends = ['products', 'type_product'];
+    protected $appends = ['product', 'type_product'];
 
 
     public function sales(): BelongsTo
@@ -105,21 +105,21 @@ class SalesDetail extends Model
         return $this->belongsTo(Grade::class);
     }
 
-    protected function getProductsAttribute(): array
+    protected function getProductAttribute(): array
     {
-        $products = [];
+        $products = null;
 
         if ($this->attributes['material_id']) {
             $data = Material::find($this->attributes['material_id']);
-            if($data) {array_push($products, $data);}
+            if($data) {$products = $data;}
         }
         if ($this->attributes['private_classes_id']) {
             $data = PrivateClass::with('mentor')->find($this->attributes['private_classes_id']);
-            if($data) {array_push($products, $data);}
+            if($data) {$products = $data;}
         }
         if ($this->attributes['group_classes_id']) {
             $data = GroupClass::find($this->attributes['group_classes_id']);
-            if($data) {array_push($products, $data);}
+            if($data) {$products = $data;}
         }
         return $products;
     }

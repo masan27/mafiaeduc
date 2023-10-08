@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Sales extends Model
 {
@@ -56,9 +55,9 @@ class Sales extends Model
         return $this->belongsTo(PaymentMethod::class);
     }
 
-    public function detail(): HasOne
+    public function details(): HasMany
     {
-        return $this->hasOne(SalesDetail::class, 'sales_id', 'id');
+        return $this->hasMany(SalesDetail::class, 'sales_id', 'id');
     }
 
     public function status(): BelongsTo

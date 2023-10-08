@@ -35,7 +35,6 @@ class CredentialsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('password')
                     ->required()
                     ->password()
-                    ->confirmed()
                     ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
                     ->dehydrated(fn(?string $state): bool => filled($state))
                     ->required(fn(string $operation): bool => $operation === 'create')

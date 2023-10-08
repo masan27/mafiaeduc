@@ -23,7 +23,7 @@ class ViewSales extends ViewRecord
                 ->disabled(function ($record) {
                     $result = false;
                     if ((int)$record->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
-                        $exist = $record;
+                        $exist = $record->detail->products;
                         foreach ($exist as $item) {
                             if ($item->getTable() == 'private_classes') {
                                 $exist = true;
@@ -85,20 +85,25 @@ class ViewSales extends ViewRecord
                 ->requiresConfirmation()
                 ->color(Color::Red)
                 ->disabled(function ($record) {
+                    $result = true;
                     if ((int)$record->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
-                        $exist = $record->details[0]->privateClassSchedule;
-                        if ($exist) {
-                            return false;
-                        } else {
-                            return true;
+                        $exist = $record->detail->products;
+                        foreach ($exist as $item) {
+                            if ($item->getTable() == 'private_classes') {
+                                $exist = false;
+                                break;
+                            }
                         }
+                        return $result;
                     } else if ((int)$record->type->value === SalesEntities::GROUP_CLASSES_TYPE) {
-                        $exist = $record->details[0]->groupClassSchedule;
-                        if ($exist) {
-                            return false;
-                        } else {
-                            return true;
+                        $exist = $record->detail->products;
+                        foreach ($exist as $item) {
+                            if ($item->getTable() == 'group_classes') {
+                                $exist = false;
+                                break;
+                            }
                         }
+                        return $result;
                     } else {
                         return false;
                     }

@@ -26,7 +26,7 @@ class NotificationService implements NotificationServiceInterface
 
             $notifications = Notification::where('user_id', $userId)
             ->where('notifications.status', NotificationEntities::STATUS_DELIVERED)
-            ->with('sales.detail')->latest()->paginate($count);
+            ->with('sales.details')->latest()->paginate($count);
 
             if ($notifications->isEmpty()) return ResponseHelper::notFound('Tidak ada notifikasi');
 

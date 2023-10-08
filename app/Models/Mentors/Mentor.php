@@ -42,7 +42,10 @@ class Mentor extends Model
         'status' => MentorStatusEnum::class
     ];
 
-    protected function getPhotoAttribute(): String
+    // APPENDS
+    protected $appends = ['photo_url'];
+
+    protected function getPhotoUrlAttribute(): String
     {
         $value = $this->attributes['photo'];
         if ($value) return FileHelper::getFileUrl($value);

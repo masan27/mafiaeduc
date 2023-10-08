@@ -22,7 +22,7 @@ class ViewSales extends ViewRecord
                 ->label('Terima')
                 ->disabled(function ($record) {
                     if ((int)$record->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
-                        $exist = $record->details[0]->privateClassSchedule;
+                        $exist = $record->detail[0]->privateClassSchedule;
                         if ($exist) {
                             return false;
                         } else {
@@ -61,7 +61,7 @@ class ViewSales extends ViewRecord
                             $schedule->users()->attach($userId);
                         }
                     }
-                    
+
                     $salesId = $record->id;
 
                     NotificationRepo::updateUserNotification($salesId, 'Pembayaran Berhasil',

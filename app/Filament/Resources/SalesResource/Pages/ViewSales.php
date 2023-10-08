@@ -21,25 +21,30 @@ class ViewSales extends ViewRecord
             Action::make('accept')
                 ->label('Terima')
                 ->disabled(function ($record) {
+                    $result = false;
                     if ((int)$record->type->value === SalesEntities::PRIVATE_CLASSES_TYPE) {
-                        $exist = $record->detail[0]->privateClassSchedule;
-                        if ($exist) {
-                            return false;
-                        } else {
-                            return true;
+                        $exist = $record;
+                        foreach ($exist as $item) {
+                            if ($item->getTable() == 'private_classes') {
+                                $exist = true;
+                                break;
+                            }
                         }
+                        return $result;
                     } else if ((int)$record->type->value === SalesEntities::GROUP_CLASSES_TYPE) {
-                        $exist = $record->details[0]->groupClassSchedule;
-                        if ($exist) {
-                            return false;
-                        } else {
-                            return true;
+                        $exist = $record->detail->products;
+                        foreach ($exist as $item) {
+                            if ($item->getTable() == 'group_classes') {
+                                $exist = true;
+                                break;
+                            }
                         }
+                        return $exist;
                     } else {
                         return false;
                     }
                 })
-                ->hidden(fn() => $this->record->sales_status_id !== SalesEntities::SALES_STATUS_PROCESSING
+                ->hidden(fn () => $this->record->sales_status_id !== SalesEntities::SALES_STATUS_PROCESSING
                     && $this->record->sales_status_id !== SalesEntities::SALES_STATUS_EXPIRED)
                 ->requiresConfirmation()
                 ->action(function ($record): void {
@@ -64,9 +69,12 @@ class ViewSales extends ViewRecord
 
                     $salesId = $record->id;
 
-                    NotificationRepo::updateUserNotification($salesId, 'Pembayaran Berhasil',
+                    NotificationRepo::updateUserNotification(
+                        $salesId,
+                        'Pembayaran Berhasil',
                         'Pembayaran Anda berhasil, silahkan cek status pembayaran Anda di halaman transaksi',
-                        NotificationEntities::TYPE_PAYMENT);
+                        NotificationEntities::TYPE_PAYMENT
+                    );
 
                     $record->sales_status_id = SalesEntities::SALES_STATUS_PAID;
                     $record->payment_date = Carbon::now();
@@ -95,14 +103,17 @@ class ViewSales extends ViewRecord
                         return false;
                     }
                 })
-                ->hidden(fn() => $this->record->sales_status_id !== SalesEntities::SALES_STATUS_PROCESSING
+                ->hidden(fn () => $this->record->sales_status_id !== SalesEntities::SALES_STATUS_PROCESSING
                     && $this->record->sales_status_id !== SalesEntities::SALES_STATUS_EXPIRED)
                 ->action(function ($record): void {
                     $salesId = $record->id;
 
-                    NotificationRepo::updateUserNotification($salesId, 'Pembayaran Gagal',
+                    NotificationRepo::updateUserNotification(
+                        $salesId,
+                        'Pembayaran Gagal',
                         'Pembayaran Anda gagal, silahkan tunggu pengembalian dana Anda dalam 1x24 jam',
-                        NotificationEntities::TYPE_PAYMENT);
+                        NotificationEntities::TYPE_PAYMENT
+                    );
 
                     $record->sales_status_id = SalesEntities::SALES_STATUS_FAILED;
                     $record->save();

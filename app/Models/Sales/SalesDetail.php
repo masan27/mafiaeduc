@@ -105,7 +105,7 @@ class SalesDetail extends Model
         return $this->belongsTo(Grade::class);
     }
 
-    protected function getProductAttribute(): array
+    protected function getProductAttribute(): object
     {
         $products = null;
 

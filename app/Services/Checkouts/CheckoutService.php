@@ -210,7 +210,7 @@ class CheckoutService implements CheckoutServiceInterface
     {
         try {
             $userId = $request->user()->id;
-            $sales = Sales::with('status', 'paymentMethod', 'detail', 'user.detail')->where([
+            $sales = Sales::with('status', 'paymentMethod', 'details', 'user.detail')->where([
                 ['id', $salesId],
                 ['user_id', $userId]
             ])->first();

@@ -33,6 +33,95 @@ class MentorResource extends Resource
     protected static ?string $navigationGroup = 'Staff';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+                ImageColumn::make('photo')
+                    ->label('Foto')
+                    ->circular(),
+                TextColumn::make('full_name')
+                    ->label('Nama Lengkap')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('phone')
+                    ->label('No. HP')
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('status')
+                    ->badge()
+                    ->label('Status')
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->label('Dikirim Pada')
+                    ->date('d F Y')
+                    ->sortable()
+                    ->searchable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->placeholder('Pilih Status')
+                    ->options(MentorStatusEnum::class),
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
+            ])
+            ->actions([
+//                Tables\Actions\Action::make('Terima')
+//                    ->color(Color::Green)
+//                    ->icon('heroicon-o-check-circle')
+//                    ->visible(fn($record) => $record->status ===
+//                        MentorEntities::MENTOR_STATUS_PENDING_APPROVAL
+//                    )
+//                    ->requiresConfirmation()
+//                    ->action(function (Mentor $records): void {
+//                        $records->status = MentorEntities::MENTOR_STATUS_APPROVED;
+//                        $records->save();
+//                    }),
+//                Tables\Actions\Action::make('Tolak')
+//                    ->color(Color::Red)
+//                    ->icon('heroicon-o-x-circle')
+//                    ->requiresConfirmation()
+//                    ->visible(
+//                        fn($record) => $record->status ===
+//                            MentorEntities::MENTOR_STATUS_PENDING_APPROVAL
+//                    )
+//                    ->action(function (Mentor $records): void {
+//                        $records->status = MentorEntities::MENTOR_STATUS_REJECTED;
+//                        $records->save();
+//                    }),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
+            ]);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -46,6 +135,12 @@ class MentorResource extends Resource
                                 Section::make('Informasi Pengajar')
                                     ->description('Menu ini digunakan untuk mengelola data pengajar')
                                     ->schema([
+                                        Select::make('user_id')
+                                            ->label('Nama Akun Pengajar')
+                                            ->relationship(name: 'userDetail', titleAttribute: 'full_name')
+                                            ->searchable()
+                                            ->required()
+                                            ->placeholder('Pilih Pengajar'),
                                         FileUpload::make('photo')
                                             ->label('Foto')
                                             ->required()
@@ -148,95 +243,6 @@ class MentorResource extends Resource
                                     ])
                             ])
                     ])
-            ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable()
-                    ->searchable(),
-                ImageColumn::make('photo')
-                    ->label('Foto')
-                    ->circular(),
-                TextColumn::make('full_name')
-                    ->label('Nama Lengkap')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('phone')
-                    ->label('No. HP')
-                    ->copyable()
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('status')
-                    ->badge()
-                    ->label('Status')
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->label('Dikirim Pada')
-                    ->date('d F Y')
-                    ->sortable()
-                    ->searchable(),
-            ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
-                    ->placeholder('Pilih Status')
-                    ->options(MentorStatusEnum::class),
-                Filter::make('created_at')
-                    ->form([
-                        DatePicker::make('created_from'),
-                        DatePicker::make('created_until'),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['created_from'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                            )
-                            ->when(
-                                $data['created_until'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                            );
-                    })
-            ])
-            ->actions([
-//                Tables\Actions\Action::make('Terima')
-//                    ->color(Color::Green)
-//                    ->icon('heroicon-o-check-circle')
-//                    ->visible(fn($record) => $record->status ===
-//                        MentorEntities::MENTOR_STATUS_PENDING_APPROVAL
-//                    )
-//                    ->requiresConfirmation()
-//                    ->action(function (Mentor $records): void {
-//                        $records->status = MentorEntities::MENTOR_STATUS_APPROVED;
-//                        $records->save();
-//                    }),
-//                Tables\Actions\Action::make('Tolak')
-//                    ->color(Color::Red)
-//                    ->icon('heroicon-o-x-circle')
-//                    ->requiresConfirmation()
-//                    ->visible(
-//                        fn($record) => $record->status ===
-//                            MentorEntities::MENTOR_STATUS_PENDING_APPROVAL
-//                    )
-//                    ->action(function (Mentor $records): void {
-//                        $records->status = MentorEntities::MENTOR_STATUS_REJECTED;
-//                        $records->save();
-//                    }),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
             ]);
     }
 

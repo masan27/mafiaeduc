@@ -9,6 +9,7 @@ use App\Models\LearningMethods\LearningMethod;
 use App\Models\Schedules\Schedule;
 use App\Models\Subjects\Subject;
 use App\Models\Users\User;
+use App\Models\Users\UserDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,6 +45,11 @@ class Mentor extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function userDetail(): BelongsTo
+    {
+        return $this->belongsTo(UserDetail::class, 'user_id', 'user_id');
     }
 
     public function grade(): BelongsTo

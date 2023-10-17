@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('learning_method_id')->constrained('learning_methods');
-            $table->foreignId('private_classes_id')->nullable()->constrained('private_classes');
-            $table->foreignId('group_classes_id')->nullable()->constrained('group_classes');
+            $table->foreignId('private_classes_id')->nullable()->constrained('private_classes')->cascadeOnDelete();
+            $table->foreignId('group_classes_id')->nullable()->constrained('group_classes')->cascadeOnDelete();
             $table->foreignId('mentor_id')->constrained('mentors');
             $table->foreignId('grade_id')->constrained('grades');
             $table->foreignId('subject_id')->constrained('subjects');

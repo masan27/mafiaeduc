@@ -10,7 +10,6 @@ use Database\Seeders\LearningMethods\LearningMethodSeeder;
 use Database\Seeders\Roles\RoleSeeder;
 use Database\Seeders\Sales\SalesStatusSeeder;
 use Database\Seeders\Subjects\SubjectSeeder;
-use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +26,7 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             RoleSeeder::class,
             DaySeeder::class,
-            UserSeeder::class,
+//            UserSeeder::class,
 //            PaymentMethodSeeder::class,
             SalesStatusSeeder::class,
 //            MentorSeeder::class,

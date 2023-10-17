@@ -10,6 +10,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
@@ -19,11 +20,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
+//use Illuminate\Database\Eloquent\Builder;
+//use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 class PaymentMethodResource extends Resource
 {
     protected static ?string $model = PaymentMethod::class;
     protected static ?int $navigationSort = 5;
-    
+
     protected static ?string $navigationLabel = 'Metode Pembayaran';
     protected static ?string $modelLabel = 'Metode Pembayaran';
     protected static ?string $navigationGroup = 'Pengaturan';
@@ -55,7 +59,6 @@ class PaymentMethodResource extends Resource
                             PaymentMethodEntities::PAYMENT_METHOD_TYPE_BANK => 'Bank',
                         ]),
                     TextInput::make('description')
-                        ->required()
                         ->string()
                         ->placeholder('Tentang Metode Pembayaran'),
                     TextInput::make('fee')
@@ -66,6 +69,8 @@ class PaymentMethodResource extends Resource
                         ->required()
                         ->numeric()
                         ->placeholder('Nomor Rekening Bank'),
+                    Toggle::make('status')
+                        ->hiddenOn(['create']),
                 ])
             ]);
     }
@@ -103,12 +108,16 @@ class PaymentMethodResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+//                Tables\Actions\ForceDeleteAction::make(),
+//                Tables\Actions\RestoreAction::make(),
+//                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+//                Tables\Actions\BulkActionGroup::make([
+//                    Tables\Actions\ForceDeleteBulkAction::make(),
+//                    Tables\Actions\RestoreBulkAction::make(),
+//                    Tables\Actions\DeleteBulkAction::make(),
+//                ]),
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
@@ -121,4 +130,12 @@ class PaymentMethodResource extends Resource
             'index' => Pages\ManagePaymentMethods::route('/'),
         ];
     }
+
+//    public static function getEloquentQuery(): Builder
+//    {
+//        return parent::getEloquentQuery()
+//            ->withoutGlobalScopes([
+//                SoftDeletingScope::class,
+//            ]);
+//    }
 }

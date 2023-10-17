@@ -18,9 +18,10 @@ use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+
+//use Illuminate\Database\Eloquent\Builder;
+//use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PaymentMethodResource extends Resource
 {
@@ -107,7 +108,7 @@ class PaymentMethodResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
+//                Tables\Actions\ForceDeleteAction::make(),
 //                Tables\Actions\RestoreAction::make(),
 //                Tables\Actions\DeleteAction::make(),
             ])
@@ -130,11 +131,11 @@ class PaymentMethodResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+//    public static function getEloquentQuery(): Builder
+//    {
+//        return parent::getEloquentQuery()
+//            ->withoutGlobalScopes([
+//                SoftDeletingScope::class,
+//            ]);
+//    }
 }
